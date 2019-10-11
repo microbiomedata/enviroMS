@@ -1,9 +1,12 @@
 import click
+from corems.molecular_id.search.MolecularFormulaSearch import SearchMolecularFormulas
+from corems.mass_spectrum.input.fromData import ms_from_array_centroid
+from tabulate import tabulate
 
 class Config(object):
     def __init__(self):
         self.verbose = False
-
+        self.home_directory = '.'   
 pass_config = click.make_pass_decorator(Config, ensure=True)   
 
 @click.group()
@@ -13,8 +16,6 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 @pass_config
 def cli(config, verbose, home_directory):
     config.verbose = verbose
-    if home_directory is None:
-        home_directory = '.'    
     config.home_directory = home_directory
     
 @cli.command()
@@ -31,5 +32,36 @@ def search_formula(config, mz, mz_error, isRadical, isProtonated, isAdduct,out):
        MZ = m/z value FLOAT\n
        out = filename to store results TEXT\n
     '''
-    if config.verbose:
-        click.echo('Searching formulas for %.5f' % mz, file=out)
+    #if config.verbose:
+    click.echo('',file=out)
+    click.echo('Searching formulas for %.5f' % mz, file=out)
+    click.echo('',file=out)
+    run_molecular_formula_search(mz, out)
+
+def run_molecular_formula_search(mz, out):
+    
+    mz = [mz]
+    abundance = [1]
+    rp, s2n = [1,1]
+    dataname = out
+    mass_spectrum_obj = ms_from_array_centroid(mz, abundance, rp, s2n, dataname)
+    SearchMolecularFormulas().run_worker_ms_peak(mass_spectrum_obj[0], mass_spectrum_obj)
+    ms_peak = mass_spectrum_obj[0]
+    
+    if ms_peak.is_assigned:
+        
+        header = ['Calculated m/z', 'Mass Error', 'Molecular Formula', 'DBE', 'Ion Type']
+        
+        results = []
+        
+        for formula in ms_peak:
+            results.append([formula.to_string_formated, round(formula.mz_theor,7), round(formula.mz_error,3), round(formula.dbe,1), formula.ion_type])
+        
+        click.echo(tabulate(results, headers=header), file=out)
+        click.echo('', file=out)        
+    
+    else:        
+        
+        click.echo("Could not find a possible molecular formula match for the m/z %.5f" % mz[0], file=out)
+        click.echo('', file=out)
+        

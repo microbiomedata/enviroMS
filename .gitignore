@@ -19,3 +19,4 @@ db/
 env/
 enviroMS.egg-info/
 desktop.ini 
+dist/
