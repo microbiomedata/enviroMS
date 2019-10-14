@@ -38,6 +38,7 @@ test-job:
     - pip install virtualenv
     - virtualenv venv
     - source venv/bin/activate
+    - pip install /home/corems/dist/*
     - pip install --editable .
     - enviroMS search-formula --help
     
