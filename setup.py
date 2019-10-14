@@ -29,7 +29,7 @@ setup(
     install_requires=['Click'],
     entry_points= '''
             [console_scripts]
-            enviroMS=cli.enviroMS:cli
+            enviroMS=cli.enviroms:cli
             ''',
 )
     
