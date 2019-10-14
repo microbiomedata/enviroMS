@@ -16,7 +16,7 @@ setup(
     description="Search and Assign Molecular Formulas for Small Molecules ",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://gitlab.pnnl.gov/corilo/corems/",
+    url="https://gitlab.pnnl.gov/corilo/enviroms/",
     author="Corilo, Yuri",
     author_email="corilo@pnnl.gov",
     license="GNU Affero General Public License v3.0",
