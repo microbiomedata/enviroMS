@@ -38,7 +38,7 @@ test-job:
     - pip install virtualenv
     - virtualenv venv
     - source venv/bin/activate
-    - pip install --editable .cd 
+    - pip install --editable .
     - enviroMS search-formula --help
     
 
