@@ -55,7 +55,7 @@ run-job:
     - pip install /home/corems/dist/*
     - source env/bin/activate
     - pip install --editable .
-    - enviroMS search-formula 215.09269
+    #- enviroMS search-formula 215.09269
   
 docker-image:
   
@@ -70,6 +70,11 @@ docker-image:
     entrypoint: [""]
   
   script:
+    - python -m venv env
+    - source env/bin/activate
+    - pip install /home/corems/dist/*
+    - source env/bin/activate
+    - pip install --editable .
     - export DOCKER_CONFIG=/kaniko/.docker/
     - export GOOGLE_APPLICATION_CREDENTIALS=/kaniko/.docker/config.json  
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
