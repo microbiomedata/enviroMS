@@ -38,7 +38,8 @@ test-job:
     - pip install virtualenv
     - virtualenv venv
     - source venv/bin/activate
-    - pip install --editable .
+    - pip install --editable .cd 
+    - enviroMS search-formula --help
     
 
 run-job:
@@ -51,7 +52,7 @@ run-job:
     
   script:
     - source venv/bin/activate
-    - enviroMS search-formula --help
+    - enviroMS search-formula 212.2321
   
 docker-image:
   
