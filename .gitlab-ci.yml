@@ -30,11 +30,9 @@ test-job:
   
   stage: test
   tags:
-    - k8s
-    - rc
-    #- docker
-    #- python
-
+    - cor
+    - lap
+    
   script:
     - python -V  # Print out python version for debugging
     - pip install virtualenv
@@ -47,10 +45,9 @@ run-job:
 
   stage: run
   tags:
-    #- docker
-    #- python
-    - k8s
-    - rc
+    - cor
+    - lap
+    
     
   script:
     - source venv/bin/activate
@@ -61,8 +58,8 @@ docker-image:
   stage: build
   
   tags:
-    - k8s
-    - rc
+    - cor
+    - lap
     
   image:
     name: gcr.io/kaniko-project/executor:debug
