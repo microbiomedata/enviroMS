@@ -40,7 +40,7 @@ test-job:
     - pip install /home/corems/dist/*
     - ls
     - pip install --editable .
-    - enviroMS search-formula --help
+
     
 
 run-job:
