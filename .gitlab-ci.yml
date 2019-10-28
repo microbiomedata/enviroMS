@@ -30,8 +30,8 @@ test-job:
   
   stage: test
   tags:
-    - cor
-    - lap
+    - k8s
+    - rc
     
   script:
     - python -V  # Print out python version for debugging
@@ -43,8 +43,8 @@ run-job:
 
   stage: run
   tags:
-    - cor
-    - lap
+    - k8s
+    - rc
     
     
   script:
