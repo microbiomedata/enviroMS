@@ -35,8 +35,7 @@ test-job:
     
   script:
     - python -V  # Print out python version for debugging
-    - python -m venv env
-    - source env/bin/activate
+    - python setup.py test
     - ls
     
 
@@ -50,10 +49,6 @@ run-job:
     
   script:
     
-    - python -m venv env
-    - source env/bin/activate
-    - pip install /home/corems/dist/*
-    - source env/bin/activate
     - pip install --editable .
     #- enviroMS search-formula 215.09269
  
