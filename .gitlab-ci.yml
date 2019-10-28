@@ -21,7 +21,7 @@ cache:
 stages:
   - test
   - run
-  - build
+  #- build
 
 #before_script:
   #
