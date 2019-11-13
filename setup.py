@@ -12,7 +12,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="enviroMS",
-    version="1.0.a0",
+    version="1.1.a0",
     description="Search and Assign Molecular Formulas for Small Molecules ",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -26,7 +26,7 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
 
-    install_requires=['Click'],
+    install_requires=['Click', 'tabulate'],
     entry_points= '''
             [console_scripts]
             enviroMS=cli.enviroms:cli
