@@ -30,8 +30,10 @@ test-job:
   
   stage: test
   tags:
-    - k8s
-    - rc
+    - massspec
+    - k8s 
+    - rcint
+
     
   script:
     - python -V  # Print out python version for debugging
@@ -43,10 +45,10 @@ run-job:
 
   stage: run
   tags:
-    - k8s
-    - rc
-    
-    
+    - massspec
+    - k8s 
+    - rcint
+
   script:
     
     - pip install --editable .
