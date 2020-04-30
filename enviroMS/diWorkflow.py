@@ -70,10 +70,10 @@ def run_assignment(args):
     mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
     
     mass_spectrum.filter_by_max_resolving_power(15, 2)
-
+ 
     SearchMolecularFormulas(mass_spectrum, first_hit=True).run_worker_mass_spectrum()
     
-    oxygen = OxygenPriorityAssignment(mass_spectrum)
+    OxygenPriorityAssignment(mass_spectrum).run()
     
     print(mass_spectrum.percentile_assigned())
 
