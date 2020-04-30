@@ -1,8 +1,8 @@
-FROM gitlab.pnnl.gov:4567/mass-spectrometry/corems:latest
+FROM corilo/corems:base-mono-pythonnet
+WORKDIR /enviroms
 
-WORKDIR /home/EnviroMS
-
-COPY cli/ /home/EnviroMS/cli
-COPY requirements.txt LICENSE README.md setup.py /home/CoreMS/
-RUN python3 setup.py install 
-RUN pip install --editable .
+COPY enviroMS/ /enviroms/enviroMS/
+COPY README.md disclaimer.txt Makefile requirements.txt setup.py /enviroms/
+COPY db/ /enviroms/db/
+RUN pip3 install --editable .
+ENTRYPOINT ["enviroMS"]
