@@ -16,13 +16,11 @@ def run_molecular_formula_search(mz, out, parameters_filepath):
     
     mass_spectrum_obj = ms_from_array_centroid(mz, abundance, rp, s2n, dataname)
     
-    parameter_from_json.load_and_set_parameters_ms(mass_spectrum_obj, settings_path=parameters_filepath)
+    parameter_from_json.load_and_set_parameters_ms(mass_spectrum_obj, parameters_path=parameters_filepath)
 
     mass_spectrum_obj.molecular_search_settings.use_min_peaks_filter = False
     mass_spectrum_obj.molecular_search_settings.use_min_peaks_filter = 10
     mass_spectrum_obj.molecular_search_settings.use_isotopologue_filter = False
-
-    
 
     click.echo('Searching for molecular formulas within %.3f and %.3f ppm' % (mass_spectrum_obj.molecular_search_settings.min_ppm_error, mass_spectrum_obj.molecular_search_settings.max_ppm_error))
 

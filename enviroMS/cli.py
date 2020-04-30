@@ -3,7 +3,7 @@ from pathlib import Path
 import click
 
 from enviroMS.singleMzSearch import run_molecular_formula_search
-from enviroMS.diWorkflow import DiWorkflowParameters
+from enviroMS.diWorkflow import DiWorkflowParameters, run_direct_infusion_workflow
 
 from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
 from corems.encapsulation.output.parameter_to_json import dump_ms_settings_json
@@ -31,7 +31,6 @@ def cli(config, verbose):
 @click.option('-r', '--radical', 'isRadical', default=True, type=bool, help='include radical ion type') 
 @click.option('-p', '--protonated', 'isProtonated', default=True, type=bool, help='include (de)-protonated ion type')
 @click.option('-a', '--adduct', 'isAdduct', default=False, type=bool, help='include adduct ion type')
-
 @pass_config
 def run_search_formula(config, mz, ppm_error, isRadical, isProtonated, isAdduct,out, corems_parameters_filepath):#settings_filepath
     '''Search for molecular formula candidates to a given m/z value \n
@@ -54,9 +53,8 @@ def run_search_formula(config, mz, ppm_error, isRadical, isProtonated, isAdduct,
     run_molecular_formula_search(mz, out, corems_parameters_filepath)
 
 @cli.command()
-@click.argument('di_workflow_paramaters_file', required=True, type=click.Path())
+@click.argument('di_workflow_paramaters_file', required=True, type=str)
 @click.option('--jobs','-j', default=4, help="'cpu's'")
-@pass_config
 def run_di_workflow(di_workflow_paramaters_file, jobs):
     '''Run the Direct Infusion Workflow\n
    
@@ -65,9 +63,8 @@ def run_di_workflow(di_workflow_paramaters_file, jobs):
        corems_json_path = json file with corems parameters\n
        --jobs = number of processes to run in parallel\n 
     '''
-    #implement a mz search inside the mass spectrum, then run a search for molecular formula and the isotopologues
     
-    pass
+    run_direct_infusion_workflow(di_workflow_paramaters_file, jobs)
 
 @cli.command()
 @click.argument('lcms_workflow_paramaters_file', required=True, type=str)

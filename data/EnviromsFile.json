@@ -1,10 +1,10 @@
-{    "file_paths": [
-        "data/GCMS_FAMES_01_GCMS-01_20191023.cdf",
-        "data/GCMS_FAMES_01_GCMS-01_20191023.cdf"
+{   "file_paths": [
+        "data/NEG_ESI_SRFA_Auto.d"
+        
     ],
-    
+    "input_type": "bruker",
     "output_directory": "data/output_goes_here",
-    "output_filename": "your_dataset_name",
-    "input_type": "masslist",
-    "corems_json_path": "data/CoremsFile.json"
+    "output_filename": "SRFA_test",
+    "output_type": "csv",
+    "corems_json_path": "data/coremsFile.json"
 }

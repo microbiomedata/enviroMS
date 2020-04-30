@@ -26,12 +26,12 @@ patch:
 	@bumpversion patch --allow-dirty
 
 install:
-	@source venv/bin/activate
-	@pip3 install --editable .
+	
+	venv/bin/pip3 install --editable .
 	
 run:
-	@ . venv/bin/activate
-	@enviroMS run-gcms-workflow $(parameters_path)
+	
+	venv/bin/pip3/enviroMS run_di_workflow $(parameters_path)
 
 pypi:
 	@python3 setup.py sdist
