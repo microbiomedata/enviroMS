@@ -1,22 +1,31 @@
 from dataclasses import dataclass, asdict
 
-from multiprocessing import Pool,Process 
+import multiprocessing
 from pathlib import Path
 
 import cProfile
 
 from corems.mass_spectrum.input.massList import ReadMassList
-from corems.mass_spectrum.factory.classification import HeteroatomsClassification, Labels
+from corems.mass_spectrum.factory.classification import HeteroatomsClassification
 from corems.molecular_id.search.priorityAssignment import OxygenPriorityAssignment
 from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
-from corems import SuppressPrints, get_filename, get_dirname
 from corems.transient.input.brukerSolarix import ReadBrukerSolarix
-from corems.molecular_id.search.findOxygenPeaks import FindOxygenPeaks
-from corems.mass_spectrum.calc.CalibrationCalc import FreqDomain_Calibration
+
+
 import json
 import click
-from corems.encapsulation.input import parameter_from_json
 
+class NoDaemonProcess(multiprocessing.Process):
+    # make 'daemon' attribute always return False
+    def _get_daemon(self):
+        return False
+    def _set_daemon(self, value):
+        pass
+    daemon = property(_get_daemon, _set_daemon)
+
+class NoDaemonPool(multiprocessing.pool.Pool):
+    Process = NoDaemonProcess
+    
 @dataclass
 class DiWorkflowParameters:
     
@@ -36,6 +45,7 @@ def run_bruker(file_location, corems_params_path):
 
         transient.set_parameter_from_json(corems_params_path) 
         mass_spectrum = transient.get_mass_spectrum(plot_result=False, auto_process=True)
+        
         return mass_spectrum
 
 def get_masslist(file_location, corems_params_path, polarity):
@@ -57,9 +67,13 @@ def run_assignment(args):
     
        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, polarity=-1)
 
+    mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
+    
     mass_spectrum.filter_by_max_resolving_power(15, 2)
 
     SearchMolecularFormulas(mass_spectrum, first_hit=True).run_worker_mass_spectrum()
+    
+    oxygen = OxygenPriorityAssignment(mass_spectrum)
     
     print(mass_spectrum.percentile_assigned())
 
@@ -94,7 +108,7 @@ def run_direct_infusion_workflow(workflow_params_file, jobs):
     worker_args = [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
     
     cores = jobs
-    pool = Pool(cores)
+    pool = NoDaemonPool(cores)
     for i, _ in enumerate(pool.imap_unordered(run_assignment, worker_args), 1):
         pass
 
