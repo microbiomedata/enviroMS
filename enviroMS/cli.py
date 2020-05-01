@@ -3,7 +3,7 @@ from pathlib import Path
 import click
 
 from enviroMS.singleMzSearch import run_molecular_formula_search
-from enviroMS.diWorkflow import DiWorkflowParameters, run_direct_infusion_workflow
+from enviroMS.diWorkflow import DiWorkflowParameters, generate_database, run_direct_infusion_workflow
 
 from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
 from corems.encapsulation.output.parameter_to_json import dump_ms_settings_json
@@ -53,9 +53,20 @@ def run_search_formula(config, mz, ppm_error, isRadical, isProtonated, isAdduct,
     run_molecular_formula_search(mz, out, corems_parameters_filepath)
 
 @cli.command()
+@click.argument('corems_parameters_file', required=True, type=str)
+@click.option('--jobs','-j', default=4, help="'cpu's'")
+def create_database(corems_parameters_file, jobs):
+    '''corems_parameters_file: Path for CoreMS JSON Parameters file\n
+       jobs: Number of processes to run\n
+       "postgresql://postgres:labthomson0102@172.22.113.27:5432/",
+    '''
+    generate_database(corems_parameters_file, jobs)
+
+@cli.command()
 @click.argument('di_workflow_paramaters_file', required=True, type=str)
 @click.option('--jobs','-j', default=4, help="'cpu's'")
-def run_di_workflow(di_workflow_paramaters_file, jobs):
+@click.option('--replicas','-r', default=1, help="data replicas")
+def run_di_workflow(di_workflow_paramaters_file, jobs, replicas):
     '''Run the Direct Infusion Workflow\n
    
        workflow_paramaters_file = json file with workflow parameters\n
@@ -64,7 +75,7 @@ def run_di_workflow(di_workflow_paramaters_file, jobs):
        --jobs = number of processes to run in parallel\n 
     '''
     
-    run_direct_infusion_workflow(di_workflow_paramaters_file, jobs)
+    run_direct_infusion_workflow(di_workflow_paramaters_file, jobs, replicas)
 
 @cli.command()
 @click.argument('lcms_workflow_paramaters_file', required=True, type=str)
