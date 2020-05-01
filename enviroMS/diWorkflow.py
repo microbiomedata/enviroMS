@@ -14,7 +14,18 @@ from corems.transient.input.brukerSolarix import ReadBrukerSolarix
 
 import json
 import click
-from multiprocessing import Pool
+
+class NoDaemonProcess(multiprocessing.Process):
+    # make 'daemon' attribute always return False
+    def _get_daemon(self):
+        return False
+    def _set_daemon(self, value):
+        pass
+    daemon = property(_get_daemon, _set_daemon)
+
+class NoDaemonPool(multiprocessing.pool.Pool):
+    Process = NoDaemonProcess
+    
 @dataclass
 class DiWorkflowParameters:
     
@@ -97,7 +108,7 @@ def run_direct_infusion_workflow(workflow_params_file, jobs):
     worker_args = [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
     
     cores = jobs
-    pool = Pool(cores)
+    pool = NoDaemonPool(cores)
     for i, _ in enumerate(pool.imap_unordered(run_assignment, worker_args), 1):
         pass
 
