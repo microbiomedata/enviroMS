@@ -1,15 +1,16 @@
 #!/bin/csh
 
-SBATCH --account mscms                         # charged account
+#SBATCH --account mscms                         # charged account
 #SBATCH --time 30                              # 30 minute time limit
-SBATCH --nodes 1                               # 2 nodes
-SBATCH --ntasks-per-node 16                    # 16 processes on each per node
-SBATCH --job-name enviroms                     # job name in queue (``squeue``)
+#SBATCH --nodes 1                               # 2 nodes
+#SBATCH --ntasks-per-node 16                    # 16 processes on each per node
+#SBATCH --job-name enviroms                     # job name in queue (``squeue``)
 #SBATCH --error my_job_name-%j.err             # stderr file with job_name-job_id.err
-SBATCH --output enviroms-%j.out                 # stdout file
+#SBATCH --output enviroms-%j.out                 # stdout file
 #SBATCH --mail-user=my_email_address@pnnl.gov  # email user
 #SBATCH --mail-type END                        # when job ends
-SBACH --reservation eber373-benchmarking
+#SBATCH --reservation eber373-benchmarking
+
 module purge                                   
 module load intel/16.1.150
 module load impi/5.1.2.150
