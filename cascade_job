@@ -15,7 +15,7 @@
 module purge                                   
 module load intel/16.1.150
 module load impi/5.1.2.150
-module load python/intel-3.7
+
 
 export SLURM_CPU_BIND=none
 mpirun -n 48 ~/enviroms/venv/bin/enviroMS run-di-workflow -r 48 --mpi /dtemp/mscms/enviroms/data/EnviromsFile.json
