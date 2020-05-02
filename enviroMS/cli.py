@@ -3,11 +3,13 @@ from pathlib import Path
 import click
 
 from enviroMS.singleMzSearch import run_molecular_formula_search
-from enviroMS.diWorkflow import DiWorkflowParameters, generate_database, run_direct_infusion_workflow
+from enviroMS.diWorkflow import DiWorkflowParameters, generate_database, run_di_mpi, run_direct_infusion_workflow
 
 from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
 from corems.encapsulation.output.parameter_to_json import dump_ms_settings_json
 import json
+import sys
+
 
 
 class Config:
@@ -66,16 +68,22 @@ def create_database(corems_parameters_file, jobs):
 @click.argument('di_workflow_paramaters_file', required=True, type=str)
 @click.option('--jobs','-j', default=4, help="'cpu's'")
 @click.option('--replicas','-r', default=1, help="data replicas")
-def run_di_workflow(di_workflow_paramaters_file, jobs, replicas):
+@click.option('--mpi','-m', is_flag=True, help="run mpi version")
+def run_di_workflow(di_workflow_paramaters_file, jobs, replicas, mpi):
     '''Run the Direct Infusion Workflow\n
-   
        workflow_paramaters_file = json file with workflow parameters\n
        output_types = csv, excel, pandas, json set on the parameter file\n
        corems_json_path = json file with corems parameters\n
        --jobs = number of processes to run in parallel\n 
+       --mpi = run on hpc, if omitted will run python's multiprocessing and will duplicate runs on nodes\n
     '''
-    
-    run_direct_infusion_workflow(di_workflow_paramaters_file, jobs, replicas)
+    if mpi:
+        
+        run_di_mpi(di_workflow_paramaters_file, replicas)
+
+    else:    
+
+        run_direct_infusion_workflow(di_workflow_paramaters_file, jobs, replicas)
 
 @cli.command()
 @click.argument('lcms_workflow_paramaters_file', required=True, type=str)

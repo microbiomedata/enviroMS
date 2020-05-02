@@ -1,5 +1,7 @@
 from dataclasses import dataclass, asdict
 
+
+
 import multiprocessing
 from pathlib import Path
 import os
@@ -47,10 +49,7 @@ def get_masslist(file_location, corems_params_path, polarity):
     return(reader.get_mass_spectrum(polarity=-1))
 
 
-def run_assignment(file_location, workflow_params_json_str):
-    
-    
-    workflow_params = DiWorkflowParameters(**json.loads(workflow_params_json_str))
+def run_assignment(file_location, workflow_params):
     
     if workflow_params.input_type == 'bruker':
     
@@ -98,9 +97,17 @@ def workflow_worker(args):
     
     file_location, workflow_params_json_str = args
     
-    mass_spec = run_assignment(file_location, workflow_params_json_str)
+    workflow_params = DiWorkflowParameters(**json.loads(workflow_params_json_str))
 
-    return mass_spec, os.getpid()
+    mass_spec = run_assignment(file_location, workflow_params)
+
+    dirloc = Path(workflow_params.output_directory)
+    
+    dirloc.mkdir(exist_ok=True)
+
+    output_path = '{DIR}/{NAME}_{ID}'.format(DIR=workflow_params.output_directory, NAME=workflow_params.output_filename, ID= os.getpid())
+    
+    eval('mass_spec.to_{OUT_TYPE}(output_path)'.format(OUT_TYPE=workflow_params.output_type))
 
 def cprofile_worker(file_location, workflow_params_json_str):
 
@@ -124,14 +131,25 @@ def run_direct_infusion_workflow(workflow_params_file, jobs, replicas):
     
     for i, results in enumerate(pool.imap_unordered(workflow_worker, worker_args), 1):
         
-        mass_spectrum, job_id =results
-
-        output_path = '{DIR}/{NAME}_{ID}'.format(DIR=workflow_params.output_directory, NAME=workflow_params.output_filename, ID=job_id)
-    
-        eval('mass_spectrum.to_{OUT_TYPE}(output_path)'.format(OUT_TYPE=workflow_params.output_type))
-
-        mass_spectrum.to_dataframe()["Ion Type"]
+        pass
 
     pool.close()
     pool.join()
+
+def run_di_mpi(workflow_params_file, replicas):
     
+    import os, sys
+    sys.path.append(os.getcwd()) 
+
+    from mpi4py import MPI
+    
+    workflow_params = read_workflow_parameter(workflow_params_file)
+    worker_args = replicas*[(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+    
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    size = comm.Get_size()
+    
+    # will only run tasks up to the number of files paths selected in the EnviroMS File
+    if rank < len(worker_args):
+        workflow_worker(worker_args[rank])
