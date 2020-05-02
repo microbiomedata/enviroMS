@@ -52,3 +52,7 @@ docker-build:
 docker-run:
 
 	docker run -v $(data_dir):/enviroms/data enviroms:local run-gcms-workflow /enviroms/data/EnviromsFile.json
+
+cascade-run:
+
+	srun -A mscms -t 240 -N 1 -n time enviroMS run-di-workflow -r 2 --mpi  /dtemp/mscms/enviroms/data/EnviromsFile.json
