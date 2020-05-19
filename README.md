@@ -94,10 +94,10 @@ If you don't have docker installed, the easiest way is to [install docker for de
     ```
 - Run Workflow from Container:
 
-    $(data_dir) = dir_containing the gcms data, EnviromsFile.json and CoremsFile.json
+    $(data_dir) = dir_containing the FT-ICR MS data, EnviromsFile.json and CoremsFile.json
     
     ```bash
-    docker run -v $(data_dir):/metaB/data corilo/enviroms:latest run-gcms-workflow /metaB/data/EnviromsFile.json    
+    docker run -v $(data_dir):/metaB/data corilo/enviroms:latest run-di /metaB/data/EnviromsFile.json    
     ```
 
 - Get the parameters templates:
