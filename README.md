@@ -58,7 +58,7 @@ To be able to open thermo raw files a installation of pythonnet is needed:
     pip3 install pythonnet   
     ```
 
-## Command Line Commands
+## Running the workflow
 
 ```bash
 enviroMS dump_json_template EnviromsFile.json
