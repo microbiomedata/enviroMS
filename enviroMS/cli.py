@@ -68,8 +68,9 @@ def create_database(corems_parameters_file, jobs):
 @click.argument('di_workflow_paramaters_file', required=True, type=str)
 @click.option('--jobs','-j', default=4, help="'cpu's'")
 @click.option('--replicas','-r', default=1, help="data replicas")
+@click.option('--tasks','-t', default=4, help="mpi tasks")
 @click.option('--mpi','-m', is_flag=True, help="run mpi version")
-def run_di_workflow(di_workflow_paramaters_file, jobs, replicas, mpi):
+def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
     '''Run the Direct Infusion Workflow\n
        workflow_paramaters_file = json file with workflow parameters\n
        output_types = csv, excel, pandas, json set on the parameter file\n
@@ -79,7 +80,7 @@ def run_di_workflow(di_workflow_paramaters_file, jobs, replicas, mpi):
     '''
     if mpi:
         
-        run_di_mpi(di_workflow_paramaters_file, replicas)
+        run_di_mpi(di_workflow_paramaters_file, tasks, replicas)
 
     else:    
 
@@ -89,7 +90,7 @@ def run_di_workflow(di_workflow_paramaters_file, jobs, replicas, mpi):
 @click.argument('lcms_workflow_paramaters_file', required=True, type=str)
 @click.option('--jobs','-j', default=4, help="'cpu's'")
 @pass_config
-def run_lcms_workflow(workflow_paramaters_file, jobs):
+def run_lcms(workflow_paramaters_file, jobs):
     #implement a mz search inside the mass spectrum, then run a search for molecular formula and the isotopologues
     pass       
 

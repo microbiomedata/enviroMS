@@ -4,45 +4,35 @@
 
 ## Current Version
 
-### `1.0.0`
+### `1.1.0`
 
 ### Data input formats
 
-- CoreMS self-containing Hierarchical Data Format (.hdf5)
+- Generic mass list in profile and centroid mode (include all delimiters types and Excel formats)
 
 ### Data output formats
 
 - Pandas data frame (can be saved using pickle, h5, etc)
 - Text Files (.csv, tab separated .txt, etc)
 - Microsoft Excel (xlsx)
-- JSON for workflow metadata
-- Self-containing Hierarchical Data Format (.hdf5) including raw data and ime-series data-point for processed data-sets with all associated metadata stored as json attributes
+- Automatic JSON for workflow metadata
+- Self-containing Hierarchical Data Format (.hdf5) including raw data and ime-series data-point for processed data-sets with all associated workflow metadata (JSON)
 
 ### Data structure types
 
 - FT-ICR MS
 - LC-FT-ICR MS
 
-## Available features
-
-### Signal Processing
-
-- Baseline detection, subtraction, smoothing 
-- Manual and automatic noise threshold calculation
-- First and second derivatives peak picking methods
-- Peak Area Calculation
-- EIC Chromatogram deconvolution(TODO)
-
-### Calibration
-
-- Ledford
-- Linear
-- Quadratic
-
-### Compound Identification
+### Molecular formulae search and assignment
 
 - Automatic local (SQLite) or external (PostgreSQL) database check, generation, and search
-- Automatic molecular match algorithm
+- Automatic molecular formulae assignments algorithm for ESI(-) MS for natural organic matter analysis
+- Automatic fine isotopic structure calculation and search for all isotopes
+- Flexible Kendrick normalization base
+- Kendrick filter using density-based clustering
+- Kendrick classification
+- Hetero atoms classification and visualization
+
 
 ## EnviroMS Installation
 
@@ -68,7 +58,7 @@ To be able to open thermo raw files a installation of pythonnet is needed:
     pip3 install pythonnet   
     ```
 
-## Usage
+## Command Line Commands
 
 ```bash
 enviroMS dump_json_template EnviromsFile.json
@@ -86,7 +76,7 @@ enviroMS run-gcms-workflow path_to_MetamsFile.json
 
 ## EnviroMS Docker 
 
-A docker image containing the EnviroMS command line as the entry point
+A docker image containing the EnviroMS command line as code entry-point
 
 If you don't have docker installed, the easiest way is to [install docker for desktop](https://hub.docker.com/?overlay=onboarding)
 
@@ -110,7 +100,7 @@ If you don't have docker installed, the easiest way is to [install docker for de
     docker run -v $(data_dir):/metaB/data corilo/enviroms:latest run-gcms-workflow /metaB/data/EnviromsFile.json    
     ```
 
-- Getting the parameters templates:
+- Get the parameters templates:
     
     ```bash
     docker run -v $(data_dir):/metaB/data corilo/enviroms:latest dump_json_template /metaB/data/EnviromsFile.json    

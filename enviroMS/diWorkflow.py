@@ -20,6 +20,7 @@ from corems.molecular_id.factory.MolecularLookupTable import MolecularCombinatio
 from corems.encapsulation.factory.processingSetting import MolecularFormulaSearchSettings
 from corems.encapsulation.input.parameter_from_json import load_and_set_parameters_class
 
+
 @dataclass
 class DiWorkflowParameters:
     
@@ -48,7 +49,6 @@ def get_masslist(file_location, corems_params_path, polarity):
     reader.set_parameter_from_json(parameters_path=corems_params_path)
     return(reader.get_mass_spectrum(polarity=-1))
 
-
 def run_assignment(file_location, workflow_params):
     
     if workflow_params.input_type == 'bruker':
@@ -62,10 +62,11 @@ def run_assignment(file_location, workflow_params):
     mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
     
     #force it to one job. daemon child can not have child process 
-    mass_spectrum.molecular_search_settings.db_jobs = 1
+    mass_spectrum.molecular_search_settings.db_jobs = 6
 
     mass_spectrum.filter_by_max_resolving_power(15, 2)
  
+    
     SearchMolecularFormulas(mass_spectrum, first_hit=True).run_worker_mass_spectrum()
     
     print(mass_spectrum.percentile_assigned())
@@ -84,7 +85,6 @@ def generate_database(corems_parameters_file, jobs):
     molecular_search_settings = load_and_set_parameters_class('MolecularSearch', MolecularFormulaSearchSettings(), parameters_path=corems_parameters_file)
 
     molecular_search_settings.db_jobs = jobs
-
     MolecularCombinations().runworker(molecular_search_settings)
 
 
@@ -108,6 +108,8 @@ def workflow_worker(args):
     output_path = '{DIR}/{NAME}_{ID}'.format(DIR=workflow_params.output_directory, NAME=workflow_params.output_filename, ID= os.getpid())
     
     eval('mass_spec.to_{OUT_TYPE}(output_path)'.format(OUT_TYPE=workflow_params.output_type))
+
+    return 'Success' + str(os.getpid())
 
 def cprofile_worker(file_location, workflow_params_json_str):
 
@@ -136,20 +138,27 @@ def run_direct_infusion_workflow(workflow_params_file, jobs, replicas):
     pool.close()
     pool.join()
 
-def run_di_mpi(workflow_params_file, replicas):
+def run_di_mpi(workflow_params_file, tasks, replicas):
     
     import os, sys
-    sys.path.append(os.getcwd()) 
-
     from mpi4py import MPI
-    
-    workflow_params = read_workflow_parameter(workflow_params_file)
-    worker_args = replicas*[(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+    #from mpi4py.futures import MPIPoolExecutor
+    sys.path.append(os.getcwd()) 
     
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
     
+    workflow_params = read_workflow_parameter(workflow_params_file)
+    all_worker_args = replicas*[(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+    
+    #worker_args = comm.scatter(all_worker_args, root=0)
+    
     # will only run tasks up to the number of files paths selected in the EnviroMS File
-    if rank < len(worker_args):
-        workflow_worker(worker_args[rank])
+    if len(all_worker_args) <= size:
+
+        workflow_worker(all_worker_args[0])
+    else:
+
+        print("Tasks needs to be the same size of the input data count, , until you find time to come and help to code this section :D")
+        
