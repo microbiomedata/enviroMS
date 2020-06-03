@@ -1,21 +1,22 @@
-from dataclasses import dataclass, asdict
 
 
-
-import multiprocessing
-from pathlib import Path
-import os
 import cProfile
+from dataclasses import dataclass, asdict
+import json
+from multiprocessing import Pool
+import os
+from pathlib import Path
 
-from corems.mass_spectrum.input.massList import ReadMassList
+import click
+
+from corems.mass_spectrum.calc.Calibration import MzDomainCalibration
 from corems.mass_spectrum.factory.classification import HeteroatomsClassification
+from corems.mass_spectrum.input.massList import ReadMassList
+
 from corems.molecular_id.search.priorityAssignment import OxygenPriorityAssignment
 from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
 from corems.transient.input.brukerSolarix import ReadBrukerSolarix
 
-import json
-import click
-from multiprocessing import Pool
 from corems.molecular_id.factory.MolecularLookupTable import MolecularCombinations
 from corems.encapsulation.factory.processingSetting import MolecularFormulaSearchSettings
 from corems.encapsulation.input.parameter_from_json import load_and_set_parameters_class
@@ -24,17 +25,39 @@ from corems.encapsulation.input.parameter_from_json import load_and_set_paramete
 @dataclass
 class DiWorkflowParameters:
     
-    file_paths: tuple = ('data/...', 'data/...')
+    #input type: masslist, bruker_transient, thermo_reduced_profile
     input_type: str = 'masslist'
-    output_directory: str = 'data/...'
-    output_filename: str = 'data/...'
-    output_type: str = 'csv'
-    corems_json_path: str = 'data/coremsFile.json'
+    
+    #scans to sum for thermo raw data, reduce profile
+    start_scan:int = 1
+    final_scan:int = 7
 
+    #input output paths 
+    file_paths: tuple = ('data/...', 'data/...')
+    output_directory: str = 'data/...'
+    output_filename: str = '...'
+    output_type: str = 'csv'
+    
+    #polarity for masslist input
+    polarity: int = -1
+    
+    #corems settings 
+    corems_json_path: str = 'data/CoremsFile.json'
+    
+    #calibration
+    calibrate: bool = True
+    calibration_ref_filepath: str = 'data/SRFA.ref'
+    
     def to_json(self):
         return json.dumps(asdict(self))
 
-def run_bruker(file_location, corems_params_path):
+def run_thermo_reduce_profile(file_location, corems_params_path):
+    
+    from corems.mass_spectra.input import rawFileReader
+    mass_spectrum = rawFileReader.ImportLCMSThermoMSFileReader(file_location).get_summed_mass_spectrum(1,7)
+    return mass_spectrum
+
+def run_bruker_transient(file_location, corems_params_path):
     
     with ReadBrukerSolarix(file_location) as transient:
 
@@ -47,27 +70,35 @@ def get_masslist(file_location, corems_params_path, polarity):
 
     reader = ReadMassList(file_location)
     reader.set_parameter_from_json(parameters_path=corems_params_path)
-    return(reader.get_mass_spectrum(polarity=-1))
+
+    return(reader.get_mass_spectrum(polarity=polarity))
 
 def run_assignment(file_location, workflow_params):
     
-    if workflow_params.input_type == 'bruker':
+    if workflow_params.input_type == 'thermo_reduced_profile':
     
-       mass_spectrum = run_bruker(file_location, workflow_params.corems_json_path)
+       mass_spectrum = run_thermo_reduce_profile(file_location, workflow_params)
+
+    if workflow_params.input_type == 'bruker_transient':
+    
+       mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
     
     elif workflow_params.input_type == 'masslist':
     
-       mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, polarity=-1)
+       mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, polarity=workflow_params.polarity)
 
     mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
     
-    #force it to one job. daemon child can not have child process 
-    mass_spectrum.molecular_search_settings.db_jobs = 6
+    if workflow_params.calibrate:
+        
+        ref_file_location = Path(workflow_params.calibration_ref_filepath) 
 
-    mass_spectrum.filter_by_max_resolving_power(15, 2)
- 
-    
-    SearchMolecularFormulas(mass_spectrum, first_hit=True).run_worker_mass_spectrum()
+        MzDomainCalibration(mass_spectrum, ref_file_location).run()
+
+    #force it to one job. daemon child can not have child process 
+    mass_spectrum.molecular_search_settings.db_jobs = 1
+
+    SearchMolecularFormulas(mass_spectrum, first_hit=False).run_worker_mass_spectrum()
     
     print(mass_spectrum.percentile_assigned())
 
@@ -83,15 +114,13 @@ def generate_database(corems_parameters_file, jobs):
     click.echo('Loading Searching Settings from %s' % corems_parameters_file)
 
     molecular_search_settings = load_and_set_parameters_class('MolecularSearch', MolecularFormulaSearchSettings(), parameters_path=corems_parameters_file)
-
     molecular_search_settings.db_jobs = jobs
     MolecularCombinations().runworker(molecular_search_settings)
-
 
 def read_workflow_parameter(di_workflow_paramaters_json_file):
     
     with open(di_workflow_paramaters_json_file, 'r') as infile:
-        return DiWorkflowParameters(**json.load(infile))    
+        return DiWorkflowParameters(**json.load(infile)) 
 
 def workflow_worker(args):
     

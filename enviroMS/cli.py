@@ -10,8 +10,6 @@ from enviroMS.diWorkflow import DiWorkflowParameters, generate_database, run_di_
 from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
 from corems.encapsulation.output.parameter_to_json import dump_ms_settings_json
 
-
-
 class Config:
     def __init__(self):
         self.verbose = False
@@ -70,6 +68,7 @@ def create_database(corems_parameters_file, jobs):
 @click.option('--replicas','-r', default=1, help="data replicas")
 @click.option('--tasks','-t', default=4, help="mpi tasks")
 @click.option('--mpi','-m', is_flag=True, help="run mpi version")
+
 def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
     '''Run the Direct Infusion Workflow\n
        workflow_paramaters_file = json file with workflow parameters\n
