@@ -1,10 +1,15 @@
-{   "file_paths": [
+{
+    "input_type": "bruker_transient",
+    "start_scan": 1,
+    "final_scan": 7,
+    "file_paths": [
         "data/NEG_ESI_SRFA_Auto.d"
-        
     ],
-    "input_type": "bruker",
-    "output_directory": "data/output_goes_here",
-    "output_filename": "SRFA_test",
+    "output_directory": "data/output",
+    "output_filename": "test",
     "output_type": "csv",
-    "corems_json_path": "data/coremsFile.json"
+    "polarity": -1,
+    "corems_json_path": "data/CoremsFile.json",
+    "calibrate": true,
+    "calibration_ref_filepath": "data/SRFA.ref"
 }
