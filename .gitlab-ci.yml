@@ -37,6 +37,7 @@ test-job:
     
   script:
     - python -V  # Print out python version for debugging
+    - pip install -U corems
     - python setup.py test
     - ls
     
@@ -51,7 +52,7 @@ run-job:
 
   script:
     
-    - pip install -U corems
+    
     - pip install --editable .
     #- enviroMS search-formula 215.09269
  
