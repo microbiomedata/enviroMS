@@ -51,6 +51,7 @@ run-job:
 
   script:
     
+    - pip install -U corems
     - pip install --editable .
     #- enviroMS search-formula 215.09269
  
