@@ -16,8 +16,7 @@ cache:
   
   paths:
     - .cache/pip
-    - venv/
-
+    
 stages:
   - test
   - run
@@ -37,7 +36,6 @@ test-job:
     
   script:
     - python -V  # Print out python version for debugging
-    - pip install -U corems
     - python setup.py test
     - ls
     
