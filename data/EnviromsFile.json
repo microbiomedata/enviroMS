@@ -6,10 +6,19 @@
         "data/NEG_ESI_SRFA_Auto.d"
     ],
     "output_directory": "data/output",
-    "output_filename": "test",
+    "output_group_name": "SRFA",
     "output_type": "csv",
     "polarity": -1,
     "corems_json_path": "data/CoremsFile.json",
+    
     "calibrate": true,
-    "calibration_ref_filepath": "data/SRFA.ref"
+    "calibration_ref_filepath": "data/SRFA.ref",
+    
+    "plot_mz_error": true,
+    "ms_assigned_unassigned": true,
+
+    "plot_c_dbe":  true,
+    "plot_van_krevelen": true,
+    "plot_ms_classes": true,
+    "plot_mz_error_classes": true
 }

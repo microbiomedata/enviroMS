@@ -8,9 +8,12 @@ import os
 from pathlib import Path
 
 import click
+from tqdm import tqdm
 
+
+from matplotlib import pyplot as plt
 from corems.mass_spectrum.calc.Calibration import MzDomainCalibration
-from corems.mass_spectrum.factory.classification import HeteroatomsClassification
+from corems.molecular_id.factory.classification import HeteroatomsClassification
 from corems.mass_spectrum.input.massList import ReadMassList
 
 from corems.molecular_id.search.priorityAssignment import OxygenPriorityAssignment
@@ -35,7 +38,7 @@ class DiWorkflowParameters:
     #input output paths 
     file_paths: tuple = ('data/...', 'data/...')
     output_directory: str = 'data/...'
-    output_filename: str = '...'
+    output_group_name: str = '...'
     output_type: str = 'csv'
     
     #polarity for masslist input
@@ -47,6 +50,15 @@ class DiWorkflowParameters:
     #calibration
     calibrate: bool = True
     calibration_ref_filepath: str = 'data/SRFA.ref'
+    
+    #plots
+    plot_mz_error: bool = True
+    ms_assigned_unassigned: bool = True
+
+    plot_c_dbe: bool = True
+    plot_van_krevelen: bool = True
+    plot_ms_classes: bool = True
+    plot_mz_error_classes: bool = True
     
     def to_json(self):
         return json.dumps(asdict(self))
@@ -102,8 +114,6 @@ def run_assignment(file_location, workflow_params):
     
     print(mass_spectrum.percentile_assigned())
 
-    mass_spectrum_by_classes = HeteroatomsClassification(mass_spectrum, choose_molecular_formula=True)
-    
     return mass_spectrum
 
 def generate_database(corems_parameters_file, jobs):
@@ -112,15 +122,74 @@ def generate_database(corems_parameters_file, jobs):
        --jobs: Number of processes to run   
     '''
     click.echo('Loading Searching Settings from %s' % corems_parameters_file)
-
+    
     molecular_search_settings = load_and_set_parameters_class('MolecularSearch', MolecularFormulaSearchSettings(), parameters_path=corems_parameters_file)
     molecular_search_settings.db_jobs = jobs
+    molecular_search_settings.url_database = None
     MolecularCombinations().runworker(molecular_search_settings)
 
 def read_workflow_parameter(di_workflow_paramaters_json_file):
     
     with open(di_workflow_paramaters_json_file, 'r') as infile:
         return DiWorkflowParameters(**json.load(infile)) 
+
+def create_plots(mass_spectrum, workflow_params, dirloc):
+
+    ms_by_classes = HeteroatomsClassification(mass_spectrum, choose_molecular_formula=False)
+
+    if workflow_params.ms_assigned_unassigned:
+        print("Plotting assigned vs. unassigned mass spectrum")
+        ax_ms = ms_by_classes.plot_ms_assigned_unassigned()
+        plt.savefig(dirloc/"assigned_unassigned.png", bbox_inches='tight')
+        plt.clf()
+
+    if workflow_params.plot_mz_error:
+        print("Plotting mz_error")
+        ax_ms = ms_by_classes.plot_mz_error()
+        plt.savefig(dirloc/"mz_error.png", bbox_inches='tight')
+        plt.clf()
+
+    if workflow_params.plot_van_krevelen:
+        van_krevelen_dirloc = dirloc/"van_krevelen"
+        van_krevelen_dirloc.mkdir(exist_ok=True, parents=True)  
+
+    if workflow_params.plot_c_dbe:
+        c_dbe_dirloc = dirloc/"dbe_vs_c"
+        c_dbe_dirloc.mkdir(exist_ok=True, parents=True)      
+
+    if workflow_params.plot_ms_classes:
+        ms_class_dirloc = dirloc/"ms_class"
+        ms_class_dirloc.mkdir(exist_ok=True, parents=True)  
+
+    if workflow_params.plot_mz_error_classes:
+        mz_error_class_dirloc = dirloc/"mz_error_class"
+        mz_error_class_dirloc.mkdir(exist_ok=True, parents=True)  
+
+    pbar = tqdm(ms_by_classes.get_classes())
+    
+    for classe in pbar:
+        
+        pbar.set_description_str(desc="Plotting results for class {}".format(classe), refresh=True)
+
+        if workflow_params.plot_van_krevelen:
+            ax_c = ms_by_classes.plot_van_krevelen(classe)
+            plt.savefig(van_krevelen_dirloc/"{}.png".format(classe) , bbox_inches='tight')
+            plt.clf()
+
+        if workflow_params.plot_mz_error_classes:
+            ax_c = ms_by_classes.plot_mz_error_class(classe)
+            plt.savefig(mz_error_class_dirloc/"{}.png".format(classe), bbox_inches='tight')
+            plt.clf()
+
+        if workflow_params.plot_ms_classes:
+            ax_c = ms_by_classes.plot_ms_class(classe)
+            plt.savefig(ms_class_dirloc/"{}.png".format(classe), bbox_inches='tight')
+            plt.clf()
+        
+        if workflow_params.plot_c_dbe:
+            ax_c = ms_by_classes.plot_dbe_vs_carbon_number(classe)
+            plt.savefig(c_dbe_dirloc/"{}.png".format(classe), bbox_inches='tight')
+            plt.clf()    
 
 def workflow_worker(args):
     
@@ -130,13 +199,15 @@ def workflow_worker(args):
 
     mass_spec = run_assignment(file_location, workflow_params)
 
-    dirloc = Path(workflow_params.output_directory)
+    dirloc = Path(workflow_params.output_directory)/workflow_params.output_group_name/mass_spec.sample_name
     
-    dirloc.mkdir(exist_ok=True)
+    dirloc.mkdir(exist_ok=True, parents=True)
 
-    output_path = '{DIR}/{NAME}_{ID}'.format(DIR=workflow_params.output_directory, NAME=workflow_params.output_filename, ID= os.getpid())
+    output_path = dirloc / mass_spec.sample_name
     
     eval('mass_spec.to_{OUT_TYPE}(output_path)'.format(OUT_TYPE=workflow_params.output_type))
+
+    create_plots(mass_spec, workflow_params, dirloc)
 
     return 'Success' + str(os.getpid())
 
@@ -160,9 +231,11 @@ def run_direct_infusion_workflow(workflow_params_file, jobs, replicas):
     cores = jobs
     pool = Pool(cores)
     
-    for i, results in enumerate(pool.imap_unordered(workflow_worker, worker_args), 1):
+    for worker_arg in worker_args:
+        workflow_worker(worker_arg)
+    #for i, results in enumerate(pool.imap_unordered(workflow_worker, worker_args), 1):
         
-        pass
+    #    pass
 
     pool.close()
     pool.join()

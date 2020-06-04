@@ -71,7 +71,7 @@
         "score_method": "prob_score", "score_methods": [
             "S_P_lowest_error", "N_S_P_lowest_error", "lowest_error", "prob_score", "air_filter_error", "water_filter_error", "earth_filter_error"
         ],
-        "url_database": "postgresql://coremsdb:coremsmolform@localhost:5432/molformula", 
+        "url_database": false,
         "use_isotopologue_filter": false,
         "use_min_peaks_filter": true,
         "use_pah_line_rule": false,
@@ -95,7 +95,7 @@
             ],
             "O": [
                 1,
-                18
+                22
             ],
             "P": [
                 0,
