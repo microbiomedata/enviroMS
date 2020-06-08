@@ -8,16 +8,16 @@ import click
 from enviroMS.singleMzSearch import run_molecular_formula_search
 from enviroMS.diWorkflow import DiWorkflowParameters, generate_database, run_di_mpi, run_direct_infusion_workflow
 from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
-from corems.encapsulation.output.parameter_to_json import dump_ms_settings_json
+from corems.encapsulation.output.parameter_to_json import dump_ms_settings_json, dump_all_settings_json
 
 class Config:
     def __init__(self):
         self.verbose = False
         
-pass_config = click.make_pass_decorator(Config, ensure=True)   
+pass_config = click.make_pass_decorator(Config, ensure=True)
 
 @click.group()
-@click.option('--verbose', is_flag=True,  help='print out the results')
+@click.option('--verbose', is_flag=True, help='print out the results')
 @pass_config
 def cli(config, verbose):
     
@@ -31,13 +31,16 @@ def cli(config, verbose):
 @click.option('-r', '--radical', 'isRadical', default=True, type=bool, help='include radical ion type') 
 @click.option('-p', '--protonated', 'isProtonated', default=True, type=bool, help='include (de)-protonated ion type')
 @click.option('-a', '--adduct', 'isAdduct', default=False, type=bool, help='include adduct ion type')
+
 @pass_config
 def run_search_formula(config, mz, ppm_error, isRadical, isProtonated, isAdduct,out, corems_parameters_filepath):#settings_filepath
+    
     '''Search for molecular formula candidates to a given m/z value \n
        corems_parameters_filepath =' CoreMS Parameters File (JSON)' 
        MZ = m/z value FLOAT\n
        out = filename to store results TEXT\n
     '''
+    
     #if config.verbose:
     click.echo('', file=out)
     #dump_search_settings_yaml()    
@@ -96,6 +99,15 @@ def run_lcms(workflow_paramaters_file, jobs):
 @cli.command()
 @click.argument('json_file_name', required=True, type=click.Path())
 def dump_corems_template(json_file_name):
+    '''Dumps a CoreMS json file template
+        to be used as the workflow parameters input 
+    '''
+    path_obj = Path(json_file_name).with_suffix('.json')
+    dump_all_settings_json(file_path=path_obj)
+
+@cli.command()
+@click.argument('json_file_name', required=True, type=click.Path())
+def dump_corems_enviroms_template(json_file_name):
     '''Dumps a CoreMS json file template
         to be used as the workflow parameters input 
     '''
