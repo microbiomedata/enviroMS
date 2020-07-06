@@ -21,16 +21,15 @@ from corems.molecular_id.factory.MolecularLookupTable import MolecularCombinatio
 from corems.encapsulation.factory.processingSetting import MolecularFormulaSearchSettings
 from corems.encapsulation.input.parameter_from_json import load_and_set_parameters_class
 
-
 @dataclass
 class DiWorkflowParameters:
 
     # input type: masslist, bruker_transient, thermo_reduced_profile
-    input_types: tuple = 'masslist'
+    input_type: tuple = 'masslist'
 
     # scans to sum for thermo raw data, reduce profile
-    first_scan: int = 1
-    last_scan: int = 7
+    start_scan: int = 1
+    final_scan: int = 7
 
     # input output paths
     file_paths: tuple = ('data/...', 'data/...')
@@ -72,6 +71,8 @@ def run_bruker_transient(file_location, corems_params_path):
 
         transient.set_parameter_from_json(corems_params_path) 
         mass_spectrum = transient.get_mass_spectrum(plot_result=False, auto_process=True)
+    
+    return mass_spectrum
 
 def get_masslist(file_location, corems_params_path, polarity):
 
@@ -82,6 +83,7 @@ def get_masslist(file_location, corems_params_path, polarity):
 
 def run_assignment(file_location, workflow_params):
 
+    print(workflow_params.input_type)
     if workflow_params.input_type == 'thermo_reduced_profile':
 
         first_scan, last_scan = workflow_params.first_scan, workflow_params.last_scan    
