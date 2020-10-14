@@ -1,135 +1,473 @@
 {
-    "DataInput": {
-        "header_translate": {
-            "Abundance": "Abundance",
-            "I": "Abundance", 
-            "Res.": "Resolving Power", 
-            "Resolving Power": "Resolving Power", 
-            "S/N": "S/N", 
-            "Signal/Noise": "S/N", 
-            "m/z": "m/z"
-        }
-    },
-    "MassSpecPeak": {
-        "kendrick_base": {
-            "C": 1,
-            "H": 2
-        },
-        "peak_max_prominence_percent": 0.1,
-        "peak_min_prominence_percent": 1
-    },
-    "MassSpectrum": {
-        "calib_minimize_method": "Powell",
-        "calib_pol_order": 2,
-        "calib_sn_threshold": 10,
-        "implemented_noise_threshold_methods": [
-            "auto", "signal_noise", "relative_abundance"
+    "MolecularFormulaSearch": {
+        "use_isotopologue_filter": false,
+        "isotopologue_filter_threshold": 33.0,
+        "isotopologue_filter_atoms": [
+            "Cl", "Br"
         ],
-        "max_calib_ppm_error": 1,
-        "max_noise_mz": 1200.0,
-        "max_picking_mz": 1200.0,
-        "min_calib_ppm_error": -1,
-        "min_noise_mz": 100.0,
-        "min_picking_mz": 100.0,
-        "noise_threshold_std": 12,
-        "relative_abundance_threshold": 6,
-        "s2n_threshold": 4,
-        "threshold_method": "auto"
-    },
-    
-    "MolecularSearch": {
+        "use_runtime_kendrick_filter": false,
+        "use_min_peaks_filter": true,
+        "min_peaks_per_class": 15,
+        "url_database": "sqlite:///db/molformula.db", "db_jobs": 3,
+        "ion_charge": -1,
+        "min_hc_filter": 0.3,
+        "max_hc_filter": 3.0,
+        "min_oc_filter": 1.2,
+        "min_op_filter": 2.0,
+        "use_pah_line_rule": false,
+        "min_dbe": 0.0,
+        "max_dbe": 40.0,
         "adduct_atoms_neg": [
             "Cl", "Br"
         ],
         "adduct_atoms_pos": [
             "Na", "K"
         ],
-        "db_jobs": 3,
-        "error_method": "None", 
-        "ion_charge": -1,
-        "ionization_type": "ESI",
-        "isAdduct": false,
-        "isProtonated": true,
-        "isRadical": false,
-        "isotopologue_filter_atoms": [
-            "Cl", "Br"
-        ],
-        "isotopologue_filter_threshold": 33,
-        "max_abun_error": 100,
-        "max_dbe": 40,
-        "max_hc_filter": 3,
-        "max_ppm_error": 1,
-        "min_abun_error": -100,
-        "min_dbe": 0,
-        "min_hc_filter": 0.3,
-        "min_oc_filter": 1.2,
-        "min_op_filter": 2,
-        "min_peaks_per_class": 15,
-        "min_ppm_error": -1,
-        "mz_error_average": 0,
-        "mz_error_range": 1.5,
-        "score_method": "prob_score", "score_methods": [
+        "score_methods": [
             "S_P_lowest_error", "N_S_P_lowest_error", "lowest_error", "prob_score", "air_filter_error", "water_filter_error", "earth_filter_error"
         ],
-        "url_database": false,
-        "use_isotopologue_filter": false,
-        "use_min_peaks_filter": true,
-        "use_pah_line_rule": false,
-        "use_runtime_kendrick_filter": false,
+        "score_method": "prob_score", "isRadical": false,
+        "isProtonated": true,
+        "isAdduct": false,
         "usedAtoms": {
             "C": [
                 1,
                 100
             ],
-            "Cl": [
-                0,
-                0
-            ],
             "H": [
-                4,
+                1,
                 200
-            ],
-            "N": [
-                0,
-                0
             ],
             "O": [
                 1,
-                22
-            ],
-            "P": [
-                0,
-                0
-            ],
-            "S": [
-                0,
-                0
+                20
             ]
         },
+        "ionization_type": "ESI", 
+        "min_ppm_error": -10.0,
+        "max_ppm_error": 10.0,
+        "min_abun_error": -100.0,
+        "max_abun_error": 100.0,
+        "mz_error_range": 1.5,
+        "error_method": "None", 
+        "mz_error_average": 0.0,
         "used_atom_valences": {
-            "13C": 4,
-            "18O": 2,
-            "34S": 2,
-            "37Cl": 1,
-            "Br": 1,
             "C": 4,
-            "Cl": 1,
-            "F": 1,
-            "H": 1,
-            "K": 1,
+            "13C": 4,
             "N": 3,
-            "Na": 1,
             "O": 2,
-            "P": 3,
-            "S": 2
+            "S": 2,
+            "H": 1,
+            "F": [
+                1,
+                0
+            ],
+            "Cl": [
+                1,
+                0
+            ],
+            "Br": [
+                1,
+                0
+            ],
+            "I": [
+                1,
+                0
+            ],
+            "At": 1,
+            "Li": [
+                1,
+                0
+            ],
+            "Na": [
+                1,
+                0
+            ],
+            "K": [
+                1,
+                0
+            ],
+            "Rb": 1,
+            "Cs": 1,
+            "Fr": 1,
+            "B": [
+                4,
+                3,
+                2,
+                1
+            ],
+            "In": [
+                3,
+                2,
+                1
+            ],
+            "Al": [
+                3,
+                1,
+                2
+            ],
+            "P": [
+                3,
+                5,
+                4,
+                2,
+                1
+            ],
+            "Ga": [
+                3,
+                1,
+                2
+            ],
+            "Mg": [
+                2,
+                1
+            ],
+            "Be": [
+                2,
+                1
+            ],
+            "Ca": [
+                2,
+                1
+            ],
+            "Sr": [
+                2,
+                1
+            ],
+            "Ba": 2,
+            "Ra": 2,
+            "V": [
+                5,
+                4,
+                3,
+                2,
+                1
+            ],
+            "Fe": [
+                3,
+                2,
+                4,
+                5,
+                6
+            ],
+            "Si": [
+                4,
+                3,
+                2
+            ],
+            "Sc": [
+                3,
+                2,
+                1
+            ],
+            "Ti": [
+                4,
+                3,
+                2,
+                1
+            ],
+            "Cr": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
+            "Mn": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            ],
+            "Co": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "Ni": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "Cu": [
+                2,
+                1,
+                3,
+                4
+            ],
+            "Zn": [
+                2,
+                1
+            ],
+            "Ge": [
+                4,
+                3,
+                2,
+                1
+            ],
+            "As": [
+                5,
+                3,
+                2,
+                1
+            ],
+            "Se": [
+                6,
+                4,
+                2,
+                1
+            ],
+            "Y": [
+                3,
+                2,
+                1
+            ],
+            "Zr": [
+                4,
+                3,
+                2,
+                1
+            ],
+            "Nb": [
+                5,
+                4,
+                3,
+                2,
+                1
+            ],
+            "Mo": [
+                6,
+                5,
+                4,
+                3,
+                2,
+                1
+            ],
+            "Tc": [
+                7,
+                6,
+                5,
+                4,
+                3,
+                2,
+                1
+            ],
+            "Ru": [
+                8,
+                7,
+                6,
+                5,
+                4,
+                3,
+                2,
+                1
+            ],
+            "Rh": [
+                6,
+                5,
+                4,
+                3,
+                2,
+                1
+            ],
+            "Pd": [
+                4,
+                2,
+                1
+            ],
+            "Ag": [
+                0,
+                1,
+                2,
+                3,
+                4
+            ],
+            "Cd": [
+                2,
+                1
+            ],
+            "Sn": [
+                4,
+                2
+            ],
+            "Sb": [
+                5,
+                3
+            ],
+            "Te": [
+                6,
+                5,
+                4,
+                2
+            ],
+            "La": [
+                3,
+                2
+            ],
+            "Hf": [
+                4,
+                3,
+                2
+            ],
+            "Ta": [
+                5,
+                4,
+                3,
+                2
+            ],
+            "W": [
+                6,
+                5,
+                4,
+                3,
+                2,
+                1
+            ],
+            "Re": [
+                4,
+                7,
+                6,
+                5,
+                3,
+                2,
+                1
+            ],
+            "Os": [
+                4,
+                8,
+                7,
+                6,
+                5,
+                3,
+                2,
+                1
+            ],
+            "Ir": [
+                4,
+                8,
+                6,
+                5,
+                3,
+                2,
+                1
+            ],
+            "Pt": [
+                4,
+                6,
+                5,
+                3,
+                2,
+                1
+            ],
+            "Au": [
+                3,
+                5,
+                2,
+                1
+            ],
+            "Hg": [
+                1,
+                2,
+                4
+            ],
+            "Tl": [
+                3,
+                1
+            ],
+            "Pb": [
+                4,
+                2
+            ],
+            "Bi": [
+                3,
+                1,
+                5
+            ],
+            "Po": [
+                2,
+                4,
+                6
+            ],
+            "Ac": [
+                3,
+                2
+            ]
         }
     },
     "Transient": {
-        "apodization_method": "Hanning", 
         "implemented_apodization_function": [
             "Hamming", "Hanning", "Blackman"
         ],
-        "number_of_truncations": 0,
+        "apodization_method": "Hanning", "number_of_truncations": 0,
         "number_of_zero_fills": 1
+    },
+    "MassSpectrum": {
+        "threshold_method": "relative_abundance", "implemented_noise_threshold_methods": [
+            "auto", "signal_noise", "relative_abundance"
+        ],
+        "noise_threshold_std": 6,
+        "s2n_threshold": 4.0,
+        "relative_abundance_threshold": 1.0,
+        "min_noise_mz": 100.0,
+        "max_noise_mz": 1200.0,
+        "min_picking_mz": 100.0,
+        "max_picking_mz": 1200.0,
+        "calib_minimize_method": "Powell", "calib_pol_order": 2,
+        "max_calib_ppm_error": 1.0,
+        "min_calib_ppm_error": -1.0,
+        "calib_sn_threshold": 10.0,
+        "do_calibration": true
+    },
+    "MassSpecPeak": {
+        "kendrick_base": {
+            "C": 1,
+            "H": 2
+        },
+        "peak_min_prominence_percent": 1.0,
+        "peak_max_prominence_percent": 0.1
+    },
+    "DataInput": {
+        "header_translate": {
+            "m/z": "m/z", "Resolving Power": "Resolving Power", "Res.": "Resolving Power", "I": "Peak Height", "Abundance": "Peak Height", "Signal/Noise": "S/N", "S/N": "S/N", "mOz": "m/z", "abs_abu": "Peak Height", "sn": "S/N", "resolution": "Resolving Power"
+        }
+    },
+    "MolecularSearch": {
+        "url_database": "sqlite:///db/pnnl_lowres_gcms_compounds.sqlite", "ri_search_range": 20.0,
+        "rt_search_range": 1.0,
+        "correlation_threshold": 0.5,
+        "score_threshold": 0.0,
+        "ri_spacing": 200.0,
+        "ri_std": 3.0,
+        "ri_calibration_compound_names": [
+            " [C8] Methyl Caprylate [7.812]", " [C10] Methyl Caprate [10.647]", " [C9] Methyl Pelargonate [9.248]", " [C12] Methyl Laurate [13.250]", " [C14] Methyl Myristate [15.597]", " [C16] Methyl Palmitate [17.723]", " [C18] Methyl Stearate [19.663]", " [C20] Methyl Eicosanoate [21.441]", " [C22] Methyl Docosanoate [23.082]", " [C24] Methyl Linocerate [24.603]", " [C26] Methyl Hexacosanoate [26.023]", " [C28] Methyl Octacosanoate [27.349]", " [C30] Methyl Triacontanoate [28.72]"
+        ],
+        "exploratory_mode": false
+    },
+    "GasChromatograph": {
+        "use_deconvolution": true,
+        "implemented_smooth_method": [
+            "savgol", "hanning", "blackman", "bartlett", "flat", "boxcar"
+        ],
+        "smooth_window": 5,
+        "smooth_method": "savgol", "savgol_pol_order": 2,
+        "peak_height_max_percent": 10.0,
+        "peak_max_prominence_percent": 1.0,
+        "min_peak_datapoints": 5.0,
+        "max_peak_width": 0.1,
+        "noise_threshold_method": "manual_relative_abundance", "implemented_noise_threshold_methods": [
+            "auto_relative_abundance", "manual_relative_abundance", "second_derivative"
+        ],
+        "std_noise_threshold": 3,
+        "peak_height_min_percent": 0.1,
+        "peak_min_prominence_percent": 0.1,
+        "eic_signal_threshold": 0.01,
+        "max_rt_distance": 0.025
     }
 }

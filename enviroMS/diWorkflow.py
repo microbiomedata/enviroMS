@@ -83,7 +83,7 @@ def get_masslist(file_location, corems_params_path, polarity):
 
 def run_assignment(file_location, workflow_params):
 
-    print(workflow_params.input_type)
+    
     if workflow_params.input_type == 'thermo_reduced_profile':
 
         first_scan, last_scan = workflow_params.first_scan, workflow_params.last_scan    

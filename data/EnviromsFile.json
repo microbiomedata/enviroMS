@@ -1,12 +1,12 @@
 {
-    "input_type": "bruker_transient",
+    "input_type": "masslist",
     "start_scan": 1,
     "final_scan": 7,
     "file_paths": [
-        "data/NEG_ESI_SRFA_Auto.d"
+        "data/20190709_WK_CADY_Auto_SRFA_QC_O40_1_01_71.txt"
     ],
     "output_directory": "data/output",
-    "output_group_name": "SRFA",
+    "output_group_name": "20190709_WK_CADY_Auto_SRFA_QC_O40_1_01_71",
     "output_type": "csv",
     "polarity": -1,
     "corems_json_path": "data/CoremsFile.json",
