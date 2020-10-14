@@ -51,7 +51,7 @@ docker-build:
 
 docker-run:
 
-	docker run -v $(data_dir):/enviroms/data enviroms:local run-gcms-workflow /enviroms/data/EnviromsFile.json
+	docker run -v $(data_dir):/enviroms/data enviroms:local run-di-workflow /enviroms/data/EnviromsFile.json
 
 cascade-run:
 

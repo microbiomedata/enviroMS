@@ -4,7 +4,7 @@
 
 ## Current Version
 
-### `1.2.2`
+### `1.3.0`
 
 ### Data input formats
 
@@ -60,11 +60,12 @@ To be able to open thermo raw files a installation of pythonnet is needed:
 
 ## Running the workflow
 
+
 ```bash
-enviroMS dump_json_template EnviromsFile.json
+enviroMS dump-corems-enviroms-template EnviromsFile.json
 ```
 ```bash
-enviroMS dump_corems_json_template CoremsFile.json
+enviroMS dump-corems-template CoremsFile.json
 ```
 
  Modify the EnviromsFile.json and CoremsFile.json accordingly to your dataset and workflow parameters
@@ -87,7 +88,7 @@ If you don't have docker installed, the easiest way is to [install docker for de
     
     ```
 
-- Build the image from source:
+- Or to build the image from source:
 
     ```bash
     docker build -t enviroms:latest .
@@ -97,13 +98,13 @@ If you don't have docker installed, the easiest way is to [install docker for de
     $(data_dir) = dir_containing the FT-ICR MS data, EnviromsFile.json and CoremsFile.json
     
     ```bash
-    docker run -v $(data_dir):/metaB/data corilo/enviroms:latest run-di /metaB/data/EnviromsFile.json    
+    docker run -v $(data_dir):/enviroms/data corilo/enviroms:latest run-di /enviroms/data/EnviromsFile.json    
     ```
 
-- Get the parameters templates:
+- Save a new parameters file template:
     
     ```bash
-    docker run -v $(data_dir):/metaB/data corilo/enviroms:latest dump_json_template /metaB/data/EnviromsFile.json    
+    docker run -v $(data_dir):/enviroms/data corilo/enviroms:latest dump_json_template /enviroms/data/EnviromsFile.json    
     ```
     
     ```bash
