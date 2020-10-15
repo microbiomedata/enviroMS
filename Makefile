@@ -40,7 +40,7 @@ pypi:
 docker-push:
 	
 	@echo corilo/enviroms:$(version).$(stage)
-	@docker build -t corilo/enviroms:$(version).$(stage) .
+	@docker build --no-cache -t corilo/enviroms:$(version).$(stage) .
 	@docker push corilo/enviroms:$(version).$(stage)
 	@docker image tag corilo/enviroms:$(version).$(stage) corilo/enviroms:latest
 	@docker push corilo/enviroms:latest
