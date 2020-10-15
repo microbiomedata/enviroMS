@@ -98,17 +98,17 @@ If you don't have docker installed, the easiest way is to [install docker for de
     $(data_dir) = dir_containing the FT-ICR MS data, EnviromsFile.json and CoremsFile.json
     
     ```bash
-    docker run -v $(data_dir):/enviroms/data corilo/enviroms:latest run-di /enviroms/data/EnviromsFile.json    
+    docker run -v $(data_dir):/enviroms/data corilo/enviroms:latest enviroMS run-di /enviroms/data/EnviromsFile.json    
     ```
 
 - Save a new parameters file template:
     
     ```bash
-    docker run -v $(data_dir):/enviroms/data corilo/enviroms:latest dump_json_template /enviroms/data/EnviromsFile.json    
+    docker run -v $(data_dir):/enviroms/data corilo/enviroms:latest enviroMS dump_json_template /enviroms/data/EnviromsFile.json    
     ```
     
     ```bash
-    docker run -v $(data_dir):/metaB/data corilo/enviroms:latest dump_corems_json_template /metaB/data/CoremsFile.json
+    docker run -v $(data_dir):/metaB/data corilo/enviroms:latest enviroMS dump_corems_json_template /metaB/data/CoremsFile.json
     ```
 
 ## Disclaimer
