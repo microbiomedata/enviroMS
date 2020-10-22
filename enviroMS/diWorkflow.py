@@ -38,7 +38,7 @@ class DiWorkflowParameters:
 
     # polarity for masslist input
     mass_list_polarity: int = -1
-
+    is_centroid:bool = False
     # corems settings
     corems_json_path: str = 'data/CoremsFile.json'
 
@@ -75,9 +75,14 @@ def run_bruker_transient(file_location, corems_params_path):
     
     return mass_spectrum
 
-def get_masslist(file_location, corems_params_path, polarity):
+def get_masslist(file_location, corems_params_path, polarity, is_centroid):
 
-    reader = ReadMassList(file_location)
+    if is_centroid:
+        isThermoProfile=False
+    else:
+        isThermoProfile=True
+    
+    reader = ReadMassList(file_location, header_lines=7, isCentroid=is_centroid, isThermoProfile=isThermoProfile)
     reader.set_parameter_from_json(parameters_path=corems_params_path)
 
     return(reader.get_mass_spectrum(polarity=polarity))
@@ -97,7 +102,10 @@ def run_assignment(file_location, workflow_params):
 
     elif file_path.suffix == '.txt' or file_path.suffix == '.csv':
 
-        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, polarity=workflow_params.mass_list_polarity)
+        
+        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, 
+                        polarity=workflow_params.mass_list_polarity, is_centroid=workflow_params.is_centroid)
+
 
     mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
 

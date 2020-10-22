@@ -11,7 +11,7 @@
     "corems_json_path": "data/CoremsFile.json",
     
     "mass_list_polarity": -1,
-    
+    "is_centroid": true,
     "raw_file_start_scan": 1,
     "raw_file_final_scan": 7,
 
