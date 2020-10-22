@@ -62,7 +62,9 @@ class DiWorkflowParameters:
 def run_thermo_reduce_profile(file_location, corems_params_path, first_scan, last_scan):
 
     from corems.mass_spectra.input import rawFileReader
-    mass_spectrum = rawFileReader.ImportLCMSThermoMSFileReader(file_location).get_summed_mass_spectrum(first_scan, last_scan)
+    parser =  rawFileReader.ImportMassSpectraThermoMSFileReader(file_location)
+    
+    mass_spectrum = parser.get_average_mass_spectrum_in_scan_range(first_scan=1, last_scan=5)
     return mass_spectrum
 
 def run_bruker_transient(file_location, corems_params_path):
