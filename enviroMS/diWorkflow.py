@@ -80,8 +80,7 @@ def get_masslist(file_location, corems_params_path, polarity, is_centroid):
     if is_centroid:
         reader = ReadMassList(file_location)
     else:
-       reader = ReadMassList(file_location, header_lines=header_lines, isCentroid=False, isThermoProfile=True)
-    
+       reader = ReadMassList(file_location, header_lines=7, isCentroid=False, isThermoProfile=True)
     
     reader.set_parameter_from_json(parameters_path=corems_params_path)
 
@@ -101,7 +100,6 @@ def run_assignment(file_location, workflow_params):
         mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
 
     elif file_path.suffix == '.txt' or file_path.suffix == '.csv':
-
         
         mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, 
                         polarity=workflow_params.mass_list_polarity, is_centroid=workflow_params.is_centroid)
