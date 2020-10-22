@@ -82,7 +82,6 @@ def get_masslist(file_location, corems_params_path, polarity, is_centroid):
         header_lines=0
     
     else:
-
         isThermoProfile=True
         header_lines=7
     
