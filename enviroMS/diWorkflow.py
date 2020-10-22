@@ -25,11 +25,10 @@ from corems.encapsulation.input.parameter_from_json import load_and_set_paramete
 class DiWorkflowParameters:
 
     # input type: masslist, bruker_transient, thermo_reduced_profile
-    input_type: tuple = 'masslist'
-
+    
     # scans to sum for thermo raw data, reduce profile
-    start_scan: int = 1
-    final_scan: int = 7
+    raw_file_start_scan: int = 1
+    raw_file_final_scan: int = 7
 
     # input output paths
     file_paths: tuple = ('data/...', 'data/...')
@@ -38,14 +37,14 @@ class DiWorkflowParameters:
     output_type: str = 'csv'
 
     # polarity for masslist input
-    polarity: int = -1
+    mass_list_polarity: int = -1
 
     # corems settings
     corems_json_path: str = 'data/CoremsFile.json'
 
     # calibration
     calibrate: bool = True
-    calibration_ref_filepath: str = 'data/SRFA.ref'
+    calibration_ref_file_path: str = 'data/SRFA.ref'
 
     # plots
     plot_mz_error: bool = True
@@ -83,25 +82,26 @@ def get_masslist(file_location, corems_params_path, polarity):
 
 def run_assignment(file_location, workflow_params):
 
-    
-    if workflow_params.input_type == 'thermo_reduced_profile':
+    file_path = Path(file_location)
 
-        first_scan, last_scan = workflow_params.first_scan, workflow_params.last_scan    
+    if file_path.suffix == '.raw':
+    
+        first_scan, last_scan = workflow_params.raw_file_start_scan, workflow_params.raw_file_final_scan    
         mass_spectrum = run_thermo_reduce_profile(file_location, workflow_params, first_scan, last_scan)
 
-    if workflow_params.input_type == 'bruker_transient':
+    elif file_path.suffix == '.d':
 
         mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
 
-    elif workflow_params.input_type == 'masslist':
+    elif file_path.suffix == '.txt' or file_path.suffix == '.csv':
 
-        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, polarity=workflow_params.polarity)
+        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, polarity=workflow_params.mass_list_polarity)
 
     mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
 
     if workflow_params.calibrate:
 
-        ref_file_location = Path(workflow_params.calibration_ref_filepath)
+        ref_file_location = Path(workflow_params.calibration_ref_file_path)
 
         MzDomainCalibration(mass_spectrum, ref_file_location).run()
 
