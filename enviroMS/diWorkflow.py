@@ -79,10 +79,14 @@ def get_masslist(file_location, corems_params_path, polarity, is_centroid):
 
     if is_centroid:
         isThermoProfile=False
-    else:
-        isThermoProfile=True
+        header_lines=0
     
-    reader = ReadMassList(file_location, header_lines=7, isCentroid=is_centroid, isThermoProfile=isThermoProfile)
+    else:
+
+        isThermoProfile=True
+        header_lines=7
+    
+    reader = ReadMassList(file_location, header_lines=0, isCentroid=is_centroid, isThermoProfile=isThermoProfile)
     reader.set_parameter_from_json(parameters_path=corems_params_path)
 
     return(reader.get_mass_spectrum(polarity=polarity))
