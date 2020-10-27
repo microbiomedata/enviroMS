@@ -4,7 +4,7 @@
 
 ## Current Version
 
-### `2.1.1`
+### `3.0.0`
 
 ### Data input formats
 
@@ -74,6 +74,24 @@ make sure to include CoremsFile.json path inside the EnviromsFile.json: "corems_
 ```bash
 enviroMS run-di path_to_MetamsFile.json
 ```
+
+## MiniWDL 
+- Change wdl/enviroms_input.json to specify the data location
+
+- Change data/CoremsFile.json to specify the workflow parameters
+
+Install miniWDL:
+```bash
+pip3 install miniwdl
+```
+
+Call:
+```bash
+miniwdl run wdl/enviroMS.wdl -i wdl/enviroms_input.json --verbose --no-cache --copy-input-files
+```
+
+WARNING ** Current mode only allows for multiprocessing in a single node and it defaults to one job at a time. 
+To use multiprocessing mode modify the parameter "runDirectInfusion.jobs_count" in the enviroMS.wdl and modify the parameter "MolecularFormulaSearch.url_database" on CoremsFile.json to point to a Postgresql url. The default is set to use SQLite and it will fail on multiprocessing mode.
 
 ## EnviroMS Docker 
 

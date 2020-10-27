@@ -1,15 +1,28 @@
 {
-        "fticrmsDOM.file_paths": [
-        "./data/GCMS_FAMES_01_GCMS-01_20191023.cdf",
-        "./data/GCMS_FAMES_01_GCMS-01_20191023.cdf"
+    
+    "fticrmsNOM.runDirectInfusion.file_paths": [
+        "data/20190709_WK_CADY_Auto_S16_H1_Post_O5_1_01_36.txt"
     ],
 
-    "gcmsMetabolomics.calibration_file_path": "./data/GCMS_FAMES_01_GCMS-01_20191023.cdf",
-    "gcmsMetabolomics.output_directory": "output_goes_here",
-    "gcmsMetabolomics.output_filename": "your_dataset_name",
-    "gcmsMetabolomics.output_type": "csv",
-    "gcmsMetabolomics.corems_json_path": "./data/CoremsFile.json",
-    "gcmsMetabolomics.jobs_count": 4
-
+    "fticrmsNOM.runDirectInfusion.output_directory": "output",
+    "fticrmsNOM.runDirectInfusion.output_type": "csv",
+    "fticrmsNOM.runDirectInfusion.calibrate": true,
+    "fticrmsNOM.runDirectInfusion.calibration_ref_file_path": "data/SRFA.ref",
     
+    "fticrmsNOM.runDirectInfusion.corems_json_path": "data/CoremsFile.json",
+    
+    "fticrmsNOM.runDirectInfusion.polarity": "negative",
+    "fticrmsNOM.runDirectInfusion.is_centroid": true,
+    "fticrmsNOM.runDirectInfusion.raw_data_start_scan": 1,
+    "fticrmsNOM.runDirectInfusion.raw_data_final_scan": 7,
+    
+    "fticrmsNOM.runDirectInfusion.plot_mz_error": true,
+    "fticrmsNOM.runDirectInfusion.plot_ms_assigned_unassigned": true,
+    "fticrmsNOM.runDirectInfusion.plot_c_dbe":  true,
+    "fticrmsNOM.runDirectInfusion.plot_van_krevelen": true,
+    "fticrmsNOM.runDirectInfusion.plot_ms_classes": true,
+    "fticrmsNOM.runDirectInfusion.plot_mz_error_classes": true
+    
+
 }
+

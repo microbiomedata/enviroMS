@@ -56,3 +56,7 @@ docker-run:
 cascade-run:
 
 	srun -A mscms -t 240 -N 1 -n time enviroMS run-di-workflow -r 2 --mpi  /dtemp/mscms/enviroms/data/EnviromsFile.json
+
+wdl-run :
+ 	 
+	 miniwdl run wdl/enviroMS.wdl -i wdl/enviroms_input.json --verbose --no-cache --copy-input-files

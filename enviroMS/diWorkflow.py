@@ -27,8 +27,8 @@ class DiWorkflowParameters:
     # input type: masslist, bruker_transient, thermo_reduced_profile
     
     # scans to sum for thermo raw data, reduce profile
-    raw_file_start_scan: int = 1
-    raw_file_final_scan: int = 7
+    raw_data_start_scan: int = 1
+    raw_data_final_scan: int = 7
 
     # input output paths
     file_paths: tuple = ('data/...', 'data/...')
@@ -37,7 +37,7 @@ class DiWorkflowParameters:
     output_type: str = 'csv'
 
     # polarity for masslist input
-    mass_list_polarity: int = -1
+    polarity: int = -1
     is_centroid:bool = False
     # corems settings
     corems_json_path: str = 'data/CoremsFile.json'
@@ -48,7 +48,7 @@ class DiWorkflowParameters:
 
     # plots
     plot_mz_error: bool = True
-    ms_assigned_unassigned: bool = True
+    plot_ms_assigned_unassigned: bool = True
 
     plot_c_dbe: bool = True
     plot_van_krevelen: bool = True
@@ -89,20 +89,20 @@ def get_masslist(file_location, corems_params_path, polarity, is_centroid):
 def run_assignment(file_location, workflow_params):
 
     file_path = Path(file_location)
-
+    
     if file_path.suffix == '.raw':
     
-        first_scan, last_scan = workflow_params.raw_file_start_scan, workflow_params.raw_file_final_scan    
+        first_scan, last_scan = workflow_params.raw_data_start_scan, workflow_params.raw_data_final_scan    
         mass_spectrum = run_thermo_reduce_profile(file_location, workflow_params, first_scan, last_scan)
 
     elif file_path.suffix == '.d':
 
         mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
 
-    elif file_path.suffix == '.txt' or file_path.suffix == '.csv':
+    elif file_path.suffix == '.txt' or file_path.suffix == 'csv':
         
         mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, 
-                        polarity=workflow_params.mass_list_polarity, is_centroid=workflow_params.is_centroid)
+                        polarity=workflow_params.polarity, is_centroid=workflow_params.is_centroid)
 
 
     mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
@@ -143,7 +143,7 @@ def create_plots(mass_spectrum, workflow_params, dirloc):
 
     ms_by_classes = HeteroatomsClassification(mass_spectrum, choose_molecular_formula=False)
 
-    if workflow_params.ms_assigned_unassigned:
+    if workflow_params.plot_ms_assigned_unassigned:
         print("Plotting assigned vs. unassigned mass spectrum")
         ax_ms = ms_by_classes.plot_ms_assigned_unassigned()
         plt.savefig(dirloc / "assigned_unassigned.png", bbox_inches='tight')
@@ -205,7 +205,7 @@ def workflow_worker(args):
 
     mass_spec = run_assignment(file_location, workflow_params)
 
-    dirloc = Path(workflow_params.output_directory) / workflow_params.output_group_name / mass_spec.sample_name
+    dirloc = Path(workflow_params.output_directory) / mass_spec.sample_name
 
     dirloc.mkdir(exist_ok=True, parents=True)
 
@@ -222,6 +222,47 @@ def cprofile_worker(file_location, workflow_params_json_str):
     cProfile.runctx('run_assignment(file_location, workflow_params)', globals(), locals(), 'di-fticr-di.prof')
     # stats = pstats.Stats("topics.prof")
     # stats.strip_dirs().sort_stats("time").print_stats() 
+
+def run_wdl_direct_infusion_workflow(*args, **kwargs):
+    
+    cores = kwargs.get('jobs')
+    del kwargs['jobs']
+    kwargs["polarity"] = -1 if kwargs.get('polarity') == 'negative' else 1
+    
+    workflow_params = DiWorkflowParameters(**kwargs)
+    workflow_params.file_paths = workflow_params.file_paths.split(",")
+    # workflow_params.output_directory = kwargs.get['output_directory']
+    # workflow_params.output_type = kwargs.get['output_type']
+    # workflow_params.corems_json_path = kwargs.get['corems_json_path']
+    # workflow_params.polarity = -1 if kwargs.get['polarity'] == 'negative' else 1
+    # workflow_params.raw_data_start_scan = kwargs.get['raw_data_start_scan']
+    # workflow_params.raw_data_final_scan = kwargs.get['raw_data_final_scan']
+    # workflow_params.is_centroid = kwargs.get['is_centroid']
+    # workflow_params.calibration_ref_file_path = kwargs.get['calibration_ref_file_path']
+
+    # workflow_params.calibrate = kwargs.get['calibrate']
+    # workflow_params.calibrate = kwargs.get['plot_mz_error']
+    # workflow_params.calibrate = kwargs.get['plot_ms_assigned_unassigned']
+    # workflow_params.calibrate = kwargs.get['plot_c_dbe']
+    # workflow_params.calibrate = kwargs.get['plot_van_krevelen']
+    # workflow_params.calibrate = kwargs.get['plot_ms_classes']
+    # workflow_params.calibrate = kwargs.get['plot_mz_error_classes']
+    # workflow_params.calibrate = kwargs.get['calibrate']
+
+    dirloc = Path(workflow_params.output_directory)
+    dirloc.mkdir(exist_ok=True)
+
+    pool = Pool(cores)
+
+    worker_args = [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+    file_path = Path(worker_args[0][0])
+    #for worker_arg in worker_args:
+    #    workflow_worker(worker_arg)
+    
+    for i, results in enumerate(pool.imap_unordered(workflow_worker, worker_args), 1):
+        pass
+    pool.close()
+    pool.join()
 
 def run_direct_infusion_workflow(workflow_params_file, jobs, replicas):
 

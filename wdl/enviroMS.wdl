@@ -1,66 +1,74 @@
-workflow fticrmsDOM {
+workflow fticrmsNOM {
     
-    Array[File] file_paths
-    
-    File calibration_ref_file_path
-
-    String output_directory
-
-    String output_filename
-
-    String output_type
-
-    File corems_json_path
-
-    Int jobs_count
-
-    call runEnviroMS {
-         input: file_paths= file_paths,
-                calibration_file_path=calibration_file_path,
-                output_directory=output_directory,
-                output_filename=output_filename,
-                output_type=output_type,
-                corems_json_path=corems_json_path,
-                jobs_count=jobs_count
-    }
+    call runDirectInfusion
 }
 
-task runEnviroMS {
+task runDirectInfusion {
     
     Array[File] file_paths
     
-    File calibration_file_path
-
     String output_directory
-
-    String output_filename
 
     String output_type
 
     File corems_json_path
 
-    Int jobs_count
+    String polarity
+
+    Int raw_data_start_scan
+
+    Int raw_data_final_scan
+
+    Boolean is_centroid
+
+    File calibration_ref_file_path
+
+    Boolean calibrate
+
+    Boolean plot_mz_error
+
+    Boolean plot_ms_assigned_unassigned
+
+    Boolean plot_c_dbe
+
+    Boolean plot_van_krevelen
+
+    Boolean plot_ms_classes
+
+    Boolean plot_mz_error_classes
+    
+    Int jobs_count = 1
     
     command {
         
-        enviroMS run-di-wdl-workflow ${sep=',' file_paths} \
-                                     ${calibration_file_path} \
+        enviroMS run-di-wdl ${sep=',' file_paths} \
                                      ${output_directory} \
-                                     ${output_filename} \
                                      ${output_type} \
                                      ${corems_json_path} \
+                                     ${polarity} \
+                                     ${raw_data_start_scan} \
+                                     ${raw_data_final_scan} \
+                                     ${is_centroid} \
+                                     ${calibration_ref_file_path} \
+                                     -c ${calibrate} \
+                                     -e ${plot_mz_error} \
+                                     -a ${plot_ms_assigned_unassigned} \
+                                     -cb ${plot_c_dbe} \
+                                     -vk ${plot_van_krevelen} \
+                                     -mc ${plot_ms_classes} \
+                                     -ec ${plot_mz_error_classes} \
                                      --jobs ${jobs_count} 
     }
     
     output {
         
         String out = read_string(stdout())
-        File output_file = "${output_directory}/${output_filename}.${output_type}"
-        File output_metafile = "${output_directory}/${output_filename}.json" 
+        
     }
 
     runtime {
-        docker: "corilo/enviroms:latest"
+
+        docker: "enviroms:local"
     
     }
 

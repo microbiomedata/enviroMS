@@ -6,7 +6,7 @@ import sys
 import click
 
 from enviroMS.singleMzSearch import run_molecular_formula_search
-from enviroMS.diWorkflow import DiWorkflowParameters, generate_database, run_di_mpi, run_direct_infusion_workflow
+from enviroMS.diWorkflow import DiWorkflowParameters, generate_database, run_di_mpi, run_direct_infusion_workflow, run_wdl_direct_infusion_workflow
 from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
 from corems.encapsulation.output.parameter_to_json import dump_ms_settings_json, dump_all_settings_json
 
@@ -66,12 +66,35 @@ def create_database(corems_parameters_file, jobs):
     generate_database(corems_parameters_file, jobs)
 
 @cli.command()
+@click.argument('file_paths', required=True, type=str)
+@click.argument('output_directory', required=True, type=str)
+@click.argument('output_type', required=True, type=str)
+@click.argument('corems_json_path', required=True, type=str)
+@click.argument('polarity', required=True, type=str)
+@click.argument('raw_data_start_scan', required=True, type=int)
+@click.argument('raw_data_final_scan', required=True, type=int)
+@click.argument('is_centroid', required=True, type=bool)
+@click.argument('calibration_ref_file_path', required=False, type=str)
+@click.option('--calibrate','-c', default=True)
+@click.option('--plot_mz_error', '-e', default=True)
+@click.option('--plot_ms_assigned_unassigned','-a', default=True)
+@click.option('--plot_c_dbe', '-cb', default=True)
+@click.option('--plot_van_krevelen', '-vk', default=True)
+@click.option('--plot_ms_classes', '-mc', default=True)
+@click.option('--plot_mz_error_classes', '-ec',  default=True)
+@click.option('--jobs','-j', default=4, help="'cpu's'")
+def run_di_wdl(*args, **kwargs):
+    '''Run the Direct Infusion Workflow using wdl'''
+    
+    run_wdl_direct_infusion_workflow(*args, **kwargs)
+
+
+@cli.command()
 @click.argument('di_workflow_paramaters_file', required=True, type=str)
 @click.option('--jobs','-j', default=4, help="'cpu's'")
 @click.option('--replicas','-r', default=1, help="data replicas")
 @click.option('--tasks','-t', default=4, help="mpi tasks")
 @click.option('--mpi','-m', is_flag=True, help="run mpi version")
-
 def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
     '''Run the Direct Infusion Workflow\n
        workflow_paramaters_file = json file with workflow parameters\n
