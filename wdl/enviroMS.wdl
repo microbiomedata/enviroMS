@@ -76,7 +76,7 @@ task runDirectInfusion {
 
     runtime {
 
-        docker: "enviroms:local"
+        docker: "microbiomedata/enviroms:latest"
     
     }
 
