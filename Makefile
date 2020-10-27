@@ -42,9 +42,17 @@ docker-push:
 	@echo corilo/enviroms:$(version).$(stage)
 	@docker build --no-cache -t corilo/enviroms:$(version).$(stage) .
 	@docker push corilo/enviroms:$(version).$(stage)
+	
 	@docker image tag corilo/enviroms:$(version).$(stage) corilo/enviroms:latest
 	@docker push corilo/enviroms:latest
 
+	@docker image tag corilo/enviroms:$(version).$(stage) microbiomedata/enviroms:$(version).$(stage)
+	@docker push microbiomedata/enviroms:$(version).$(stage)
+
+	@docker image tag corilo/enviroms:$(version).$(stage) microbiomedata/enviroms:latest
+	@docker push microbiomedata/enviroms:latest
+	
+	
 docker-build:
 
 	docker build -t enviroms:local .
