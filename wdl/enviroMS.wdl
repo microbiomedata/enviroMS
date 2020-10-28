@@ -62,15 +62,12 @@ task runDirectInfusion {
     
     output {
         
-        
-
         String out = read_string(stdout())
         Array[File] output_files = glob('${output_directory}/**/*.*')
         Array[File] van_krevelen_plots = glob('${output_directory}/**/van_krevelen/*.*')
         Array[File] dbe_vs_c_plots = glob('${output_directory}/**/dbe_vs_c/*.*')
         Array[File] ms_class_plots = glob('${output_directory}/**/ms_class/*.*')
         Array[File] mz_error_class_plots = glob('${output_directory}/**/mz_error_class/*.*')
-        
         
     }   
 
