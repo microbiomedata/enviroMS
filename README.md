@@ -1,19 +1,19 @@
 # Table of Contents  
 - Introduction
   - [EnviroMS](#EnviroMS)  
-  - [Version](##current-version)  
-  - [Data Input](##data-input-formats)  
-  - [Data Output](##data-output-formats)  
-  - [Data Structure](##data-structure-types)  
-  - [Features](##molecular-formulae-search-and-assignment)  
+  - [Version](#current-version)  
+  - [Data Input](#data-input-formats)  
+  - [Data Output](#data-output-formats)  
+  - [Data Structure](#data-structure-types)  
+  - [Features](#molecular-formulae-search-and-assignment)  
 - Installation
-  - [PyPi](##enviroms-installation)  
+  - [PyPi](#enviroms-installation)  
 - Execution:  
-  - [CLI](##running-the-workflow)  
-  - [MiniWDL](##MiniWDL)  
-  - [Docker Container](##docker)  
+  - [CLI](#running-the-workflow)  
+  - [MiniWDL](#MiniWDL)  
+  - [Docker Container](#enviroms-docker)  
   
-  
+
 # EnviroMS
 
 **EnviroMS** is a workflow for natural organic matter data processing and annotation
