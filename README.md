@@ -6,6 +6,7 @@
   - [Data Output](#data-output-formats)  
   - [Data Structure](#data-structure-types)  
   - [Features](#molecular-formulae-search-and-assignment)  
+  - [Code Documentation](https://emsl-computing.github.io/EnviroMS/)  
 - Installation
   - [PyPi](#enviroms-installation)  
 - Execution:  
