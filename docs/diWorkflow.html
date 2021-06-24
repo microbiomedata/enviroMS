@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>enviroMS.diWorkflow API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>enviroMS.diWorkflow</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import cProfile
+from dataclasses import dataclass, asdict
+import json
+from multiprocessing import Pool
+import os
+from pathlib import Path
+
+import click
+from tqdm import tqdm
+
+from matplotlib import pyplot as plt
+from corems.mass_spectrum.calc.Calibration import MzDomainCalibration
+from corems.molecular_id.factory.classification import HeteroatomsClassification
+from corems.mass_spectrum.input.massList import ReadMassList
+
+from corems.molecular_id.search.priorityAssignment import OxygenPriorityAssignment
+from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
+from corems.transient.input.brukerSolarix import ReadBrukerSolarix
+
+from corems.molecular_id.factory.MolecularLookupTable import MolecularCombinations
+from corems.encapsulation.factory.processingSetting import MolecularFormulaSearchSettings
+from corems.encapsulation.input.parameter_from_json import load_and_set_parameters_class
+
+@dataclass
+class DiWorkflowParameters:
+
+    # input type: masslist, bruker_transient, thermo_reduced_profile
+    
+    # scans to sum for thermo raw data, reduce profile
+    raw_data_start_scan: int = 1
+    raw_data_final_scan: int = 7
+
+    # input output paths
+    file_paths: tuple = (&#39;data/...&#39;, &#39;data/...&#39;)
+    output_directory: str = &#39;data/...&#39;
+    output_group_name: str = &#39;...&#39;
+    output_type: str = &#39;csv&#39;
+
+    # polarity for masslist input
+    polarity: int = -1
+    is_centroid:bool = False
+    # corems settings
+    corems_json_path: str = &#39;data/CoremsFile.json&#39;
+
+    # calibration
+    calibrate: bool = True
+    calibration_ref_file_path: str = &#39;data/SRFA.ref&#39;
+
+    # plots
+    plot_mz_error: bool = True
+    plot_ms_assigned_unassigned: bool = True
+
+    plot_c_dbe: bool = True
+    plot_van_krevelen: bool = True
+    plot_ms_classes: bool = True
+    plot_mz_error_classes: bool = True
+
+    def to_json(self):
+        return json.dumps(asdict(self))
+
+def run_thermo_reduce_profile(file_location, corems_params_path, first_scan, last_scan):
+
+    from corems.mass_spectra.input import rawFileReader
+    parser =  rawFileReader.ImportMassSpectraThermoMSFileReader(file_location)
+    
+    mass_spectrum = parser.get_average_mass_spectrum_in_scan_range(first_scan=1, last_scan=5)
+    return mass_spectrum
+
+def run_bruker_transient(file_location, corems_params_path):
+
+    with ReadBrukerSolarix(file_location) as transient:
+
+        transient.set_parameter_from_json(corems_params_path) 
+        mass_spectrum = transient.get_mass_spectrum(plot_result=False, auto_process=True)
+    
+    return mass_spectrum
+
+def get_masslist(file_location, corems_params_path, polarity, is_centroid):
+
+    if is_centroid:
+        reader = ReadMassList(file_location)
+    else:
+       reader = ReadMassList(file_location, header_lines=7, isCentroid=False, isThermoProfile=True)
+    
+    reader.set_parameter_from_json(parameters_path=corems_params_path)
+
+    return(reader.get_mass_spectrum(polarity=polarity))
+
+def run_assignment(file_location, workflow_params):
+
+    file_path = Path(file_location)
+    
+    if file_path.suffix == &#39;.raw&#39;:
+    
+        first_scan, last_scan = workflow_params.raw_data_start_scan, workflow_params.raw_data_final_scan    
+        mass_spectrum = run_thermo_reduce_profile(file_location, workflow_params, first_scan, last_scan)
+
+    elif file_path.suffix == &#39;.d&#39;:
+
+        mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
+
+    elif file_path.suffix == &#39;.txt&#39; or file_path.suffix == &#39;csv&#39;:
+        
+        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, 
+                        polarity=workflow_params.polarity, is_centroid=workflow_params.is_centroid)
+
+
+    mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
+
+    if workflow_params.calibrate:
+
+        ref_file_location = Path(workflow_params.calibration_ref_file_path)
+
+        MzDomainCalibration(mass_spectrum, ref_file_location).run()
+
+    # force it to one job. daemon child can not have child process 
+    mass_spectrum.molecular_search_settings.db_jobs = 1
+
+    SearchMolecularFormulas(mass_spectrum, first_hit=False).run_worker_mass_spectrum()
+
+    print(mass_spectrum.percentile_assigned())
+
+    return mass_spectrum
+
+def generate_database(corems_parameters_file, jobs):
+
+    &#39;&#39;&#39;corems_parameters_file: Path for CoreMS JSON Parameters file
+       --jobs: Number of processes to run   
+    &#39;&#39;&#39;
+    click.echo(&#39;Loading Searching Settings from %s&#39; % corems_parameters_file)
+
+    molecular_search_settings = load_and_set_parameters_class(&#39;MolecularSearch&#39;, MolecularFormulaSearchSettings(), parameters_path=corems_parameters_file)
+    molecular_search_settings.db_jobs = jobs
+    molecular_search_settings.url_database = None
+    MolecularCombinations().runworker(molecular_search_settings)
+
+def read_workflow_parameter(di_workflow_paramaters_json_file):
+
+    with open(di_workflow_paramaters_json_file, &#39;r&#39;) as infile:
+        return DiWorkflowParameters(**json.load(infile))
+
+def create_plots(mass_spectrum, workflow_params, dirloc):
+
+    ms_by_classes = HeteroatomsClassification(mass_spectrum, choose_molecular_formula=False)
+
+    if workflow_params.plot_ms_assigned_unassigned:
+        print(&#34;Plotting assigned vs. unassigned mass spectrum&#34;)
+        ax_ms = ms_by_classes.plot_ms_assigned_unassigned()
+        plt.savefig(dirloc / &#34;assigned_unassigned.png&#34;, bbox_inches=&#39;tight&#39;)
+        plt.clf()
+
+    if workflow_params.plot_mz_error:
+        print(&#34;Plotting mz_error&#34;)
+        ax_ms = ms_by_classes.plot_mz_error()
+        plt.savefig(dirloc / &#34;mz_error.png&#34;, bbox_inches=&#39;tight&#39;)
+        plt.clf()
+
+    if workflow_params.plot_van_krevelen:
+        van_krevelen_dirloc = dirloc / &#34;van_krevelen&#34;
+        van_krevelen_dirloc.mkdir(exist_ok=True, parents=True)  
+
+    if workflow_params.plot_c_dbe:
+        c_dbe_dirloc = dirloc / &#34;dbe_vs_c&#34;
+        c_dbe_dirloc.mkdir(exist_ok=True, parents=True)      
+
+    if workflow_params.plot_ms_classes:
+        ms_class_dirloc = dirloc / &#34;ms_class&#34;
+        ms_class_dirloc.mkdir(exist_ok=True, parents=True)  
+
+    if workflow_params.plot_mz_error_classes:
+        mz_error_class_dirloc = dirloc / &#34;mz_error_class&#34;
+        mz_error_class_dirloc.mkdir(exist_ok=True, parents=True)  
+
+    pbar = tqdm(ms_by_classes.get_classes())
+
+    for classe in pbar:
+
+        pbar.set_description_str(desc=&#34;Plotting results for class {}&#34;.format(classe), refresh=True)
+
+        if workflow_params.plot_van_krevelen:
+            ax_c = ms_by_classes.plot_van_krevelen(classe)
+            plt.savefig(van_krevelen_dirloc / &#34;{}.png&#34;.format(classe), bbox_inches=&#39;tight&#39;)
+            plt.clf()
+
+        if workflow_params.plot_mz_error_classes:
+            ax_c = ms_by_classes.plot_mz_error_class(classe)
+            plt.savefig(mz_error_class_dirloc / &#34;{}.png&#34;.format(classe), bbox_inches=&#39;tight&#39;)
+            plt.clf()
+
+        if workflow_params.plot_ms_classes:
+            ax_c = ms_by_classes.plot_ms_class(classe)
+            plt.savefig(ms_class_dirloc / &#34;{}.png&#34;.format(classe), bbox_inches=&#39;tight&#39;)
+            plt.clf()
+
+        if workflow_params.plot_c_dbe:
+            ax_c = ms_by_classes.plot_dbe_vs_carbon_number(classe)
+            plt.savefig(c_dbe_dirloc / &#34;{}.png&#34;.format(classe), bbox_inches=&#39;tight&#39;)
+            plt.clf()
+
+def workflow_worker(args):
+
+    file_location, workflow_params_json_str = args
+
+    workflow_params = DiWorkflowParameters(**json.loads(workflow_params_json_str))
+
+    mass_spec = run_assignment(file_location, workflow_params)
+
+    dirloc = Path(workflow_params.output_directory) / mass_spec.sample_name
+
+    dirloc.mkdir(exist_ok=True, parents=True)
+
+    output_path = dirloc / mass_spec.sample_name
+
+    eval(&#39;mass_spec.to_{OUT_TYPE}(output_path)&#39;.format(OUT_TYPE=workflow_params.output_type))
+
+    create_plots(mass_spec, workflow_params, dirloc)
+
+    return &#39;Success&#39; + str(os.getpid())
+
+def cprofile_worker(file_location, workflow_params_json_str):
+
+    cProfile.runctx(&#39;run_assignment(file_location, workflow_params)&#39;, globals(), locals(), &#39;di-fticr-di.prof&#39;)
+    # stats = pstats.Stats(&#34;topics.prof&#34;)
+    # stats.strip_dirs().sort_stats(&#34;time&#34;).print_stats() 
+
+def run_wdl_direct_infusion_workflow(*args, **kwargs):
+    
+    cores = kwargs.get(&#39;jobs&#39;)
+    del kwargs[&#39;jobs&#39;]
+    kwargs[&#34;polarity&#34;] = -1 if kwargs.get(&#39;polarity&#39;) == &#39;negative&#39; else 1
+    
+    workflow_params = DiWorkflowParameters(**kwargs)
+    workflow_params.file_paths = workflow_params.file_paths.split(&#34;,&#34;)
+    # workflow_params.output_directory = kwargs.get[&#39;output_directory&#39;]
+    # workflow_params.output_type = kwargs.get[&#39;output_type&#39;]
+    # workflow_params.corems_json_path = kwargs.get[&#39;corems_json_path&#39;]
+    # workflow_params.polarity = -1 if kwargs.get[&#39;polarity&#39;] == &#39;negative&#39; else 1
+    # workflow_params.raw_data_start_scan = kwargs.get[&#39;raw_data_start_scan&#39;]
+    # workflow_params.raw_data_final_scan = kwargs.get[&#39;raw_data_final_scan&#39;]
+    # workflow_params.is_centroid = kwargs.get[&#39;is_centroid&#39;]
+    # workflow_params.calibration_ref_file_path = kwargs.get[&#39;calibration_ref_file_path&#39;]
+
+    # workflow_params.calibrate = kwargs.get[&#39;calibrate&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_mz_error&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_ms_assigned_unassigned&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_c_dbe&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_van_krevelen&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_ms_classes&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_mz_error_classes&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;calibrate&#39;]
+
+    dirloc = Path(workflow_params.output_directory)
+    dirloc.mkdir(exist_ok=True)
+
+    pool = Pool(cores)
+
+    worker_args = [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+    file_path = Path(worker_args[0][0])
+    #for worker_arg in worker_args:
+    #    workflow_worker(worker_arg)
+    
+    for i, results in enumerate(pool.imap_unordered(workflow_worker, worker_args), 1):
+        pass
+    pool.close()
+    pool.join()
+
+def run_direct_infusion_workflow(workflow_params_file, jobs, replicas):
+
+    click.echo(&#39;Loading Searching Settings from %s&#39; % workflow_params_file)
+
+    workflow_params = read_workflow_parameter(workflow_params_file)
+
+    dirloc = Path(workflow_params.output_directory)
+    dirloc.mkdir(exist_ok=True)
+
+    worker_args = replicas * [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+
+    cores = jobs
+    pool = Pool(cores)
+
+    for worker_arg in worker_args:
+        workflow_worker(worker_arg)
+    # for i, results in enumerate(pool.imap_unordered(workflow_worker, worker_args), 1):
+
+    #    pass
+
+    pool.close()
+    pool.join()
+
+def run_di_mpi(workflow_params_file, tasks, replicas):
+
+    import os, sys
+    from mpi4py import MPI
+    # from mpi4py.futures import MPIPoolExecutor
+    sys.path.append(os.getcwd())
+
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    size = comm.Get_size()
+
+    workflow_params = read_workflow_parameter(workflow_params_file)
+    all_worker_args = replicas * [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+
+    # worker_args = comm.scatter(all_worker_args, root=0)
+
+    # will only run tasks up to the number of files paths selected in the EnviroMS File
+    if len(all_worker_args) &lt;= size:
+
+        workflow_worker(all_worker_args[0])
+
+    else:
+
+        print(&#34;Tasks needs to be the same size of the input data count, , until you find time to come and help to code this section :D&#34;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="enviroMS.diWorkflow.cprofile_worker"><code class="name flex">
+<span>def <span class="ident">cprofile_worker</span></span>(<span>file_location, workflow_params_json_str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cprofile_worker(file_location, workflow_params_json_str):
+
+    cProfile.runctx(&#39;run_assignment(file_location, workflow_params)&#39;, globals(), locals(), &#39;di-fticr-di.prof&#39;)</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.create_plots"><code class="name flex">
+<span>def <span class="ident">create_plots</span></span>(<span>mass_spectrum, workflow_params, dirloc)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_plots(mass_spectrum, workflow_params, dirloc):
+
+    ms_by_classes = HeteroatomsClassification(mass_spectrum, choose_molecular_formula=False)
+
+    if workflow_params.plot_ms_assigned_unassigned:
+        print(&#34;Plotting assigned vs. unassigned mass spectrum&#34;)
+        ax_ms = ms_by_classes.plot_ms_assigned_unassigned()
+        plt.savefig(dirloc / &#34;assigned_unassigned.png&#34;, bbox_inches=&#39;tight&#39;)
+        plt.clf()
+
+    if workflow_params.plot_mz_error:
+        print(&#34;Plotting mz_error&#34;)
+        ax_ms = ms_by_classes.plot_mz_error()
+        plt.savefig(dirloc / &#34;mz_error.png&#34;, bbox_inches=&#39;tight&#39;)
+        plt.clf()
+
+    if workflow_params.plot_van_krevelen:
+        van_krevelen_dirloc = dirloc / &#34;van_krevelen&#34;
+        van_krevelen_dirloc.mkdir(exist_ok=True, parents=True)  
+
+    if workflow_params.plot_c_dbe:
+        c_dbe_dirloc = dirloc / &#34;dbe_vs_c&#34;
+        c_dbe_dirloc.mkdir(exist_ok=True, parents=True)      
+
+    if workflow_params.plot_ms_classes:
+        ms_class_dirloc = dirloc / &#34;ms_class&#34;
+        ms_class_dirloc.mkdir(exist_ok=True, parents=True)  
+
+    if workflow_params.plot_mz_error_classes:
+        mz_error_class_dirloc = dirloc / &#34;mz_error_class&#34;
+        mz_error_class_dirloc.mkdir(exist_ok=True, parents=True)  
+
+    pbar = tqdm(ms_by_classes.get_classes())
+
+    for classe in pbar:
+
+        pbar.set_description_str(desc=&#34;Plotting results for class {}&#34;.format(classe), refresh=True)
+
+        if workflow_params.plot_van_krevelen:
+            ax_c = ms_by_classes.plot_van_krevelen(classe)
+            plt.savefig(van_krevelen_dirloc / &#34;{}.png&#34;.format(classe), bbox_inches=&#39;tight&#39;)
+            plt.clf()
+
+        if workflow_params.plot_mz_error_classes:
+            ax_c = ms_by_classes.plot_mz_error_class(classe)
+            plt.savefig(mz_error_class_dirloc / &#34;{}.png&#34;.format(classe), bbox_inches=&#39;tight&#39;)
+            plt.clf()
+
+        if workflow_params.plot_ms_classes:
+            ax_c = ms_by_classes.plot_ms_class(classe)
+            plt.savefig(ms_class_dirloc / &#34;{}.png&#34;.format(classe), bbox_inches=&#39;tight&#39;)
+            plt.clf()
+
+        if workflow_params.plot_c_dbe:
+            ax_c = ms_by_classes.plot_dbe_vs_carbon_number(classe)
+            plt.savefig(c_dbe_dirloc / &#34;{}.png&#34;.format(classe), bbox_inches=&#39;tight&#39;)
+            plt.clf()</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.generate_database"><code class="name flex">
+<span>def <span class="ident">generate_database</span></span>(<span>corems_parameters_file, jobs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>corems_parameters_file: Path for CoreMS JSON Parameters file
+&ndash;jobs: Number of processes to run</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_database(corems_parameters_file, jobs):
+
+    &#39;&#39;&#39;corems_parameters_file: Path for CoreMS JSON Parameters file
+       --jobs: Number of processes to run   
+    &#39;&#39;&#39;
+    click.echo(&#39;Loading Searching Settings from %s&#39; % corems_parameters_file)
+
+    molecular_search_settings = load_and_set_parameters_class(&#39;MolecularSearch&#39;, MolecularFormulaSearchSettings(), parameters_path=corems_parameters_file)
+    molecular_search_settings.db_jobs = jobs
+    molecular_search_settings.url_database = None
+    MolecularCombinations().runworker(molecular_search_settings)</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.get_masslist"><code class="name flex">
+<span>def <span class="ident">get_masslist</span></span>(<span>file_location, corems_params_path, polarity, is_centroid)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_masslist(file_location, corems_params_path, polarity, is_centroid):
+
+    if is_centroid:
+        reader = ReadMassList(file_location)
+    else:
+       reader = ReadMassList(file_location, header_lines=7, isCentroid=False, isThermoProfile=True)
+    
+    reader.set_parameter_from_json(parameters_path=corems_params_path)
+
+    return(reader.get_mass_spectrum(polarity=polarity))</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.read_workflow_parameter"><code class="name flex">
+<span>def <span class="ident">read_workflow_parameter</span></span>(<span>di_workflow_paramaters_json_file)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_workflow_parameter(di_workflow_paramaters_json_file):
+
+    with open(di_workflow_paramaters_json_file, &#39;r&#39;) as infile:
+        return DiWorkflowParameters(**json.load(infile))</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.run_assignment"><code class="name flex">
+<span>def <span class="ident">run_assignment</span></span>(<span>file_location, workflow_params)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_assignment(file_location, workflow_params):
+
+    file_path = Path(file_location)
+    
+    if file_path.suffix == &#39;.raw&#39;:
+    
+        first_scan, last_scan = workflow_params.raw_data_start_scan, workflow_params.raw_data_final_scan    
+        mass_spectrum = run_thermo_reduce_profile(file_location, workflow_params, first_scan, last_scan)
+
+    elif file_path.suffix == &#39;.d&#39;:
+
+        mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
+
+    elif file_path.suffix == &#39;.txt&#39; or file_path.suffix == &#39;csv&#39;:
+        
+        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, 
+                        polarity=workflow_params.polarity, is_centroid=workflow_params.is_centroid)
+
+
+    mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
+
+    if workflow_params.calibrate:
+
+        ref_file_location = Path(workflow_params.calibration_ref_file_path)
+
+        MzDomainCalibration(mass_spectrum, ref_file_location).run()
+
+    # force it to one job. daemon child can not have child process 
+    mass_spectrum.molecular_search_settings.db_jobs = 1
+
+    SearchMolecularFormulas(mass_spectrum, first_hit=False).run_worker_mass_spectrum()
+
+    print(mass_spectrum.percentile_assigned())
+
+    return mass_spectrum</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.run_bruker_transient"><code class="name flex">
+<span>def <span class="ident">run_bruker_transient</span></span>(<span>file_location, corems_params_path)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_bruker_transient(file_location, corems_params_path):
+
+    with ReadBrukerSolarix(file_location) as transient:
+
+        transient.set_parameter_from_json(corems_params_path) 
+        mass_spectrum = transient.get_mass_spectrum(plot_result=False, auto_process=True)
+    
+    return mass_spectrum</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.run_di_mpi"><code class="name flex">
+<span>def <span class="ident">run_di_mpi</span></span>(<span>workflow_params_file, tasks, replicas)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_di_mpi(workflow_params_file, tasks, replicas):
+
+    import os, sys
+    from mpi4py import MPI
+    # from mpi4py.futures import MPIPoolExecutor
+    sys.path.append(os.getcwd())
+
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    size = comm.Get_size()
+
+    workflow_params = read_workflow_parameter(workflow_params_file)
+    all_worker_args = replicas * [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+
+    # worker_args = comm.scatter(all_worker_args, root=0)
+
+    # will only run tasks up to the number of files paths selected in the EnviroMS File
+    if len(all_worker_args) &lt;= size:
+
+        workflow_worker(all_worker_args[0])
+
+    else:
+
+        print(&#34;Tasks needs to be the same size of the input data count, , until you find time to come and help to code this section :D&#34;)</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.run_direct_infusion_workflow"><code class="name flex">
+<span>def <span class="ident">run_direct_infusion_workflow</span></span>(<span>workflow_params_file, jobs, replicas)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_direct_infusion_workflow(workflow_params_file, jobs, replicas):
+
+    click.echo(&#39;Loading Searching Settings from %s&#39; % workflow_params_file)
+
+    workflow_params = read_workflow_parameter(workflow_params_file)
+
+    dirloc = Path(workflow_params.output_directory)
+    dirloc.mkdir(exist_ok=True)
+
+    worker_args = replicas * [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+
+    cores = jobs
+    pool = Pool(cores)
+
+    for worker_arg in worker_args:
+        workflow_worker(worker_arg)
+    # for i, results in enumerate(pool.imap_unordered(workflow_worker, worker_args), 1):
+
+    #    pass
+
+    pool.close()
+    pool.join()</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.run_thermo_reduce_profile"><code class="name flex">
+<span>def <span class="ident">run_thermo_reduce_profile</span></span>(<span>file_location, corems_params_path, first_scan, last_scan)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_thermo_reduce_profile(file_location, corems_params_path, first_scan, last_scan):
+
+    from corems.mass_spectra.input import rawFileReader
+    parser =  rawFileReader.ImportMassSpectraThermoMSFileReader(file_location)
+    
+    mass_spectrum = parser.get_average_mass_spectrum_in_scan_range(first_scan=1, last_scan=5)
+    return mass_spectrum</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.run_wdl_direct_infusion_workflow"><code class="name flex">
+<span>def <span class="ident">run_wdl_direct_infusion_workflow</span></span>(<span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_wdl_direct_infusion_workflow(*args, **kwargs):
+    
+    cores = kwargs.get(&#39;jobs&#39;)
+    del kwargs[&#39;jobs&#39;]
+    kwargs[&#34;polarity&#34;] = -1 if kwargs.get(&#39;polarity&#39;) == &#39;negative&#39; else 1
+    
+    workflow_params = DiWorkflowParameters(**kwargs)
+    workflow_params.file_paths = workflow_params.file_paths.split(&#34;,&#34;)
+    # workflow_params.output_directory = kwargs.get[&#39;output_directory&#39;]
+    # workflow_params.output_type = kwargs.get[&#39;output_type&#39;]
+    # workflow_params.corems_json_path = kwargs.get[&#39;corems_json_path&#39;]
+    # workflow_params.polarity = -1 if kwargs.get[&#39;polarity&#39;] == &#39;negative&#39; else 1
+    # workflow_params.raw_data_start_scan = kwargs.get[&#39;raw_data_start_scan&#39;]
+    # workflow_params.raw_data_final_scan = kwargs.get[&#39;raw_data_final_scan&#39;]
+    # workflow_params.is_centroid = kwargs.get[&#39;is_centroid&#39;]
+    # workflow_params.calibration_ref_file_path = kwargs.get[&#39;calibration_ref_file_path&#39;]
+
+    # workflow_params.calibrate = kwargs.get[&#39;calibrate&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_mz_error&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_ms_assigned_unassigned&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_c_dbe&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_van_krevelen&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_ms_classes&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;plot_mz_error_classes&#39;]
+    # workflow_params.calibrate = kwargs.get[&#39;calibrate&#39;]
+
+    dirloc = Path(workflow_params.output_directory)
+    dirloc.mkdir(exist_ok=True)
+
+    pool = Pool(cores)
+
+    worker_args = [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+    file_path = Path(worker_args[0][0])
+    #for worker_arg in worker_args:
+    #    workflow_worker(worker_arg)
+    
+    for i, results in enumerate(pool.imap_unordered(workflow_worker, worker_args), 1):
+        pass
+    pool.close()
+    pool.join()</code></pre>
+</details>
+</dd>
+<dt id="enviroMS.diWorkflow.workflow_worker"><code class="name flex">
+<span>def <span class="ident">workflow_worker</span></span>(<span>args)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def workflow_worker(args):
+
+    file_location, workflow_params_json_str = args
+
+    workflow_params = DiWorkflowParameters(**json.loads(workflow_params_json_str))
+
+    mass_spec = run_assignment(file_location, workflow_params)
+
+    dirloc = Path(workflow_params.output_directory) / mass_spec.sample_name
+
+    dirloc.mkdir(exist_ok=True, parents=True)
+
+    output_path = dirloc / mass_spec.sample_name
+
+    eval(&#39;mass_spec.to_{OUT_TYPE}(output_path)&#39;.format(OUT_TYPE=workflow_params.output_type))
+
+    create_plots(mass_spec, workflow_params, dirloc)
+
+    return &#39;Success&#39; + str(os.getpid())</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters"><code class="flex name class">
+<span>class <span class="ident">DiWorkflowParameters</span></span>
+<span>(</span><span>raw_data_start_scan: int = 1, raw_data_final_scan: int = 7, file_paths: tuple = ('data/...', 'data/...'), output_directory: str = 'data/...', output_group_name: str = '...', output_type: str = 'csv', polarity: int = -1, is_centroid: bool = False, corems_json_path: str = 'data/CoremsFile.json', calibrate: bool = True, calibration_ref_file_path: str = 'data/SRFA.ref', plot_mz_error: bool = True, plot_ms_assigned_unassigned: bool = True, plot_c_dbe: bool = True, plot_van_krevelen: bool = True, plot_ms_classes: bool = True, plot_mz_error_classes: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DiWorkflowParameters(raw_data_start_scan: int = 1, raw_data_final_scan: int = 7, file_paths: tuple = ('data/&hellip;', 'data/&hellip;'), output_directory: str = 'data/&hellip;', output_group_name: str = '&hellip;', output_type: str = 'csv', polarity: int = -1, is_centroid: bool = False, corems_json_path: str = 'data/CoremsFile.json', calibrate: bool = True, calibration_ref_file_path: str = 'data/SRFA.ref', plot_mz_error: bool = True, plot_ms_assigned_unassigned: bool = True, plot_c_dbe: bool = True, plot_van_krevelen: bool = True, plot_ms_classes: bool = True, plot_mz_error_classes: bool = True)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DiWorkflowParameters:
+
+    # input type: masslist, bruker_transient, thermo_reduced_profile
+    
+    # scans to sum for thermo raw data, reduce profile
+    raw_data_start_scan: int = 1
+    raw_data_final_scan: int = 7
+
+    # input output paths
+    file_paths: tuple = (&#39;data/...&#39;, &#39;data/...&#39;)
+    output_directory: str = &#39;data/...&#39;
+    output_group_name: str = &#39;...&#39;
+    output_type: str = &#39;csv&#39;
+
+    # polarity for masslist input
+    polarity: int = -1
+    is_centroid:bool = False
+    # corems settings
+    corems_json_path: str = &#39;data/CoremsFile.json&#39;
+
+    # calibration
+    calibrate: bool = True
+    calibration_ref_file_path: str = &#39;data/SRFA.ref&#39;
+
+    # plots
+    plot_mz_error: bool = True
+    plot_ms_assigned_unassigned: bool = True
+
+    plot_c_dbe: bool = True
+    plot_van_krevelen: bool = True
+    plot_ms_classes: bool = True
+    plot_mz_error_classes: bool = True
+
+    def to_json(self):
+        return json.dumps(asdict(self))</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.calibrate"><code class="name">var <span class="ident">calibrate</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.calibration_ref_file_path"><code class="name">var <span class="ident">calibration_ref_file_path</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.corems_json_path"><code class="name">var <span class="ident">corems_json_path</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.file_paths"><code class="name">var <span class="ident">file_paths</span> : tuple</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.is_centroid"><code class="name">var <span class="ident">is_centroid</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.output_directory"><code class="name">var <span class="ident">output_directory</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.output_group_name"><code class="name">var <span class="ident">output_group_name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.output_type"><code class="name">var <span class="ident">output_type</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.plot_c_dbe"><code class="name">var <span class="ident">plot_c_dbe</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.plot_ms_assigned_unassigned"><code class="name">var <span class="ident">plot_ms_assigned_unassigned</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.plot_ms_classes"><code class="name">var <span class="ident">plot_ms_classes</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.plot_mz_error"><code class="name">var <span class="ident">plot_mz_error</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.plot_mz_error_classes"><code class="name">var <span class="ident">plot_mz_error_classes</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.plot_van_krevelen"><code class="name">var <span class="ident">plot_van_krevelen</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.polarity"><code class="name">var <span class="ident">polarity</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.raw_data_final_scan"><code class="name">var <span class="ident">raw_data_final_scan</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.raw_data_start_scan"><code class="name">var <span class="ident">raw_data_start_scan</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.to_json"><code class="name flex">
+<span>def <span class="ident">to_json</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_json(self):
+    return json.dumps(asdict(self))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="enviroMS" href="index.html">enviroMS</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="enviroMS.diWorkflow.cprofile_worker" href="#enviroMS.diWorkflow.cprofile_worker">cprofile_worker</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.create_plots" href="#enviroMS.diWorkflow.create_plots">create_plots</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.generate_database" href="#enviroMS.diWorkflow.generate_database">generate_database</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.get_masslist" href="#enviroMS.diWorkflow.get_masslist">get_masslist</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.read_workflow_parameter" href="#enviroMS.diWorkflow.read_workflow_parameter">read_workflow_parameter</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.run_assignment" href="#enviroMS.diWorkflow.run_assignment">run_assignment</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.run_bruker_transient" href="#enviroMS.diWorkflow.run_bruker_transient">run_bruker_transient</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.run_di_mpi" href="#enviroMS.diWorkflow.run_di_mpi">run_di_mpi</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.run_direct_infusion_workflow" href="#enviroMS.diWorkflow.run_direct_infusion_workflow">run_direct_infusion_workflow</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.run_thermo_reduce_profile" href="#enviroMS.diWorkflow.run_thermo_reduce_profile">run_thermo_reduce_profile</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.run_wdl_direct_infusion_workflow" href="#enviroMS.diWorkflow.run_wdl_direct_infusion_workflow">run_wdl_direct_infusion_workflow</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.workflow_worker" href="#enviroMS.diWorkflow.workflow_worker">workflow_worker</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="enviroMS.diWorkflow.DiWorkflowParameters" href="#enviroMS.diWorkflow.DiWorkflowParameters">DiWorkflowParameters</a></code></h4>
+<ul class="">
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.calibrate" href="#enviroMS.diWorkflow.DiWorkflowParameters.calibrate">calibrate</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.calibration_ref_file_path" href="#enviroMS.diWorkflow.DiWorkflowParameters.calibration_ref_file_path">calibration_ref_file_path</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.corems_json_path" href="#enviroMS.diWorkflow.DiWorkflowParameters.corems_json_path">corems_json_path</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.file_paths" href="#enviroMS.diWorkflow.DiWorkflowParameters.file_paths">file_paths</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.is_centroid" href="#enviroMS.diWorkflow.DiWorkflowParameters.is_centroid">is_centroid</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.output_directory" href="#enviroMS.diWorkflow.DiWorkflowParameters.output_directory">output_directory</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.output_group_name" href="#enviroMS.diWorkflow.DiWorkflowParameters.output_group_name">output_group_name</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.output_type" href="#enviroMS.diWorkflow.DiWorkflowParameters.output_type">output_type</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.plot_c_dbe" href="#enviroMS.diWorkflow.DiWorkflowParameters.plot_c_dbe">plot_c_dbe</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.plot_ms_assigned_unassigned" href="#enviroMS.diWorkflow.DiWorkflowParameters.plot_ms_assigned_unassigned">plot_ms_assigned_unassigned</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.plot_ms_classes" href="#enviroMS.diWorkflow.DiWorkflowParameters.plot_ms_classes">plot_ms_classes</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.plot_mz_error" href="#enviroMS.diWorkflow.DiWorkflowParameters.plot_mz_error">plot_mz_error</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.plot_mz_error_classes" href="#enviroMS.diWorkflow.DiWorkflowParameters.plot_mz_error_classes">plot_mz_error_classes</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.plot_van_krevelen" href="#enviroMS.diWorkflow.DiWorkflowParameters.plot_van_krevelen">plot_van_krevelen</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.polarity" href="#enviroMS.diWorkflow.DiWorkflowParameters.polarity">polarity</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.raw_data_final_scan" href="#enviroMS.diWorkflow.DiWorkflowParameters.raw_data_final_scan">raw_data_final_scan</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.raw_data_start_scan" href="#enviroMS.diWorkflow.DiWorkflowParameters.raw_data_start_scan">raw_data_start_scan</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.to_json" href="#enviroMS.diWorkflow.DiWorkflowParameters.to_json">to_json</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

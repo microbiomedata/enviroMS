@@ -1,6 +1,6 @@
 # Official language image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/python/tags/
-image: gitlab.pnnl.gov:4567/mass-spectrometry/corems:latest
+image: corilo/corems:latest
 
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
@@ -29,9 +29,10 @@ test-job:
   
   stage: test
   tags:
-    - massspec
     - k8s 
-    - rcint
+    - rzr
+    - codebuilds
+    
 
     
   script:
@@ -44,9 +45,10 @@ run-job:
 
   stage: run
   tags:
-    - massspec
     - k8s 
-    - rcint
+    - rzr
+    - codebuilds
+    
 
   script:
     
