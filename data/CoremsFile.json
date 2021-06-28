@@ -8,16 +8,18 @@
         "use_runtime_kendrick_filter": false,
         "use_min_peaks_filter": true,
         "min_peaks_per_class": 15,
-        "url_database": "sqlite:///molformula.db",
-        "db_jobs": 1,
+        "url_database": "sqlite:///db/molformula.db", "db_jobs": 3,
         "ion_charge": -1,
         "min_hc_filter": 0.3,
         "max_hc_filter": 3.0,
-        "min_oc_filter": 1.2,
+        "min_oc_filter": 0.0,
+        "max_oc_filter": 1.2,
         "min_op_filter": 2.0,
         "use_pah_line_rule": false,
         "min_dbe": 0.0,
         "max_dbe": 40.0,
+        "mz_error_score_weight": 0.6,
+        "isotopologue_score_weight": 0.4,
         "adduct_atoms_neg": [
             "Cl", "Br"
         ],
@@ -27,7 +29,8 @@
         "score_methods": [
             "S_P_lowest_error", "N_S_P_lowest_error", "lowest_error", "prob_score", "air_filter_error", "water_filter_error", "earth_filter_error"
         ],
-        "score_method": "prob_score", "isRadical": false,
+        "score_method": "prob_score", "output_min_score": 0.1,
+        "output_score_method": "All Candidates", "isRadical": false,
         "isProtonated": true,
         "isAdduct": false,
         "usedAtoms": {
@@ -415,7 +418,7 @@
         ],
         "noise_threshold_std": 6,
         "s2n_threshold": 4.0,
-        "relative_abundance_threshold": 1.0,
+        "relative_abundance_threshold": 6.0,
         "min_noise_mz": 100.0,
         "max_noise_mz": 1200.0,
         "min_picking_mz": 100.0,
@@ -436,39 +439,7 @@
     },
     "DataInput": {
         "header_translate": {
-            "m/z": "m/z", "Resolving Power": "Resolving Power", "Res.": "Resolving Power", "I": "Peak Height", "Abundance": "Peak Height", "Signal/Noise": "S/N", "S/N": "S/N", "mOz": "m/z", "abs_abu": "Peak Height", "sn": "S/N", "resolution": "Resolving Power"
+            "m/z": "m/z", "mOz": "m/z", "Mass": "m/z", "Resolving Power": "Resolving Power", "Res.": "Resolving Power", "Intensity": "Peak Height", "I": "Peak Height", "Abundance": "Peak Height", "Signal/Noise": "S/N", "S/N": "S/N", "abs_abu": "Peak Height", "sn": "S/N", "resolution": "Resolving Power"
         }
-    },
-    "MolecularSearch": {
-        "url_database": "sqlite:///db/pnnl_lowres_gcms_compounds.sqlite", "ri_search_range": 20.0,
-        "rt_search_range": 1.0,
-        "correlation_threshold": 0.5,
-        "score_threshold": 0.0,
-        "ri_spacing": 200.0,
-        "ri_std": 3.0,
-        "ri_calibration_compound_names": [
-            " [C8] Methyl Caprylate [7.812]", " [C10] Methyl Caprate [10.647]", " [C9] Methyl Pelargonate [9.248]", " [C12] Methyl Laurate [13.250]", " [C14] Methyl Myristate [15.597]", " [C16] Methyl Palmitate [17.723]", " [C18] Methyl Stearate [19.663]", " [C20] Methyl Eicosanoate [21.441]", " [C22] Methyl Docosanoate [23.082]", " [C24] Methyl Linocerate [24.603]", " [C26] Methyl Hexacosanoate [26.023]", " [C28] Methyl Octacosanoate [27.349]", " [C30] Methyl Triacontanoate [28.72]"
-        ],
-        "exploratory_mode": false
-    },
-    "GasChromatograph": {
-        "use_deconvolution": true,
-        "implemented_smooth_method": [
-            "savgol", "hanning", "blackman", "bartlett", "flat", "boxcar"
-        ],
-        "smooth_window": 5,
-        "smooth_method": "savgol", "savgol_pol_order": 2,
-        "peak_height_max_percent": 10.0,
-        "peak_max_prominence_percent": 1.0,
-        "min_peak_datapoints": 5.0,
-        "max_peak_width": 0.1,
-        "noise_threshold_method": "manual_relative_abundance", "implemented_noise_threshold_methods": [
-            "auto_relative_abundance", "manual_relative_abundance", "second_derivative"
-        ],
-        "std_noise_threshold": 3,
-        "peak_height_min_percent": 0.1,
-        "peak_min_prominence_percent": 0.1,
-        "eic_signal_threshold": 0.01,
-        "max_rt_distance": 0.025
     }
 }

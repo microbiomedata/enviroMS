@@ -27,8 +27,8 @@ class DiWorkflowParameters:
     # input type: masslist, bruker_transient, thermo_reduced_profile
     
     # scans to sum for thermo raw data, reduce profile
-    raw_data_start_scan: int = 1
-    raw_data_final_scan: int = 7
+    raw_file_start_scan: int = 1
+    raw_file_final_scan: int = 7
 
     # input output paths
     file_paths: tuple = ('data/...', 'data/...')
@@ -106,7 +106,7 @@ def run_assignment(file_location, workflow_params):
 
 
     mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
-
+    
     if workflow_params.calibrate:
 
         ref_file_location = Path(workflow_params.calibration_ref_file_path)
@@ -118,8 +118,7 @@ def run_assignment(file_location, workflow_params):
 
     SearchMolecularFormulas(mass_spectrum, first_hit=False).run_worker_mass_spectrum()
 
-    print(mass_spectrum.percentile_assigned())
-
+    
     return mass_spectrum
 
 def generate_database(corems_parameters_file, jobs):
@@ -202,7 +201,7 @@ def workflow_worker(args):
     file_location, workflow_params_json_str = args
 
     workflow_params = DiWorkflowParameters(**json.loads(workflow_params_json_str))
-
+    
     mass_spec = run_assignment(file_location, workflow_params)
 
     dirloc = Path(workflow_params.output_directory) / mass_spec.sample_name
