@@ -13,8 +13,8 @@
     
     "fticrmsNOM.runDirectInfusion.polarity": "negative",
     "fticrmsNOM.runDirectInfusion.is_centroid": true,
-    "fticrmsNOM.runDirectInfusion.raw_data_start_scan": 1,
-    "fticrmsNOM.runDirectInfusion.raw_data_final_scan": 7,
+    "fticrmsNOM.runDirectInfusion.raw_file_start_scan": 1,
+    "fticrmsNOM.runDirectInfusion.raw_file_final_scan": 7,
     
     "fticrmsNOM.runDirectInfusion.plot_mz_error": true,
     "fticrmsNOM.runDirectInfusion.plot_ms_assigned_unassigned": true,

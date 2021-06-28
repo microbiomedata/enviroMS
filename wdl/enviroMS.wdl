@@ -15,9 +15,9 @@ task runDirectInfusion {
 
     String polarity
 
-    Int raw_data_start_scan
+    Int raw_file_start_scan
 
-    Int raw_data_final_scan
+    Int raw_file_final_scan
 
     Boolean is_centroid
 
@@ -46,8 +46,8 @@ task runDirectInfusion {
                                      ${output_type} \
                                      ${corems_json_path} \
                                      ${polarity} \
-                                     ${raw_data_start_scan} \
-                                     ${raw_data_final_scan} \
+                                     ${raw_file_start_scan} \
+                                     ${raw_file_final_scan} \
                                      ${is_centroid} \
                                      ${calibration_ref_file_path} \
                                      -c ${calibrate} \

@@ -92,7 +92,7 @@ def run_assignment(file_location, workflow_params):
     
     if file_path.suffix == '.raw':
     
-        first_scan, last_scan = workflow_params.raw_data_start_scan, workflow_params.raw_data_final_scan    
+        first_scan, last_scan = workflow_params.raw_file_start_scan, workflow_params.raw_file_final_scan    
         mass_spectrum = run_thermo_reduce_profile(file_location, workflow_params, first_scan, last_scan)
 
     elif file_path.suffix == '.d':
@@ -234,8 +234,8 @@ def run_wdl_direct_infusion_workflow(*args, **kwargs):
     # workflow_params.output_type = kwargs.get['output_type']
     # workflow_params.corems_json_path = kwargs.get['corems_json_path']
     # workflow_params.polarity = -1 if kwargs.get['polarity'] == 'negative' else 1
-    # workflow_params.raw_data_start_scan = kwargs.get['raw_data_start_scan']
-    # workflow_params.raw_data_final_scan = kwargs.get['raw_data_final_scan']
+    # workflow_params.raw_file_start_scan = kwargs.get['raw_file_start_scan']
+    # workflow_params.raw_file_final_scan = kwargs.get['raw_file_final_scan']
     # workflow_params.is_centroid = kwargs.get['is_centroid']
     # workflow_params.calibration_ref_file_path = kwargs.get['calibration_ref_file_path']
 
