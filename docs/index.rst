@@ -1,5 +1,5 @@
 Natural Organic Matter Workflow
-==============================
+================================
 
 Summary
 -------
@@ -9,7 +9,7 @@ Direct Infusion Fourier Transform mass spectrometry (DI FT-MS) data undergoes si
 Workflow Diagram
 ------------------
 
-.. image:: metamsworkflow.png
+.. image:: enviromsworkflow.png
 
 
 Workflow Dependencies
