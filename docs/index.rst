@@ -68,7 +68,7 @@ Inputs
 Outputs
 ~~~~~~~~
 
-- Molecular Formula data-table
+- Molecular Formula Data-Table, containing m/z measuments, Peak height, Peak Area, Molecular Formula Identification, Ion Type, Confidence Score, etc.  
     - CSV, TAB-SEPARATED TXT
     - HDF: CoreMS HDF5 format
     - XLSX : Microsoft Excel
