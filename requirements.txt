@@ -1,4 +1,4 @@
-corems=>1.0.0
+corems>=1.0.0
 Click==7.1.1
 mpi4py
 tabulate
