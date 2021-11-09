@@ -99,7 +99,8 @@ def run_assignment(file_location, workflow_params):
 
         mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
 
-    elif file_path.suffix == '.txt' or file_path.suffix == 'csv':
+    
+    elif file_path.suffix == '.txt' or file_path.suffix == 'csv' or file_path.suffix == '.tsv':
         
         mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, 
                         polarity=workflow_params.polarity, is_centroid=workflow_params.is_centroid)
