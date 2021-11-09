@@ -12,7 +12,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="EnviroMS",
-    version="4.1.5",
+    version="4.2.0",
     description="Search and Assign Molecular Formulas for Complex Mixtures of Small Molecules",
     long_description=README,
     long_description_content_type="text/markdown",
