@@ -1,4 +1,0 @@
-Currently Loaded Modules:
-  1) intel/14.0.3   2) impi/5.1.2.150   3) pnnl_env/1.1
-
-(venv) [eber373@glogin2 enviroms]$ srun -A mscms -t 240 -N 1 -n 2 --reservation eber373-benchmarking time enviroMS run-di-workflow -r 2 --mpi  /dtemp/mscms/enviroms/data/EnviromsFile.json
