@@ -96,7 +96,7 @@ def create_database(corems_parameters_file, jobs):
 @click.argument(&#39;file_paths&#39;, required=True, type=str)
 @click.argument(&#39;output_directory&#39;, required=True, type=str)
 @click.argument(&#39;output_type&#39;, required=True, type=str)
-@click.argument(&#39;corems_json_path&#39;, required=True, type=str)
+@click.argument(&#39;corems_toml_path&#39;, required=True, type=str)
 @click.argument(&#39;polarity&#39;, required=True, type=str)
 @click.argument(&#39;raw_data_start_scan&#39;, required=True, type=int)
 @click.argument(&#39;raw_data_final_scan&#39;, required=True, type=int)
@@ -126,7 +126,7 @@ def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
     &#39;&#39;&#39;Run the Direct Infusion Workflow\n
        workflow_paramaters_file = json file with workflow parameters\n
        output_types = csv, excel, pandas, json set on the parameter file\n
-       corems_json_path = json file with corems parameters\n
+       corems_toml_path = json file with corems parameters\n
        --jobs = number of processes to run in parallel\n 
        --mpi = run on hpc, if omitted will run python&#39;s multiprocessing and will duplicate runs on nodes\n
     &#39;&#39;&#39;

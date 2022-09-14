@@ -1,7 +1,8 @@
 app_name = enviroms
-parameters_path = data/EnviromsFile.json
+parameters_path = data/enviroms.toml
 # change the path to your data path /Users/eber373/Desenvolvimento/enviroms
 data_dir = /Users/eber373/Desenvolvimento/enviroms/data/
+configuration_dir = /Users/eber373/Desenvolvimento/enviroms/configuration/
 version := $(shell cat .bumpversion.cfg | grep current_version | cut -d= -f2 | tr -d ' ')
 stage := $(shell cat .bumpversion.cfg | grep optional_value | cut -d= -f2 | tr -d ' ') 
 
@@ -39,17 +40,17 @@ pypi:
 
 docker-push:
 	
-	@echo corilo/enviroms:$(version).$(stage)
-	@docker build --no-cache -t corilo/enviroms:$(version).$(stage) .
-	@docker push corilo/enviroms:$(version).$(stage)
+	@echo corilo/enviroms:$(version)
+	@docker build --no-cache -t corilo/enviroms:$(version) .
+	@docker push corilo/enviroms:$(version)
 	
-	@docker image tag corilo/enviroms:$(version).$(stage) corilo/enviroms:latest
+	@docker image tag corilo/enviroms:$(version) corilo/enviroms:latest
 	@docker push corilo/enviroms:latest
 
-	@docker image tag corilo/enviroms:$(version).$(stage) microbiomedata/enviroms:$(version).$(stage)
-	@docker push microbiomedata/enviroms:$(version).$(stage)
+	@docker image tag corilo/enviroms:$(version) microbiomedata/enviroms:$(version)
+	@docker push microbiomedata/enviroms:$(version)
 
-	@docker image tag corilo/enviroms:$(version).$(stage) microbiomedata/enviroms:latest
+	@docker image tag corilo/enviroms:$(version) microbiomedata/enviroms:latest
 	@docker push microbiomedata/enviroms:latest
 	
 	
@@ -59,11 +60,11 @@ docker-build:
 
 docker-run:
 
-	docker run -v $(data_dir):/enviroms/data enviroms:local run-di-workflow /enviroms/data/EnviromsFile.json
+	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:latest run-di-workflow /enviroms/data/configuration/enviroms.toml
 
 cascade-run:
 
-	srun -A mscms -t 240 -N 1 -n time enviroMS run-di-workflow -r 2 --mpi  /dtemp/mscms/enviroms/data/EnviromsFile.json
+	srun -A mscms -t 240 -N 1 -n time enviroMS run-di-workflow -r 2 --mpi  /dtemp/mscms/enviroms/data/configuration/enviroms.toml
 
 wdl-run :
  	 

@@ -1,4 +1,4 @@
-__version__ = "4.2.1"
+__version__ = "4.3.0"
 __doc__ = '''
 # Table of Contents  
 - Introduction
@@ -87,7 +87,7 @@ enviroMS dump-corems-template CoremsFile.json
 ```
 
  Modify the EnviromsFile.json and CoremsFile.json accordingly to your dataset and workflow parameters
-make sure to include CoremsFile.json path inside the EnviromsFile.json: "corems_json_path": "path_to_CoremsFile.json" 
+make sure to include CoremsFile.json path inside the EnviromsFile.json: "corems_toml_path": "path_to_CoremsFile.toml" 
 
 ```bash
 enviroMS run-di path_to_MetamsFile.json

@@ -1,14 +1,14 @@
 
+from dataclasses import asdict
 from pathlib import Path
-import json
-import sys
 
+import toml
 import click
 
 from enviroMS.singleMzSearch import run_molecular_formula_search
 from enviroMS.diWorkflow import DiWorkflowParameters, generate_database, run_di_mpi, run_direct_infusion_workflow, run_wdl_direct_infusion_workflow
 from corems.molecular_id.search.molecularFormulaSearch import SearchMolecularFormulas
-from corems.encapsulation.output.parameter_to_json import dump_ms_settings_json, dump_all_settings_json
+from corems.encapsulation.output.parameter_to_json import dump_ms_settings_toml, dump_all_settings_toml
 
 class Config:
     def __init__(self):
@@ -59,7 +59,7 @@ def run_search_formula(config, mz, ppm_error, isRadical, isProtonated, isAdduct,
 @click.argument('corems_parameters_file', required=True, type=str)
 @click.option('--jobs','-j', default=4, help="'cpu's'")
 def create_database(corems_parameters_file, jobs):
-    '''corems_parameters_file: Path for CoreMS JSON Parameters file\n
+    '''corems_parameters_file: Path for CoreMS TOML Parameters file\n
        jobs: Number of processes to run\n
        "postgresql://postgres:labthomson0102@172.22.113.27:5432/",
     '''
@@ -69,7 +69,8 @@ def create_database(corems_parameters_file, jobs):
 @click.argument('file_paths', required=True, type=str)
 @click.argument('output_directory', required=True, type=str)
 @click.argument('output_type', required=True, type=str)
-@click.argument('corems_json_path', required=True, type=str)
+@click.argument('corems_toml_path', required=True, type=str)
+@click.argument('nmdc_metadata_path', required=True, type=str)
 @click.argument('polarity', required=True, type=str)
 @click.argument('raw_file_start_scan', required=True, type=int)
 @click.argument('raw_file_final_scan', required=True, type=int)
@@ -97,9 +98,9 @@ def run_di_wdl(*args, **kwargs):
 @click.option('--mpi','-m', is_flag=True, help="run mpi version")
 def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
     '''Run the Direct Infusion Workflow\n
-       workflow_paramaters_file = json file with workflow parameters\n
+       workflow_paramaters_file = toml file with workflow parameters\n
        output_types = csv, excel, pandas, json set on the parameter file\n
-       corems_json_path = json file with corems parameters\n
+       corems_toml_path = toml file with corems parameters\n
        --jobs = number of processes to run in parallel\n 
        --mpi = run on hpc, if omitted will run python's multiprocessing and will duplicate runs on nodes\n
     '''
@@ -120,30 +121,34 @@ def run_lcms(workflow_paramaters_file, jobs):
     pass       
 
 @cli.command()
-@click.argument('json_file_name', required=True, type=click.Path())
-def dump_corems_template(json_file_name):
-    '''Dumps a CoreMS json file template
+@click.argument('toml_file_name', required=True, type=click.Path())
+def dump_corems_template(toml_file_name):
+    '''Dumps a CoreMS toml file template
         to be used as the workflow parameters input 
     '''
-    path_obj = Path(json_file_name).with_suffix('.json')
-    dump_all_settings_json(file_path=path_obj)
+    path_obj = Path(toml_file_name).with_suffix('.toml')
+    dump_all_settings_toml(file_path=path_obj)
 
 @cli.command()
-@click.argument('json_file_name', required=True, type=click.Path())
-def dump_corems_enviroms_template(json_file_name):
-    '''Dumps a CoreMS json file template
+@click.argument('toml_file_name', required=True, type=click.Path())
+def dump_corems_enviroms_template(toml_file_name):
+    '''Dumps a CoreMS toml file template
         to be used as the workflow parameters input 
     '''
-    path_obj = Path(json_file_name).with_suffix('.json')
-    dump_ms_settings_json(file_path=path_obj)
+    path_obj = Path(toml_file_name).with_suffix('.toml')
+    dump_ms_settings_toml(file_path=path_obj)
 
 @cli.command()
-@click.argument('json_file_name', required=True, type=click.Path())
-def dump_di_template(json_file_name):
-    '''Dumps a json file template
+@click.argument('toml_file_name', required=True, type=click.Path())
+def dump_di_template(toml_file_name):
+    '''Dumps a toml file template
         to be used as the workflow parameters input
     '''
-    ref_lib_path = Path(json_file_name).with_suffix('.json')
+    ref_lib_path = Path(toml_file_name).with_suffix('.toml')
     with open(ref_lib_path, 'w') as workflow_param:
-    
-        json.dump(DiWorkflowParameters().__dict__, workflow_param, indent=4)
+        
+        workflow = DiWorkflowParameters()
+       
+        toml.dump(asdict(workflow), workflow_param)
+
+        

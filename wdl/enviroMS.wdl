@@ -11,8 +11,10 @@ task runDirectInfusion {
 
     String output_type
 
-    File corems_json_path
+    File corems_toml_path
 
+    File nmdc_metadata_path
+    
     String polarity
 
     Int raw_file_start_scan
@@ -44,7 +46,8 @@ task runDirectInfusion {
         enviroMS run-di-wdl ${sep=',' file_paths} \
                                      ${output_directory} \
                                      ${output_type} \
-                                     ${corems_json_path} \
+                                     ${corems_toml_path} \
+                                     ${nmdc_metadata_path} \
                                      ${polarity} \
                                      ${raw_file_start_scan} \
                                      ${raw_file_final_scan} \

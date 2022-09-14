@@ -13,7 +13,6 @@
   - [CLI](#running-the-workflow)  
   - [MiniWDL](#MiniWDL)  
   - [Docker Container](#enviroms-docker)  
-  
 
 # EnviroMS
 
@@ -21,7 +20,7 @@
 
 ## Current Version
 
-### `4.2.1`
+### `4.3.0`
 
 ### Data input formats
 
@@ -79,23 +78,23 @@ To be able to open thermo raw files a installation of pythonnet is needed:
 
 
 ```bash
-enviroMS dump-corems-enviroms-template EnviromsFile.json
+enviroMS dump-corems-enviroms-template enviroms.toml
 ```
 ```bash
-enviroMS dump-corems-template CoremsFile.json
+enviroMS dump-corems-template corems.toml
 ```
 
- Modify the EnviromsFile.json and CoremsFile.json accordingly to your dataset and workflow parameters
-make sure to include CoremsFile.json path inside the EnviromsFile.json: "corems_json_path": "path_to_CoremsFile.json" 
+ Modify the enviroms.toml and corems.toml accordingly to your dataset and workflow parameters
+make sure to include corems.toml path inside the enviroms.toml: "corems_toml_path": "path_to_corems.toml" 
 
 ```bash
-enviroMS run-di path_to_MetamsFile.json
+enviroMS run-di configuration/enviroms.json
 ```
 
 ## MiniWDL 
 - Change wdl/enviroms_input.json to specify the data location
 
-- Change data/CoremsFile.json to specify the workflow parameters
+- Change configuration/corems.toml to specify the workflow parameters
 
 Install miniWDL:
 ```bash
@@ -108,7 +107,7 @@ miniwdl run wdl/enviroMS.wdl -i wdl/enviroms_input.json --verbose --no-cache --c
 ```
 
 WARNING ** Current mode only allows for multiprocessing in a single node and it defaults to one job at a time. 
-To use multiprocessing mode modify the parameter "runDirectInfusion.jobs_count" in the enviroMS.wdl and modify the parameter "MolecularFormulaSearch.url_database" on CoremsFile.json to point to a Postgresql url. The default is set to use SQLite and it will fail on multiprocessing mode.
+To use multiprocessing mode modify the parameter "runDirectInfusion.jobs_count" in the enviroMS.wdl and modify the parameter "MolecularFormulaSearch.url_database" on corems.toml to point to a Postgresql url. The default is set to use SQLite and it will fail on multiprocessing mode.
 
 ## EnviroMS Docker 
 
@@ -119,31 +118,38 @@ If you don't have docker installed, the easiest way is to [install docker for de
 - Pull from Docker Registry:
 
     ```bash
-    docker pull corilo/enviroms:latest
+    docker pull microbiome/enviroms:latest
     
     ```
 
 - Or to build the image from source:
 
     ```bash
-    docker build -t enviroms:latest .
+    docker build -t microbiomedata/enviroms:latest .
     ```
 - Run Workflow from Container:
 
-    $(data_dir) = dir_containing the FT-ICR MS data, EnviromsFile.json and CoremsFile.json
+    $(data_dir) = dir_containing the FT-ICR MS data
+    $(configuration_dir) = dir_containing the enviroms.toml, corems.toml and nmdc_metadata.json
     
     ```bash
-    docker run -v $(data_dir):/enviroms/data corilo/enviroms:latest enviroMS run-di /enviroms/data/EnviromsFile.json    
+    docker run -v $(data_dir):/enviroms/data \
+               -v $(configuration):/enviroms/configuration \
+                  microbiomedata/enviroms:latest enviroMS run-di /enviroms/configuration/enviroms.toml    
     ```
 
 - Save a new parameters file template:
     
     ```bash
-    docker run -v $(data_dir):/enviroms/data corilo/enviroms:latest enviroMS dump_json_template /enviroms/data/EnviromsFile.json    
+    docker run -v $(data_dir):/enviroms/data \
+               -v $(configuration):/enviroms/configuration \
+                microbiomedata/enviroms:latest enviroMS dump_di_template /enviroms/configuration/enviroms.toml    
     ```
     
     ```bash
-    docker run -v $(data_dir):/metaB/data corilo/enviroms:latest enviroMS dump_corems_json_template /metaB/data/CoremsFile.json
+    docker run -v $(data_dir):/enviroms/data \
+               -v $(configuration):/enviroms/configuration \
+                microbiomedata/enviroms:latest enviroMS dump_corems_template /enviroms/configuration/corems.toml
     ```
 
 ## Disclaimer

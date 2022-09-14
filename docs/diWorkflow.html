@@ -68,7 +68,7 @@ class DiWorkflowParameters:
     polarity: int = -1
     is_centroid:bool = False
     # corems settings
-    corems_json_path: str = &#39;data/CoremsFile.json&#39;
+    corems_toml_path: str = &#39;data/CoremsFile.json&#39;
 
     # calibration
     calibrate: bool = True
@@ -125,15 +125,15 @@ def run_assignment(file_location, workflow_params):
 
     elif file_path.suffix == &#39;.d&#39;:
 
-        mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
+        mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_toml_path)
 
     elif file_path.suffix == &#39;.txt&#39; or file_path.suffix == &#39;csv&#39;:
         
-        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, 
+        mass_spectrum = get_masslist(file_location, workflow_params.corems_toml_path, 
                         polarity=workflow_params.polarity, is_centroid=workflow_params.is_centroid)
 
 
-    mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
+    mass_spectrum.set_parameter_from_json(workflow_params.corems_toml_path)
 
     if workflow_params.calibrate:
 
@@ -261,7 +261,7 @@ def run_wdl_direct_infusion_workflow(*args, **kwargs):
     workflow_params.file_paths = workflow_params.file_paths.split(&#34;,&#34;)
     # workflow_params.output_directory = kwargs.get[&#39;output_directory&#39;]
     # workflow_params.output_type = kwargs.get[&#39;output_type&#39;]
-    # workflow_params.corems_json_path = kwargs.get[&#39;corems_json_path&#39;]
+    # workflow_params.corems_toml_path = kwargs.get[&#39;corems_toml_path&#39;]
     # workflow_params.polarity = -1 if kwargs.get[&#39;polarity&#39;] == &#39;negative&#39; else 1
     # workflow_params.raw_data_start_scan = kwargs.get[&#39;raw_data_start_scan&#39;]
     # workflow_params.raw_data_final_scan = kwargs.get[&#39;raw_data_final_scan&#39;]
@@ -509,15 +509,15 @@ def run_di_mpi(workflow_params_file, tasks, replicas):
 
     elif file_path.suffix == &#39;.d&#39;:
 
-        mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
+        mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_toml_path)
 
     elif file_path.suffix == &#39;.txt&#39; or file_path.suffix == &#39;csv&#39;:
         
-        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, 
+        mass_spectrum = get_masslist(file_location, workflow_params.corems_toml_path, 
                         polarity=workflow_params.polarity, is_centroid=workflow_params.is_centroid)
 
 
-    mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
+    mass_spectrum.set_parameter_from_json(workflow_params.corems_toml_path)
 
     if workflow_params.calibrate:
 
@@ -659,7 +659,7 @@ def run_di_mpi(workflow_params_file, tasks, replicas):
     workflow_params.file_paths = workflow_params.file_paths.split(&#34;,&#34;)
     # workflow_params.output_directory = kwargs.get[&#39;output_directory&#39;]
     # workflow_params.output_type = kwargs.get[&#39;output_type&#39;]
-    # workflow_params.corems_json_path = kwargs.get[&#39;corems_json_path&#39;]
+    # workflow_params.corems_toml_path = kwargs.get[&#39;corems_toml_path&#39;]
     # workflow_params.polarity = -1 if kwargs.get[&#39;polarity&#39;] == &#39;negative&#39; else 1
     # workflow_params.raw_data_start_scan = kwargs.get[&#39;raw_data_start_scan&#39;]
     # workflow_params.raw_data_final_scan = kwargs.get[&#39;raw_data_final_scan&#39;]
@@ -728,10 +728,10 @@ def run_di_mpi(workflow_params_file, tasks, replicas):
 <dl>
 <dt id="enviroMS.diWorkflow.DiWorkflowParameters"><code class="flex name class">
 <span>class <span class="ident">DiWorkflowParameters</span></span>
-<span>(</span><span>raw_data_start_scan: int = 1, raw_data_final_scan: int = 7, file_paths: tuple = ('data/...', 'data/...'), output_directory: str = 'data/...', output_group_name: str = '...', output_type: str = 'csv', polarity: int = -1, is_centroid: bool = False, corems_json_path: str = 'data/CoremsFile.json', calibrate: bool = True, calibration_ref_file_path: str = 'data/SRFA.ref', plot_mz_error: bool = True, plot_ms_assigned_unassigned: bool = True, plot_c_dbe: bool = True, plot_van_krevelen: bool = True, plot_ms_classes: bool = True, plot_mz_error_classes: bool = True)</span>
+<span>(</span><span>raw_data_start_scan: int = 1, raw_data_final_scan: int = 7, file_paths: tuple = ('data/...', 'data/...'), output_directory: str = 'data/...', output_group_name: str = '...', output_type: str = 'csv', polarity: int = -1, is_centroid: bool = False, corems_toml_path: str = 'data/CoremsFile.json', calibrate: bool = True, calibration_ref_file_path: str = 'data/SRFA.ref', plot_mz_error: bool = True, plot_ms_assigned_unassigned: bool = True, plot_c_dbe: bool = True, plot_van_krevelen: bool = True, plot_ms_classes: bool = True, plot_mz_error_classes: bool = True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>DiWorkflowParameters(raw_data_start_scan: int = 1, raw_data_final_scan: int = 7, file_paths: tuple = ('data/&hellip;', 'data/&hellip;'), output_directory: str = 'data/&hellip;', output_group_name: str = '&hellip;', output_type: str = 'csv', polarity: int = -1, is_centroid: bool = False, corems_json_path: str = 'data/CoremsFile.json', calibrate: bool = True, calibration_ref_file_path: str = 'data/SRFA.ref', plot_mz_error: bool = True, plot_ms_assigned_unassigned: bool = True, plot_c_dbe: bool = True, plot_van_krevelen: bool = True, plot_ms_classes: bool = True, plot_mz_error_classes: bool = True)</p></div>
+<div class="desc"><p>DiWorkflowParameters(raw_data_start_scan: int = 1, raw_data_final_scan: int = 7, file_paths: tuple = ('data/&hellip;', 'data/&hellip;'), output_directory: str = 'data/&hellip;', output_group_name: str = '&hellip;', output_type: str = 'csv', polarity: int = -1, is_centroid: bool = False, corems_toml_path: str = 'data/CoremsFile.json', calibrate: bool = True, calibration_ref_file_path: str = 'data/SRFA.ref', plot_mz_error: bool = True, plot_ms_assigned_unassigned: bool = True, plot_c_dbe: bool = True, plot_van_krevelen: bool = True, plot_ms_classes: bool = True, plot_mz_error_classes: bool = True)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -754,7 +754,7 @@ def run_di_mpi(workflow_params_file, tasks, replicas):
     polarity: int = -1
     is_centroid:bool = False
     # corems settings
-    corems_json_path: str = &#39;data/CoremsFile.json&#39;
+    corems_toml_path: str = &#39;data/CoremsFile.json&#39;
 
     # calibration
     calibrate: bool = True
@@ -782,7 +782,7 @@ def run_di_mpi(workflow_params_file, tasks, replicas):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="enviroMS.diWorkflow.DiWorkflowParameters.corems_json_path"><code class="name">var <span class="ident">corems_json_path</span> : str</code></dt>
+<dt id="enviroMS.diWorkflow.DiWorkflowParameters.corems_toml_path"><code class="name">var <span class="ident">corems_toml_path</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -897,7 +897,7 @@ def run_di_mpi(workflow_params_file, tasks, replicas):
 <ul class="">
 <li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.calibrate" href="#enviroMS.diWorkflow.DiWorkflowParameters.calibrate">calibrate</a></code></li>
 <li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.calibration_ref_file_path" href="#enviroMS.diWorkflow.DiWorkflowParameters.calibration_ref_file_path">calibration_ref_file_path</a></code></li>
-<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.corems_json_path" href="#enviroMS.diWorkflow.DiWorkflowParameters.corems_json_path">corems_json_path</a></code></li>
+<li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.corems_toml_path" href="#enviroMS.diWorkflow.DiWorkflowParameters.corems_toml_path">corems_toml_path</a></code></li>
 <li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.file_paths" href="#enviroMS.diWorkflow.DiWorkflowParameters.file_paths">file_paths</a></code></li>
 <li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.is_centroid" href="#enviroMS.diWorkflow.DiWorkflowParameters.is_centroid">is_centroid</a></code></li>
 <li><code><a title="enviroMS.diWorkflow.DiWorkflowParameters.output_directory" href="#enviroMS.diWorkflow.DiWorkflowParameters.output_directory">output_directory</a></code></li>

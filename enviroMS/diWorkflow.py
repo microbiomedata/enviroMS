@@ -1,11 +1,11 @@
 import cProfile
 from dataclasses import dataclass, asdict
-import json
 from multiprocessing import Pool
 import os
 from pathlib import Path
 
 import click
+import toml
 from tqdm import tqdm
 
 from matplotlib import pyplot as plt
@@ -40,11 +40,11 @@ class DiWorkflowParameters:
     polarity: int = -1
     is_centroid:bool = False
     # corems settings
-    corems_json_path: str = 'data/CoremsFile.json'
-
+    corems_toml_path: str = 'data/configuration/corems.toml'
+    nmdc_metadata_path: str = 'data/configuration/nmdc_metadata.json' 
     # calibration
     calibrate: bool = True
-    calibration_ref_file_path: str = 'data/SRFA.ref'
+    calibration_ref_file_path: str = 'data/raw_data/SRFA.ref'
 
     # plots
     plot_mz_error: bool = True
@@ -55,22 +55,23 @@ class DiWorkflowParameters:
     plot_ms_classes: bool = True
     plot_mz_error_classes: bool = True
 
-    def to_json(self):
-        return json.dumps(asdict(self))
+    def to_toml(self):
+        return toml.dumps(asdict(self))
 
+  
 def run_thermo_reduce_profile(file_location, corems_params_path, first_scan, last_scan):
 
     from corems.mass_spectra.input import rawFileReader
     parser =  rawFileReader.ImportMassSpectraThermoMSFileReader(file_location)
     
-    mass_spectrum = parser.get_average_mass_spectrum_in_scan_range(first_scan=1, last_scan=5)
+    mass_spectrum = parser.get_average_mass_spectrum_in_scan_range(first_scan=first_scan, last_scan=last_scan)
     return mass_spectrum
 
 def run_bruker_transient(file_location, corems_params_path):
 
     with ReadBrukerSolarix(file_location) as transient:
 
-        transient.set_parameter_from_json(corems_params_path) 
+        transient.set_parameter_from_toml(corems_params_path) 
         mass_spectrum = transient.get_mass_spectrum(plot_result=False, auto_process=True)
     
     return mass_spectrum
@@ -82,7 +83,7 @@ def get_masslist(file_location, corems_params_path, polarity, is_centroid):
     else:
        reader = ReadMassList(file_location, header_lines=7, isCentroid=False, isThermoProfile=True)
     
-    reader.set_parameter_from_json(parameters_path=corems_params_path)
+    reader.set_parameter_from_toml(parameters_path=corems_params_path)
 
     return(reader.get_mass_spectrum(polarity=polarity))
 
@@ -97,16 +98,16 @@ def run_assignment(file_location, workflow_params):
 
     elif file_path.suffix == '.d':
 
-        mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_json_path)
+        mass_spectrum = run_bruker_transient(file_location, workflow_params.corems_toml_path)
 
     
     elif file_path.suffix == '.txt' or file_path.suffix == 'csv' or file_path.suffix == '.tsv':
         
-        mass_spectrum = get_masslist(file_location, workflow_params.corems_json_path, 
+        mass_spectrum = get_masslist(file_location, workflow_params.corems_toml_path, 
                         polarity=workflow_params.polarity, is_centroid=workflow_params.is_centroid)
 
 
-    mass_spectrum.set_parameter_from_json(workflow_params.corems_json_path)
+    mass_spectrum.set_parameter_from_toml(workflow_params.corems_toml_path)
     
     if workflow_params.calibrate:
 
@@ -118,13 +119,12 @@ def run_assignment(file_location, workflow_params):
     mass_spectrum.molecular_search_settings.db_jobs = 1
 
     SearchMolecularFormulas(mass_spectrum, first_hit=False).run_worker_mass_spectrum()
-
     
     return mass_spectrum
 
 def generate_database(corems_parameters_file, jobs):
 
-    '''corems_parameters_file: Path for CoreMS JSON Parameters file
+    '''corems_parameters_file: Path for CoreMS TOML Parameters file
        --jobs: Number of processes to run   
     '''
     click.echo('Loading Searching Settings from %s' % corems_parameters_file)
@@ -134,10 +134,10 @@ def generate_database(corems_parameters_file, jobs):
     molecular_search_settings.url_database = None
     MolecularCombinations().runworker(molecular_search_settings)
 
-def read_workflow_parameter(di_workflow_paramaters_json_file):
+def read_workflow_parameter(di_workflow_paramaters_toml_file):
 
-    with open(di_workflow_paramaters_json_file, 'r') as infile:
-        return DiWorkflowParameters(**json.load(infile))
+    with open(di_workflow_paramaters_toml_file, 'r') as infile:
+        return DiWorkflowParameters(**toml.load(infile))
 
 def create_plots(mass_spectrum, workflow_params, dirloc):
 
@@ -199,9 +199,9 @@ def create_plots(mass_spectrum, workflow_params, dirloc):
 
 def workflow_worker(args):
 
-    file_location, workflow_params_json_str = args
+    file_location, workflow_params_toml_str = args
 
-    workflow_params = DiWorkflowParameters(**json.loads(workflow_params_json_str))
+    workflow_params = DiWorkflowParameters(**toml.loads(workflow_params_toml_str))
     
     mass_spec = run_assignment(file_location, workflow_params)
 
@@ -217,7 +217,7 @@ def workflow_worker(args):
 
     return 'Success' + str(os.getpid())
 
-def cprofile_worker(file_location, workflow_params_json_str):
+def cprofile_worker(file_location, workflow_params_toml_str):
 
     cProfile.runctx('run_assignment(file_location, workflow_params)', globals(), locals(), 'di-fticr-di.prof')
     # stats = pstats.Stats("topics.prof")
@@ -233,7 +233,7 @@ def run_wdl_direct_infusion_workflow(*args, **kwargs):
     workflow_params.file_paths = workflow_params.file_paths.split(",")
     # workflow_params.output_directory = kwargs.get['output_directory']
     # workflow_params.output_type = kwargs.get['output_type']
-    # workflow_params.corems_json_path = kwargs.get['corems_json_path']
+    # workflow_params.corems_toml_path = kwargs.get['corems_toml_path']
     # workflow_params.polarity = -1 if kwargs.get['polarity'] == 'negative' else 1
     # workflow_params.raw_file_start_scan = kwargs.get['raw_file_start_scan']
     # workflow_params.raw_file_final_scan = kwargs.get['raw_file_final_scan']
@@ -254,7 +254,7 @@ def run_wdl_direct_infusion_workflow(*args, **kwargs):
 
     pool = Pool(cores)
 
-    worker_args = [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+    worker_args = [(file_path, workflow_params.to_toml()) for file_path in workflow_params.file_paths]
     file_path = Path(worker_args[0][0])
     #for worker_arg in worker_args:
     #    workflow_worker(worker_arg)
@@ -273,7 +273,7 @@ def run_direct_infusion_workflow(workflow_params_file, jobs, replicas):
     dirloc = Path(workflow_params.output_directory)
     dirloc.mkdir(exist_ok=True)
 
-    worker_args = replicas * [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+    worker_args = replicas * [(file_path, workflow_params.to_toml()) for file_path in workflow_params.file_paths]
 
     cores = jobs
     pool = Pool(cores)
@@ -299,7 +299,7 @@ def run_di_mpi(workflow_params_file, tasks, replicas):
     size = comm.Get_size()
 
     workflow_params = read_workflow_parameter(workflow_params_file)
-    all_worker_args = replicas * [(file_path, workflow_params.to_json()) for file_path in workflow_params.file_paths]
+    all_worker_args = replicas * [(file_path, workflow_params.to_toml()) for file_path in workflow_params.file_paths]
 
     # worker_args = comm.scatter(all_worker_args, root=0)
 
