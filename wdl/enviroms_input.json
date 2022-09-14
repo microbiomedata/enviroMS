@@ -1,7 +1,7 @@
 {
     
     "fticrmsNOM.runDirectInfusion.file_paths": [
-        "data/raw_data/20190709_WK_CADY_Auto_S16_H1_Post_O5_1_01_36.txt"
+        "data/raw_data/20190709_WK_CADY_Auto_S16_H1_Post_O5_1_01_36.tsv"
     ],
 
     "fticrmsNOM.runDirectInfusion.output_directory": "output",
@@ -10,7 +10,7 @@
     "fticrmsNOM.runDirectInfusion.calibration_ref_file_path": "data/reference/SRFA.ref",
     
     "fticrmsNOM.runDirectInfusion.corems_toml_path": "configuration/corems.toml",
-    "fticrmsNOM.runDirectInfusion.metadata_path": "configuration/nmdc_metadata.json",
+    "fticrmsNOM.runDirectInfusion.nmdc_metadata_path": "configuration/nmdc_metadata.json",
 
     "fticrmsNOM.runDirectInfusion.polarity": "negative",
     "fticrmsNOM.runDirectInfusion.is_centroid": true,

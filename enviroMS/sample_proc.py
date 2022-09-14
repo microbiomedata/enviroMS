@@ -1,5 +1,6 @@
 import yaml
-import nmdc_schema as nmdc
+import nmdc_schema.nmdc as nmdc
+from linkml_runtime.dumpers import yaml_dumper, json_dumper
 
 b1 = nmdc.Biosample(
     id='monet_data:soil_1',
@@ -83,4 +84,5 @@ d5 = nmdc.MaterialSample(
 
 samp_proc_db.material_sample_set.append(d5)
 
-print(yaml.dump(samp_proc_db.__dict__, "assets/samp_proc_instantiation.yaml"))
+print(yaml_dumper.dump(samp_proc_db, "samp_proc_instantiation.yaml"))
+print(json_dumper.dump(samp_proc_db, "samp_proc_instantiation.json"))

@@ -3,3 +3,4 @@ Click==7.1.1
 mpi4py
 tabulate
 toml
+nmdc-schema==7.0.0
