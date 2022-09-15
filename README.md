@@ -52,6 +52,8 @@
 
 ## EnviroMS Installation
 
+Make sure you have python 3.9.13 installed before continue
+
 - PyPi:     
 ```bash
 pip3 install enviroms
@@ -76,7 +78,6 @@ To be able to open thermo raw files a installation of pythonnet is needed:
 
 ## Running the workflow
 
-
 ```bash
 enviroMS dump-corems-enviroms-template enviroms.toml
 ```
@@ -92,6 +93,11 @@ enviroMS run-di configuration/enviroms.json
 ```
 
 ## MiniWDL 
+
+Make sure you have python 3.9.13 installed before continue
+
+MiniWDL uses the microbiome/enviroMS image so there is not need to install enviroMS
+
 - Change wdl/enviroms_input.json to specify the data location
 
 - Change configuration/corems.toml to specify the workflow parameters
@@ -111,9 +117,11 @@ To use multiprocessing mode modify the parameter "runDirectInfusion.jobs_count" 
 
 ## EnviroMS Docker 
 
-A docker image containing the EnviroMS command line as code entry-point
+You will need docker and docker compose: 
 
-If you don't have docker installed, the easiest way is to [install docker for desktop](https://hub.docker.com/?overlay=onboarding)
+If you don't have it installed, the easiest way is to [install docker for desktop](https://www.docker.com/products/docker-desktop/)
+
+A docker image containing the EnviroMS command line as code entry-point
 
 - Pull from Docker Registry:
 
@@ -122,7 +130,7 @@ If you don't have docker installed, the easiest way is to [install docker for de
     
     ```
 
-- Or to build the image from source:
+- Or to build the image from source (after cloning microbiomedata/enviroMS github repo):
 
     ```bash
     docker build -t microbiomedata/enviroms:latest .
@@ -134,7 +142,7 @@ If you don't have docker installed, the easiest way is to [install docker for de
     
     ```bash
     docker run -v $(data_dir):/enviroms/data \
-               -v $(configuration):/enviroms/configuration \
+               -v $(configuration_dir):/enviroms/configuration \
                   microbiomedata/enviroms:latest enviroMS run-di /enviroms/configuration/enviroms.toml    
     ```
 
@@ -142,7 +150,7 @@ If you don't have docker installed, the easiest way is to [install docker for de
     
     ```bash
     docker run -v $(data_dir):/enviroms/data \
-               -v $(configuration):/enviroms/configuration \
+               -v $(configuration_dir):/enviroms/configuration \
                 microbiomedata/enviroms:latest enviroMS dump_di_template /enviroms/configuration/enviroms.toml    
     ```
     

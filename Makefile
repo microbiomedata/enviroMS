@@ -1,8 +1,8 @@
 app_name = enviroms
 parameters_path = data/enviroms.toml
 # change the path to your data path /Users/eber373/Desenvolvimento/enviroms
-data_dir = /Users/eber373/Desenvolvimento/enviroms/data/
-configuration_dir = /Users/eber373/Desenvolvimento/enviroms/configuration/
+data_dir = /Users/eber373/Development/enviroms/data
+configuration_dir = /Users/eber373/Development/enviroms/configuration
 version := $(shell cat .bumpversion.cfg | grep current_version | cut -d= -f2 | tr -d ' ')
 stage := $(shell cat .bumpversion.cfg | grep optional_value | cut -d= -f2 | tr -d ' ') 
 
@@ -60,11 +60,11 @@ docker-build:
 
 docker-run:
 
-	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:latest run-di-workflow /enviroms/data/configuration/enviroms.toml
+	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:latest run-di /enviroms/configuration/enviroms.toml
 
 cascade-run:
 
-	srun -A mscms -t 240 -N 1 -n time enviroMS run-di-workflow -r 2 --mpi  /dtemp/mscms/enviroms/data/configuration/enviroms.toml
+	srun -A mscms -t 240 -N 1 -n time enviroMS run-di -r 2 --mpi  /dtemp/mscms/enviroms/data/configuration/enviroms.toml
 
 wdl-run :
  	 
