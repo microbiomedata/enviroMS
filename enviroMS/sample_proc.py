@@ -1,9 +1,8 @@
-import yaml
 import nmdc_schema.nmdc as nmdc
 from linkml_runtime.dumpers import yaml_dumper, json_dumper
 
 b1 = nmdc.Biosample(
-    id='monet_data:soil_1',
+    id='nmdc:soil_1',
     description='biosample 1',
     env_broad_scale=nmdc.ControlledTermValue(term=nmdc.OntologyClass(id='ENVO:01000179', name='desert biome')),
     env_local_scale=nmdc.ControlledTermValue(term=nmdc.OntologyClass(id='ENVO:01001304', name='oasis')),
