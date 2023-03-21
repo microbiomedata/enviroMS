@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import List
 import yaml
 
-
 from linkml_runtime.dumpers import json_dumper
 import nmdc_schema.nmdc as nmdc
 import oauthlib
@@ -122,9 +121,9 @@ def get_omics_processing(file_path:Path, instrument_name:str, sample_id:str,
 
     return omicsProcessing
 
-def get_nom_analysis_activity(cluster_name:str, code_repository_url, 
+def get_nom_analysis_activity(cluster_name:str, code_repository_url:str, 
                           raw_data_id:str, data_product_id:str, 
-                          has_calibration:bool,  omics_processing_id, 
+                          has_calibration:bool,  omics_processing_id:str, 
                           instrument_name:str) -> nmdc.NomAnalysisActivity:
     
     nmdc_id = mint_nmdc_id({'id': NMDC_Types.NomAnalysisActivity.value})[0]
