@@ -3,6 +3,7 @@ from datetime import datetime
 import hashlib
 from json import dumps
 from pathlib import Path
+from typing import List
 import yaml
 
 
@@ -55,7 +56,7 @@ class NMDC_Mint:
     def json(self):
         return dumps(self.__dict__)
 
-def mint_nmdc_id(type:NMDC_Types, how_many:int = 1): 
+def mint_nmdc_id(type:NMDC_Types, how_many:int = 1) -> List[str]: 
     
     config = yaml.safe_load(open('./config.yaml','r'))
     client = oauthlib.oauth2.BackendApplicationClient(client_id=config['client_id'])
@@ -78,7 +79,7 @@ def mint_nmdc_id(type:NMDC_Types, how_many:int = 1):
     return list_ids
 
 def get_data_object(file_path:Path, base_url:str, was_generated_by:str,
-                data_object_type:str, description:str):
+                data_object_type:str, description:str) -> nmdc.DataObject:
     
     nmdc_id = mint_nmdc_id({'id': NMDC_Types.DataObject.value})[0]
 
@@ -99,7 +100,8 @@ def get_data_object(file_path:Path, base_url:str, was_generated_by:str,
     return data_object
 
 def get_omics_processing(file_path:Path, instrument_name:str, sample_id:str,
-                raw_data_id:str, omics_type:str,  description:str, project_id:str):
+                raw_data_id:str, omics_type:str,  
+                description:str, project_id:str) -> nmdc.OmicsProcessing:
     
     nmdc_id = mint_nmdc_id({'id': NMDC_Types.OmicsProcessing.value})[0]
     
@@ -123,7 +125,7 @@ def get_omics_processing(file_path:Path, instrument_name:str, sample_id:str,
 def get_nom_analysis_activity(cluster_name:str, code_repository_url, 
                           raw_data_id:str, data_product_id:str, 
                           has_calibration:bool,  omics_processing_id, 
-                          instrument_name:str):
+                          instrument_name:str) -> nmdc.NomAnalysisActivity:
     
     nmdc_id = mint_nmdc_id({'id': NMDC_Types.NomAnalysisActivity.value})[0]
     
@@ -145,7 +147,7 @@ def get_nom_analysis_activity(cluster_name:str, code_repository_url,
 
     return nomAnalysisActivity
 
-def start_nmdc_database():
+def start_nmdc_database() -> nmdc.Database:
     return nmdc.Database()
 
 def create_nmdc_metadata(raw_data_path:Path, base_url:str,
