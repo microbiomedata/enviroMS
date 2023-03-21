@@ -7,8 +7,10 @@ from pathlib import Path
 import yaml
 import oauthlib
 
+from linkml_runtime.dumpers import yaml_dumper, json_dumper
 import nmdc_schema.nmdc as nmdc
 import requests_oauthlib
+
 
 @dataclass
 class NomAnalysisActivity:
@@ -77,7 +79,6 @@ def mint_nmdc_id(type:NMDC_Types, how_many:int = 1):
 
 def get_data_object(file_path:Path, base_url:str, was_generated_by:str,
                 data_object_type:str, description:str):
-    base_url = "https://nmdcdemo.emsl.pnnl.gov/nom/raw/"
     
     nmdc_id = mint_nmdc_id({'id': NMDC_Types.DataObject.value})[0]
 
@@ -144,9 +145,14 @@ def get_nom_analysis_activity(cluster_name:str, code_repository_url,
 
     return nomAnalysisActivity
 
+def start_nmdc_database():
+    return nmdc.Database()
+
 def create_nmdc_metadata(raw_data_path:Path, base_url:str,
-                         nmdc_study_id:str, 
+                         nmdc_study_id:str, nom_proc_db:nmdc.Database,
                          create_biosample=False):
+
+    base_url = "https://nmdcdemo.emsl.pnnl.gov/"
 
     if create_biosample:
         biosample_id = mint_nmdc_id({'id': NMDC_Types.BioSample.value})[0]
@@ -180,31 +186,12 @@ def create_nmdc_metadata(raw_data_path:Path, base_url:str,
     nomAnalysisActivity.has_input = rawDataObject.id
     nomAnalysisActivity.has_output = dataProductDataObject.id
     omicsProcessing.has_output = rawDataObject.id
+
+    nom_proc_db.data_object_set.append(rawDataObject)
+    nom_proc_db.nom_analysis_activity_set.append(nomAnalysisActivity)
+    nom_proc_db.omics_processing_set.append(omicsProcessing)
+    nom_proc_db.data_object_set.append(rawDataObject)
+
+def dump_nmdc_database(ndmc_database:nmdc.Database, output_filepath:str):
     
-'''
-
-def run_nom_nmdc_data_processing():
-
-    file_ext = '.raw'  # '.d' 
-    data_dir = Path("/Users/eber373/OneDrive - PNNL/Documents/Data/FT_ICR_MS/Spruce_Data/")
-    dms_file_path = Path("/Users/eber373/OneDrive - PNNL/Documents/Data/FT_ICR_MS/Spruce_Data/SPRUCE_FTICR_Peat.xlsx")
-
-    results_dir = Path("results/")
-    registration_path = results_dir / "spruce_ftms_nom_data_products.json"
-    failed_files = results_dir / "nom_failed_files.json"
-    pos_files = results_dir / "pos_files.json"
-
-    field_strength = 21
-    cores = 4
-    ref_calibration_path = False
-
-    # file_paths = get_dirnames()
-    ref_calibration_path = Path("db/Hawkes_neg.ref")
-
-    dms_mapping = DMS_Mapping(dms_file_path)
-    selected_files = dms_mapping.get_selected_sample_list()
-
-    failed_list = []
-    pos_list = []
-
-    '''
+    json_dumper.dump(ndmc_database, output_filepath)
