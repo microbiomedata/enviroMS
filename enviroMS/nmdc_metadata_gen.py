@@ -150,17 +150,19 @@ def start_nmdc_database():
 
 def create_nmdc_metadata(raw_data_path:Path, base_url:str,
                          nmdc_study_id:str, nom_metadata_db:nmdc.Database,
-                         create_biosample=False):
+                         biosample_id=None):
 
     base_url = "https://nmdcdemo.emsl.pnnl.gov/"
 
-    if create_biosample:
+    if not biosample_id:
         biosample_id = mint_nmdc_id({'id': NMDC_Types.BioSample.value})[0]
+        ''' needs to finish the logic for creating biosamples, this will fail because it is missing some required fields'''
         bioSample =  nmdc.BioSample(id=biosample_id)
+        biosample_id = bioSample.id
 
     omicsProcessing = get_omics_processing(raw_data_path,
                                            OmicsProcessing.nom_21T_instrument_name,
-                                           bioSample.id, None, 
+                                           biosample_id, None, 
                                            OmicsProcessing.nom_omics_processing_type,
                                            OmicsProcessing.nom_omics_processing_description,
                                            nmdc_study_id
