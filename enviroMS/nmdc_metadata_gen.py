@@ -2,13 +2,13 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime
 import hashlib
 from json import dumps
-from enum import Enum
 from pathlib import Path
 import yaml
-import oauthlib
 
-from linkml_runtime.dumpers import yaml_dumper, json_dumper
+
+from linkml_runtime.dumpers import json_dumper
 import nmdc_schema.nmdc as nmdc
+import oauthlib
 import requests_oauthlib
 
 
@@ -149,7 +149,7 @@ def start_nmdc_database():
     return nmdc.Database()
 
 def create_nmdc_metadata(raw_data_path:Path, base_url:str,
-                         nmdc_study_id:str, nom_proc_db:nmdc.Database,
+                         nmdc_study_id:str, nom_metadata_db:nmdc.Database,
                          create_biosample=False):
 
     base_url = "https://nmdcdemo.emsl.pnnl.gov/"
@@ -187,10 +187,10 @@ def create_nmdc_metadata(raw_data_path:Path, base_url:str,
     nomAnalysisActivity.has_output = dataProductDataObject.id
     omicsProcessing.has_output = rawDataObject.id
 
-    nom_proc_db.data_object_set.append(rawDataObject)
-    nom_proc_db.nom_analysis_activity_set.append(nomAnalysisActivity)
-    nom_proc_db.omics_processing_set.append(omicsProcessing)
-    nom_proc_db.data_object_set.append(rawDataObject)
+    nom_metadata_db.data_object_set.append(rawDataObject)
+    nom_metadata_db.nom_analysis_activity_set.append(nomAnalysisActivity)
+    nom_metadata_db.omics_processing_set.append(omicsProcessing)
+    nom_metadata_db.data_object_set.append(rawDataObject)
 
 def dump_nmdc_database(ndmc_database:nmdc.Database, output_filepath:str):
     
