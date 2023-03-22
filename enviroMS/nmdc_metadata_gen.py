@@ -75,13 +75,13 @@ def mint_nmdc_id(type:NMDC_Types, how_many:int = 1) -> List[str]:
     print(payload.json)
     response = oauth.post(nmdc_mint_url, data=payload.json)
     list_ids = response.json()
-
+    print(list_ids)
     return list_ids
 
 def get_data_object(file_path:Path, base_url:str, was_generated_by:str,
                 data_object_type:str, description:str) -> nmdc.DataObject:
     
-    nmdc_id = mint_nmdc_id({'id': NMDC_Types.DataObject.value})[0]
+    nmdc_id = mint_nmdc_id({'id': NMDC_Types.DataObject})[0]
 
     data_dict = {
                 'id': nmdc_id,
@@ -103,7 +103,7 @@ def get_omics_processing(file_path:Path, instrument_name:str, sample_id:str,
                 raw_data_id:str, omics_type:str,  
                 description:str, project_id:str) -> nmdc.OmicsProcessing:
     
-    nmdc_id = mint_nmdc_id({'id': NMDC_Types.OmicsProcessing.value})[0]
+    nmdc_id = mint_nmdc_id({'id': NMDC_Types.OmicsProcessing})[0]
     
     data_dict = {
                 'id': nmdc_id,
@@ -113,7 +113,7 @@ def get_omics_processing(file_path:Path, instrument_name:str, sample_id:str,
                 "has_output": raw_data_id,
                 "omics_type": {"has_raw_value": omics_type},
                 "part_of": project_id,
-                "processing_institution": "Environmental Molecular Science Laboratory",
+                "processing_institution": "EMSL",
                 "description": description,
                 "type": "nmdc:OmicsProcessing"
                 } 
@@ -127,7 +127,7 @@ def get_nom_analysis_activity(cluster_name:str, code_repository_url:str,
                           has_calibration:bool,  omics_processing_id:str, 
                           instrument_name:str) -> nmdc.NomAnalysisActivity:
     
-    nmdc_id = mint_nmdc_id({'id': NMDC_Types.NomAnalysisActivity.value})[0]
+    nmdc_id = mint_nmdc_id({'id': NMDC_Types.NomAnalysisActivity})[0]
     
     data_dict = {
                 'id': nmdc_id,
@@ -157,7 +157,7 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
     base_url = "https://nmdcdemo.emsl.pnnl.gov/"
 
     if not biosample_id:
-        biosample_id = mint_nmdc_id({'id': NMDC_Types.BioSample.value})[0]
+        biosample_id = mint_nmdc_id({'id': NMDC_Types.BioSample})[0]
         ''' needs to finish the logic for creating biosamples, this will fail because it is missing some required fields'''
         bioSample =  nmdc.BioSample(id=biosample_id)
         biosample_id = bioSample.id
@@ -199,3 +199,4 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
 def dump_nmdc_database(ndmc_database:nmdc.Database, output_filepath:str):
     
     json_dumper.dump(ndmc_database, output_filepath)
+    
