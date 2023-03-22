@@ -194,7 +194,7 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
     nom_metadata_db.data_object_set.append(rawDataObject)
     nom_metadata_db.nom_analysis_activity_set.append(nomAnalysisActivity)
     nom_metadata_db.omics_processing_set.append(omicsProcessing)
-    nom_metadata_db.data_object_set.append(rawDataObject)
+    nom_metadata_db.data_object_set.append(dataProductDataObject)
 
 def dump_nmdc_database(ndmc_database:nmdc.Database, output_filepath:str):
     
