@@ -11,18 +11,19 @@ import nmdc_schema.nmdc as nmdc
 import oauthlib
 import requests_oauthlib
 
-
 @dataclass
 class NomAnalysisActivity:
     codebase_url:str = "https://github.com/microbiomedata/enviroMS"
     cluster_name:str = "EMSL-RZR"
     nom_21T_instrument_name: str = "21T Agilent"
-
+    nom_12T_instrument_name: str = "12T_FTICR_B"
+    
 @dataclass
 class OmicsProcessing:
     nom_omics_processing_type:str = "Organic Matter Characterization"
     nom_omics_processing_description:str = "High resolution MS spectra only"
     nom_21T_instrument_name: str = "21T Agilent"
+    nom_12T_instrument_name: str = "12T_FTICR_B"
 
 @dataclass
 class DataObject:
@@ -149,7 +150,7 @@ def get_nom_analysis_activity(cluster_name:str, code_repository_url:str,
 def start_nmdc_database() -> nmdc.Database:
     return nmdc.Database()
 
-def create_nmdc_metadata(raw_data_path:Path, base_url:str,
+def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:str,
                          nmdc_study_id:str, nom_metadata_db:nmdc.Database,
                          biosample_id=None):
 
@@ -162,14 +163,14 @@ def create_nmdc_metadata(raw_data_path:Path, base_url:str,
         biosample_id = bioSample.id
 
     omicsProcessing = get_omics_processing(raw_data_path,
-                                           OmicsProcessing.nom_21T_instrument_name,
+                                           OmicsProcessing.nom_12T_instrument_name,
                                            biosample_id, None, 
                                            OmicsProcessing.nom_omics_processing_type,
                                            OmicsProcessing.nom_omics_processing_description,
                                            nmdc_study_id
                                            )
     
-    rawDataObject = get_data_object(raw_data_path, base_url + 'nom/raw/', 
+    rawDataObject = get_data_object(raw_data_path, base_url + '/nom/grow/raw/', 
                                     was_generated_by=omicsProcessing.id, 
                                     data_object_type =DataObject.nom_raw_data_object_type,
                                     description =DataObject.nom_raw_data_object_description)
@@ -178,12 +179,12 @@ def create_nmdc_metadata(raw_data_path:Path, base_url:str,
                                                 NomAnalysisActivity.codebase_url,
                                                 rawDataObject.id, None, False, 
                                                 omicsProcessing.id,
-                                                NomAnalysisActivity.nom_21T_instrument_name)
+                                                NomAnalysisActivity.nom_12T_instrument_name)
 
-    dataProductDataObject = get_data_object(raw_data_path, base_url + 'nom/results/', 
+    dataProductDataObject = get_data_object(data_product_path, base_url + 'nom/grow/results/', 
                                     was_generated_by=nomAnalysisActivity.id, 
                                     data_object_type =DataObject.nom_dp_data_object_type,
-                                    data_object_type =DataObject.nom_dp_data_object_description)
+                                    description =DataObject.nom_dp_data_object_description)
     
     #circular dependencies : great! 
     nomAnalysisActivity.has_input = rawDataObject.id
