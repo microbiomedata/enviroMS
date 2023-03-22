@@ -154,8 +154,6 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
                          nmdc_study_id:str, nom_metadata_db:nmdc.Database,
                          biosample_id=None):
 
-    base_url = "https://nmdcdemo.emsl.pnnl.gov/"
-
     if not biosample_id:
         biosample_id = mint_nmdc_id({'id': NMDC_Types.BioSample})[0]
         ''' needs to finish the logic for creating biosamples, this will fail because it is missing some required fields'''
@@ -170,7 +168,7 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
                                            nmdc_study_id
                                            )
     
-    rawDataObject = get_data_object(raw_data_path, base_url + '/nom/grow/raw/', 
+    rawDataObject = get_data_object(raw_data_path, base_url + 'nom/grow/raw/', 
                                     was_generated_by=omicsProcessing.id, 
                                     data_object_type =DataObject.nom_raw_data_object_type,
                                     description =DataObject.nom_raw_data_object_description)
