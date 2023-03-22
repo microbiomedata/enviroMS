@@ -36,7 +36,7 @@ class DataObject:
 class NMDC_Types: 
     
     BioSample:str = "nmdc:BioSample"
-    OmicsProcessing:str = "nmdc:OmicsProcessingActivity"
+    OmicsProcessing:str = "nmdc:OmicsProcessing"
     NomAnalysisActivity:str = "nmdc:NomAnalysisActivity"
     DataObject:str = "nmdc:DataObject"
 
