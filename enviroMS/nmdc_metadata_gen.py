@@ -15,6 +15,7 @@ from support_code.nmdc.nom.nom_grow_workflow import EMSL_Metadata
 
 env_mediums = {'ENVO_00002042': 'surface water',
                'ENVO_00002007': 'sediment',
+               'ENVO:00001998': 'soil'
                }
 env_local_scales = {'ENVO_00000022': 'river'}    
 env_broad_scales = {'ENVO_01000253': 'freshwater river biome'}    
