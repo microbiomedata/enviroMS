@@ -18,7 +18,11 @@ env_mediums = {'ENVO_00002042': 'surface water',
                'ENVO:00001998': 'soil'
                }
 env_local_scales = {'ENVO_00000022': 'river',
-                    'ENVO:01000861': 'area of dwarf scrub'
+                    'ENVO:01000861': 'area of dwarf scrub',
+                    'ENVO:00000516': 'hummock',
+                    'ENVO:01000869': 'area of scrub',
+                    'ENVO:01000887': 'area of sedge- and forb-dominated herbaceous vegetation',
+                    'ENVO:01001370': 'tundra ecosystem'
                     }    
 env_broad_scales = {'ENVO_01000253': 'freshwater river biome'}    
 
