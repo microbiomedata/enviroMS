@@ -251,7 +251,7 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
                                            biosample_id, None, 
                                            OmicsProcessing.nom_omics_processing_type,
                                            OmicsProcessing.nom_omics_processing_description,
-                                           emsl_metadata.nmdc_study_id
+                                           emsl_metadata.nmdc_study 
                                            )
     
     rawDataObject = get_data_object(raw_data_path, base_url + 'nom/grow/raw/', 
