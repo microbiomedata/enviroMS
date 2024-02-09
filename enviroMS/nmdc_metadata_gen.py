@@ -24,7 +24,9 @@ env_local_scales = {'ENVO_00000022': 'river',
                     'ENVO:01000887': 'area of sedge- and forb-dominated herbaceous vegetation',
                     'ENVO:01001370': 'tundra ecosystem'
                     }    
-env_broad_scales = {'ENVO_01000253': 'freshwater river biome'}    
+env_broad_scales = {'ENVO_01000253': 'freshwater river biome',
+                    'ENVO:00000446': 'terrestrial biome'
+                    }    
 
 
 @dataclass
