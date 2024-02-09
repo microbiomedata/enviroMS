@@ -48,7 +48,7 @@ class DataObject:
     nom_raw_data_object_type:str = "Direct Infusion FT ICR-MS Raw Data"
     nom_raw_data_object_description:str = "Raw 21T Direct Infusion Data"
     nom_dp_data_object_type:str = "FT ICR-MS Analysis Results"
-    nom_dp_data_object_description:str = "EnviroMS FT ICR-MS natural organic matter workflow molecular formula assignment output details",
+    nom_dp_data_object_description:str = "EnviroMS FT ICR-MS natural organic matter workflow molecular formula assignment output details"
 
 @dataclass
 class BioSample:
@@ -130,7 +130,7 @@ def get_biosample_object(emsl_metadata:EMSL_Metadata) -> nmdc.Biosample:
                 "longitude": emsl_metadata.longitude,
             }
 
-    collection_date = { 'has_raw_value': emsl_metadata.collection_date}
+    collection_date = {'has_raw_value': emsl_metadata.collection_date}
 
     geo_loc_name =  {'has_raw_value': emsl_metadata.geo_loc_name}
     
