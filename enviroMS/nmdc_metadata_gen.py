@@ -137,7 +137,7 @@ def get_biosample_object(emsl_metadata:EMSL_Metadata) -> nmdc.Biosample:
     data_dict = {'id': nmdc_id,
                 'env_medium' : env_medium,
                 'env_local_scale' : env_local_scale,
-                'env_broad_scales_data' : env_broad_scale,
+                'env_broad_scale' : env_broad_scale,
                 'lat_lon': lat_lon,
                 'location': emsl_metadata.location,
                 'ecosystem_type': emsl_metadata.ecosystem_type,
