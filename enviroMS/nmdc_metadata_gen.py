@@ -57,7 +57,7 @@ class BioSample:
 @dataclass
 class NMDC_Types: 
     
-    BioSample:str = "nmdc:BioSample"
+    BioSample:str = "nmdc:Biosample"
     OmicsProcessing:str = "nmdc:OmicsProcessing"
     NomAnalysisActivity:str = "nmdc:NomAnalysisActivity"
     DataObject:str = "nmdc:DataObject"
