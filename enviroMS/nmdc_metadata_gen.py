@@ -248,7 +248,7 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
         
     omicsProcessing = get_omics_processing(raw_data_path,
                                            OmicsProcessing.nom_12T_instrument_name,
-                                           biosample_id, None, 
+                                           biosample_id, 'nmdc:placeholder', 
                                            OmicsProcessing.nom_omics_processing_type,
                                            OmicsProcessing.nom_omics_processing_description,
                                            emsl_metadata.nmdc_study 
@@ -261,7 +261,7 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
     
     nomAnalysisActivity = get_nom_analysis_activity(NomAnalysisActivity.cluster_name,
                                                 NomAnalysisActivity.codebase_url,
-                                                rawDataObject.id, None, False, 
+                                                rawDataObject.id, 'nmdc:placeholder', False, 
                                                 omicsProcessing.id,
                                                 NomAnalysisActivity.nom_12T_instrument_name)
 
