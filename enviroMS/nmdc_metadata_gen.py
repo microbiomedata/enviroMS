@@ -57,7 +57,7 @@ class BioSample:
 @dataclass
 class NMDC_Types: 
     
-    BioSample:str = "nmdc:Biosample"
+    Biosample:str = "nmdc:Biosample"
     OmicsProcessing:str = "nmdc:OmicsProcessing"
     NomAnalysisActivity:str = "nmdc:NomAnalysisActivity"
     DataObject:str = "nmdc:DataObject"
@@ -102,7 +102,7 @@ def mint_nmdc_id(type:NMDC_Types, how_many:int = 1) -> List[str]:
 
 def get_biosample_object(emsl_metadata:EMSL_Metadata) -> nmdc.Biosample:
     
-    nmdc_id = mint_nmdc_id({'id': NMDC_Types.BioSample})[0]
+    nmdc_id = mint_nmdc_id({'id': NMDC_Types.Biosample})[0]
 
     env_medium = {
                  'has_raw_value': emsl_metadata.env_medium,
