@@ -237,7 +237,7 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
 
     if not biosample_id:
         
-        biosample_id = mint_nmdc_id({'id': NMDC_Types.BioSample})[0]
+        biosample_id = mint_nmdc_id({'id': NMDC_Types.Biosample})[0]
         bioSample = get_biosample_object(emsl_metadata)
         biosample_id = bioSample.id
     
