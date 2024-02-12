@@ -271,9 +271,8 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
                                     description =DataObject.nom_dp_data_object_description)
     
     #circular dependencies : great! 
-    nomAnalysisActivity.has_input = rawDataObject.id
-    nomAnalysisActivity.has_output = dataProductDataObject.id
-    omicsProcessing.has_output = rawDataObject.id
+    nomAnalysisActivity.has_output = [dataProductDataObject.id]
+    omicsProcessing.has_output = [rawDataObject.id]
 
     nom_metadata_db.biosample_set.append(bioSample)
     nom_metadata_db.data_object_set.append(rawDataObject)
