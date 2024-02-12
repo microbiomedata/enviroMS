@@ -51,7 +51,7 @@ class DataObject:
     nom_dp_data_object_description:str = "EnviroMS FT ICR-MS natural organic matter workflow molecular formula assignment output details"
 
 @dataclass
-class BioSample:
+class Biosample:
     pass
 
 @dataclass
