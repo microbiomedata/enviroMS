@@ -244,7 +244,7 @@ def create_nmdc_metadata(raw_data_path:Path, data_product_path:Path, base_url:st
     else:
         
         ''' needs to finish the logic for creating biosamples, this will fail because it is missing some required fields'''
-        bioSample =  nmdc.BioSample(id=biosample_id)
+        bioSample =  nmdc.Biosample(id=biosample_id)
         
     omicsProcessing = get_omics_processing(raw_data_path,
                                            OmicsProcessing.nom_12T_instrument_name,
