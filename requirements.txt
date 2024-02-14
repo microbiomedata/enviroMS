@@ -4,4 +4,4 @@ mpi4py
 tabulate
 toml
 pyyaml
-nmdc-schema==7.0.0
+nmdc-schema==10.0.0
