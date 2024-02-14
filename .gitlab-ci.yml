@@ -41,6 +41,7 @@ test-job:
 
     
   script:
+    - python -m pip install -U pip
     - python -m pip install -r requirements.txt
     - python -V  # Print out python version for debugging
     - python setup.py test
