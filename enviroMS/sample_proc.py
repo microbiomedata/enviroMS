@@ -1,13 +1,15 @@
 import nmdc_schema.nmdc as nmdc
+
 from linkml_runtime.dumpers import yaml_dumper, json_dumper
+from uuid import uuid4
 
 b1 = nmdc.Biosample(
-    id='nmdc:soil_1',
-    description='biosample 1',
-    env_broad_scale=nmdc.ControlledTermValue(term=nmdc.OntologyClass(id='ENVO:01000179', name='desert biome')),
-    env_local_scale=nmdc.ControlledTermValue(term=nmdc.OntologyClass(id='ENVO:01001304', name='oasis')),
-    env_medium=nmdc.ControlledTermValue(term=nmdc.OntologyClass(id='ENVO:00002229', name='arenosol')),
-    sample_link="study:1"
+    id="nmdc:biosample:SAMN0626712",
+    description='Groundwater microbial communities from the Columbia River',
+    env_broad_scale=nmdc.ControlledTermValue(term=nmdc.OntologyClass(id='ENVO:01000253', name='freshwater river biome')),
+    env_local_scale=nmdc.ControlledTermValue(term=nmdc.OntologyClass(id='ENVO:00000384', name='river bed')),
+    env_medium=nmdc.ControlledTermValue(term=nmdc.OntologyClass(id='ENVO:00002007', name='sediment')),
+    sample_link="gold:Gb0126441"
 )
 
 samp_proc_db = nmdc.Database()
@@ -15,23 +17,23 @@ samp_proc_db = nmdc.Database()
 samp_proc_db.biosample_set.append(b1)
 
 weighing = nmdc.MaterialSamplingActivity(
-    biosample_input="monet_data:soil_1",
+    biosample_input=b1.id,
     amount_collected=nmdc.QuantityValue(has_unit='grams', has_numeric_value=6.0),
     sampling_method="weighing",
     collected_into=nmdc.MaterialContainer(
         container_size=nmdc.QuantityValue(has_unit='mL', has_numeric_value=50.0),
         container_type="screw_top_conical"),
-    material_output="monet_data:somextract_6"
+    material_output="nmdc:{}".format(uuid4()),
 )
 
 samp_proc_db.material_sampling_activity_set.append(weighing)
 
-se6 = nmdc.MaterialSample(id="monet_data:somextract_6", description="a 6 gram aliquot of monet_data:soil_1")
+se6 = nmdc.MaterialSample(id=weighing.material_output, description="a 6 gram aliquot of EMSL:2f7107d6-5dd1-11ec-bf63-0242ac130002")
 
 samp_proc_db.material_sample_set.append(se6)
 
 dissolving = nmdc.DissolvingActivity(
-    material_input="monet_data:somextract_6",
+    material_input=se6.id,
     dissolution_aided_by=nmdc.LabDevice(
         device_type="orbital_shaker",
         activity_speed=nmdc.QuantityValue(
@@ -52,11 +54,10 @@ dissolving = nmdc.DissolvingActivity(
         ),
         container_type="screw_top_conical"
     ),
-    material_output="monet_data:somextract_7"
+    material_output="nmdc:{}".format(uuid4()),
 )
-
 samp_proc_db.dissolving_activity_set.append(dissolving)
-
+'''
 se7 = nmdc.MaterialSample(id="monet_data:somextract_7",
                           description="monet_data:somextract_6 dissolved in 30 mL of water")
 
@@ -82,6 +83,6 @@ d5 = nmdc.MaterialSample(
     description="something at the end of a reaction")
 
 samp_proc_db.material_sample_set.append(d5)
-
+'''
 print(yaml_dumper.dump(samp_proc_db, "samp_proc_instantiation.yaml"))
-print(json_dumper.dump(samp_proc_db, "samp_proc_instantiation.json"))
+print(json_dumper.dump(samp_proc_db, "sample_process_srfa.json"))

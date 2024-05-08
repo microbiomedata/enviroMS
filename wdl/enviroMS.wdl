@@ -1,46 +1,51 @@
+version 1.0
+
 workflow fticrmsNOM {
     
     call runDirectInfusion
+
 }
 
 task runDirectInfusion {
-    
-    Array[File] file_paths
-    
-    String output_directory
 
-    String output_type
-
-    File corems_toml_path
-
-    File nmdc_metadata_path
-    
-    String polarity
-
-    Int raw_file_start_scan
-
-    Int raw_file_final_scan
-
-    Boolean is_centroid
-
-    File calibration_ref_file_path
-
-    Boolean calibrate
-
-    Boolean plot_mz_error
-
-    Boolean plot_ms_assigned_unassigned
-
-    Boolean plot_c_dbe
-
-    Boolean plot_van_krevelen
-
-    Boolean plot_ms_classes
-
-    Boolean plot_mz_error_classes
-    
-    Int jobs_count = 1
-    
+        input {
+                Array[File] file_paths
+                
+                String output_directory
+            
+                String output_type
+            
+                File corems_toml_path
+            
+                File nmdc_metadata_path
+                
+                String polarity
+            
+                Int raw_file_start_scan
+            
+                Int raw_file_final_scan
+            
+                Boolean is_centroid
+            
+                File calibration_ref_file_path
+            
+                Boolean calibrate
+            
+                Boolean plot_mz_error
+            
+                Boolean plot_ms_assigned_unassigned
+            
+                Boolean plot_c_dbe
+            
+                Boolean plot_van_krevelen
+            
+                Boolean plot_ms_classes
+            
+                Boolean plot_mz_error_classes
+                
+                Int jobs_count = 1
+        }
+        
     command {
         
         enviroMS run-di-wdl ${sep=',' file_paths} \
