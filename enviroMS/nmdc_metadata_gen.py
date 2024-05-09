@@ -39,7 +39,7 @@ class DataObject:
     nom_raw_data_object_type:str = "Direct Infusion FT ICR-MS Raw Data"
     nom_raw_data_object_description:str = "Raw 21T Direct Infusion Data"
     nom_dp_data_object_type:str = "FT ICR-MS Analysis Results"
-    nom_dp_data_object_description:str = "EnviroMS FT ICR-MS natural organic matter workflow molecular formula assignment output details",
+    nom_dp_data_object_description:str = "EnviroMS FT ICR-MS natural organic matter workflow molecular formula assignment output details"
 
 @dataclass
 class BioSample:
