@@ -1,7 +1,7 @@
 {
     
     "fticrmsNOM.runDirectInfusion.file_paths": [
-        "data/raw_data/20190709_WK_CADY_Auto_S16_H1_Post_O5_1_01_36.tsv"
+        "data/raw_data/SRFA_40ppm_NegativeESI_21T.raw"
     ],
 
     "fticrmsNOM.runDirectInfusion.output_directory": "output",

@@ -1,0 +1,108 @@
+{
+  "biosample_set": [
+    {
+      "id": "nmdc:biosample:SAMN0626712",
+      "description": "Groundwater microbial communities from the Columbia River",
+      "env_broad_scale": {
+        "term": {
+          "id": "ENVO:01000253",
+          "name": "freshwater river biome"
+        }
+      },
+      "env_local_scale": {
+        "term": {
+          "id": "ENVO:00000384",
+          "name": "river bed"
+        }
+      },
+      "env_medium": {
+        "term": {
+          "id": "ENVO:00002007",
+          "name": "sediment"
+        }
+      },
+      "sample_link": [
+        "gold:Gb0126441"
+      ]
+    }
+  ],
+  "dissolving_activity_set": [
+    {
+      "dissolution_aided_by": {
+        "device_type": "orbital_shaker",
+        "activity_speed": {
+          "has_unit": "rpm",
+          "has_numeric_value": 800.0
+        },
+        "activity_time": {
+          "has_unit": "hours",
+          "has_numeric_value": 2.0
+        }
+      },
+      "dissolution_reagent": "MSTFA",
+      "dissolution_volume": {
+        "has_unit": "µL",
+        "has_numeric_value": 80.0
+      },
+      "dissolved_in": {
+        "container_size": {
+          "has_unit": "mL",
+          "has_numeric_value": 1.5
+        },
+        "container_type": "screw_top_conical"
+      },
+      "material_input": "nmdc:9a6e9c45-87f9-449c-83fe-2f881f7ff3c6",
+      "material_output": "nmdc:a34b26bf-bf44-4db2-8d07-cd98063a455e"
+    }
+  ],
+  "material_sample_set": [
+    {
+      "id": "nmdc:9a6e9c45-87f9-449c-83fe-2f881f7ff3c6",
+      "description": "a 6 gram aliquot of EMSL:2f7107d6-5dd1-11ec-bf63-0242ac130002"
+    },
+    {
+      "id": "nmdc:a34b26bf-bf44-4db2-8d07-cd98063a455e",
+      "description": "somextract_6 dissolved in 1.5 mL of water"
+    },
+    {
+      "id": "nmdc:de9acd16-89ae-4414-8840-d5f1fbb98f83",
+      "description": "something at the end of a reaction"
+    }
+  ],
+  "material_sampling_activity_set": [
+    {
+      "amount_collected": {
+        "has_unit": "grams",
+        "has_numeric_value": 6.0
+      },
+      "collected_into": {
+        "container_size": {
+          "has_unit": "mL",
+          "has_numeric_value": 50.0
+        },
+        "container_type": "screw_top_conical"
+      },
+      "biosample_input": "EMSL:2f7107d6-5dd1-11ec-bf63-0242ac130002",
+      "material_output": "nmdc:9a6e9c45-87f9-449c-83fe-2f881f7ff3c6",
+      "sampling_method": "weighing"
+    }
+  ],
+  "reaction_activity_set": [
+    {
+      "material_input": "nmdc:a34b26bf-bf44-4db2-8d07-cd98063a455e",
+      "material_output": "nmdc:de9acd16-89ae-4414-8840-d5f1fbb98f83",
+      "reaction_aided_by": {
+        "device_type": "thermomixer",
+        "activity_temperature": {
+          "has_unit": "degrees Celsius",
+          "has_numeric_value": 37.0
+        },
+        "activity_time": {
+          "has_unit": "hours",
+          "has_numeric_value": 1.5
+        }
+      }
+    }
+  ],
+  "@type": "Database"
+}

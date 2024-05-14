@@ -1,0 +1,83 @@
+{
+  "biosample_set": [
+    {
+      "id": "nmdc:biosample:SAMN0626712",
+      "description": "Groundwater microbial communities from the Columbia River",
+      "env_broad_scale": {
+        "term": {
+          "id": "ENVO:01000253",
+          "name": "freshwater river biome"
+        }
+      },
+      "env_local_scale": {
+        "term": {
+          "id": "ENVO:00000384",
+          "name": "river bed"
+        }
+      },
+      "env_medium": {
+        "term": {
+          "id": "ENVO:00002007",
+          "name": "sediment"
+        }
+      },
+      "sample_link": [
+        "gold:Gb0126441"
+      ]
+    }
+  ],
+  "dissolving_activity_set": [
+    {
+      "dissolution_aided_by": {
+        "device_type": "orbital_shaker",
+        "activity_speed": {
+          "has_unit": "rpm",
+          "has_numeric_value": 800.0
+        },
+        "activity_time": {
+          "has_unit": "hours",
+          "has_numeric_value": 2.0
+        }
+      },
+      "dissolution_reagent": "deionized_water",
+      "dissolution_volume": {
+        "has_unit": "mL",
+        "has_numeric_value": 30.0
+      },
+      "dissolved_in": {
+        "container_size": {
+          "has_unit": "mL",
+          "has_numeric_value": 50.0
+        },
+        "container_type": "screw_top_conical"
+      },
+      "material_input": "nmdc:f13ce32a-fa54-441d-b201-e22e617050e6",
+      "material_output": "nmdc:bd767630-cdbe-47f1-a935-3abbeda25d48"
+    }
+  ],
+  "material_sample_set": [
+    {
+      "id": "nmdc:f13ce32a-fa54-441d-b201-e22e617050e6",
+      "description": "a 6 gram aliquot of EMSL:2f7107d6-5dd1-11ec-bf63-0242ac130002"
+    }
+  ],
+  "material_sampling_activity_set": [
+    {
+      "amount_collected": {
+        "has_unit": "grams",
+        "has_numeric_value": 6.0
+      },
+      "collected_into": {
+        "container_size": {
+          "has_unit": "mL",
+          "has_numeric_value": 50.0
+        },
+        "container_type": "screw_top_conical"
+      },
+      "biosample_input": "EMSL:2f7107d6-5dd1-11ec-bf63-0242ac130002",
+      "material_output": "nmdc:2a9d8ec5-c7c8-4511-b632-8785ea979b14",
+      "sampling_method": "weighing"
+    }
+  ],
+  "@type": "Database"
+}
