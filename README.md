@@ -25,14 +25,71 @@
 ### Data input formats
 
 - Generic mass list in profile and centroid mode (include all delimiters types and Excel formats)
+- Intrument raw files - Thermo(.raw) and Bruker(.d) 
 
-### Data output formats
+### Data output
 
+The primary output consists of a molecular formula table with several columns, each representing specific measurements and attributes related to the mass spectrometry data. Below is a description of each column and its significance:
+
+  - Index: A unique identifier for each row in the dataset.
+
+  - m/z: The mass-to-charge ratio of the detected ions. This is a fundamental measurement in mass spectrometry.
+
+  - Calibrated m/z: The calibrated mass-to-charge ratio, adjusted for any instrumental deviations.
+
+  - Calculated m/z: The theoretical mass-to-charge ratio calculated based on the chemical formula.
+
+  - Peak Height: The intensity of the detected ion peak, representing the abundance of the ion.
+
+  - Resolving Power: The measurement that represents how narrow a mass spectral peak is.
+
+  - S/N: Signal-to-noise ratio, indicating the quality of the detected signal.
+
+  - Ion Charge: The charge state of the ion.
+
+  - m/z Error (ppm): The error in the measured m/z value expressed in parts per million.
+
+  - m/z Error Score: A score representing the accuracy of the m/z measurement.
+
+  - Mass Defect: The difference between the exact mass of an ion and its nominal mass.
+
+  - Isotope Distribution: Information about the distribution of isotopes within the detected ion.
+
+  - Ion Type: The type of ion detected (e.g., protonated, de-protonated).
+
+  - Is Isotopologue: A flag indicating if the ion is an isotopologue (a molecule that differs only in the isotopic composition).
+
+  - Mono Isotopic Index: The index of the monoisotopic peak in the isotope distribution.
+
+  - Molecular Formula: The chemical formula of the detected ion.
+
+  - C: Number of carbon atoms in the molecular formula.
+
+  - H: Number of hydrogen atoms in the molecular formula.
+
+  - O: Number of oxygen atoms in the molecular formula.
+
+  - 13C: Number of carbon-13 isotopes in the molecular formula.
+
+  - 18O: Number of oxygen-18 isotopes in the molecular formula.
+
+  - 17O: Number of oxygen-17 isotopes in the molecular formula.
+
+  - Any other atoms that is part of at least one molecular formula
+
+In addtion to the data table, a few digrams are provided with the intention to serve as quick quality checks including:
+
+1. Mass Error Plot: Distribution of mass errors.
+
+2. Van Krevelen Diagram: H/C vs. O/C plot, categorized by heteroatomic classes.
+
+3. Carbon Number vs. DBE: Plot of carbon number against DBE, categorized by heteroatomic classes.
+
+#### Data Formats
 - Pandas data frame (can be saved using pickle, h5, etc)
 - Text Files (.csv, tab separated .txt, etc)
 - Microsoft Excel (xlsx)
-- Automatic JSON for workflow metadata
-- Self-containing Hierarchical Data Format (.hdf5) including raw data and ime-series data-point for processed data-sets with all associated workflow metadata (JSON)
+- JSON for workflow metadata
 
 ### Data structure types
 
