@@ -77,7 +77,7 @@ The primary output consists of a molecular formula table with several columns, e
 
   - Any other atoms that is part of at least one molecular formula
 
-In addtion to the data table, a few digrams are provided with the intention to serve as quick quality checks including:
+In addition to the data table, diagrams are provided to serve as quick quality checks, including:
 
 1. Mass Error Plot: Distribution of mass errors.
 
