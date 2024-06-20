@@ -83,7 +83,7 @@ In addition to the data table, diagrams are provided to serve as quick quality c
 
 2. Van Krevelen Diagram: H/C vs. O/C plot, categorized by heteroatomic classes.
 
-3. Carbon Number vs. DBE: Plot of carbon number against DBE, categorized by heteroatomic classes.
+3. Carbon Number vs. DBE: Plot of carbon number against double bound equivalents, categorized by heteroatomic classes.
 
 #### Data Formats
 - Pandas data frame (can be saved using pickle, h5, etc)
