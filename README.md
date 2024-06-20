@@ -29,7 +29,7 @@
 
 ### Data output
 
-The primary output consists of a molecular formula table with several columns, each representing specific measurements and attributes related to the mass spectrometry data. Below is a description of each column and its significance:
+The primary output consists of a molecular formula table with several columns representing specific measurements and attributes related to the mass spectrometry data. All molecular formula candidates are shown for each m/z measurement that is possible within the molecular search space defined by the user. Below is a description of each column and its significance:
 
   - Index: A unique identifier for each row in the dataset.
 
