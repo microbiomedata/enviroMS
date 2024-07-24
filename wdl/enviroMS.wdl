@@ -67,6 +67,6 @@ task runDirectInfusion {
     }
 
     runtime {
-        docker: "microbiomedata/enviroms:latest"
+        docker: "microbiomedata/enviroms:4.3.1"
     }
 }
