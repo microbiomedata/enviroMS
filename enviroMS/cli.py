@@ -36,7 +36,7 @@ def cli(config, verbose):
 def run_search_formula(config, mz, ppm_error, isRadical, isProtonated, isAdduct,out, corems_parameters_filepath):#settings_filepath
     
     '''Search for molecular formula candidates to a given m/z value \n
-       corems_parameters_filepath =' CoreMS Parameters File (JSON)' 
+       corems_parameters_filepath =' CoreMS Parameters File (TOML)' 
        MZ = m/z value FLOAT\n
        out = filename to store results TEXT\n
     '''
