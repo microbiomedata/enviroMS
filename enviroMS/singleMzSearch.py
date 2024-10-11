@@ -13,9 +13,12 @@ def run_molecular_formula_search(mz, out, parameters_filepath):
     abundance = [1]
     rp, s2n = [[1],[1]]
     dataname = Path(str(out))
-    
-    mass_spectrum_obj = ms_from_array_centroid(mz, abundance, rp, s2n, dataname)
-    
+
+    mass_spectrum_obj = ms_from_array_centroid(mz, abundance, rp, s2n, dataname, auto_process=False)
+    mass_spectrum_obj.parameters.mass_spectrum.noise_threshold_method = "relative_abundance"
+    mass_spectrum_obj.parameters.mass_spectrum.noise_threshold_min_relative_abundance = 0
+    mass_spectrum_obj.process_mass_spec()
+
     # parameter_from_json.load_and_set_parameters_ms(mass_spectrum_obj, parameters_path=parameters_filepath)
     parameter_from_json.load_and_set_toml_parameters_ms(mass_spectrum_obj, parameters_path=parameters_filepath)
 
