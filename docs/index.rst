@@ -1,16 +1,12 @@
 Natural Organic Matter Workflow
 ================================
 
-Summary
+.. image:: enviromsworkflow.png
+
+Workflow Overview
 -------
 
 Direct Infusion Fourier Transform mass spectrometry (DI FT-MS) data undergoes signal processing and molecular formula assignment leveraging EMSL’s CoreMS framework. Raw time domain data is transformed into the m/z domain using Fourier Transform and Ledford equation. Data is denoised followed by peak picking, recalibration using an external reference list of known compounds, and searched against a dynamically generated molecular formula library with a defined molecular search space. The confidence scores for all the molecular formula candidates are calculated based on the mass accuracy and fine isotopic structure, and the best candidate assigned as the highest score.
-
-Workflow Diagram
-------------------
-
-.. image:: enviromsworkflow.png
-
 
 Workflow Dependencies
 ---------------------
