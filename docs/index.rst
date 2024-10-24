@@ -33,9 +33,6 @@ https://hub.docker.com/r/microbiomedata/enviroms
 The python package is available on PyPi:
 https://pypi.org/project/enviroMS/
 
-The databases are available by request.
-Please contact NMDC (support@microbiomedata.org) for access.
-
 Test datasets
 -------------
 https://github.com/microbiomedata/enviroMS/tree/master/data
