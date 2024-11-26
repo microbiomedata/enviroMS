@@ -45,6 +45,10 @@ Please refer to:
 
 https://github.com/microbiomedata/enviroMS#enviroms-installation
 
+Hardware Requirements
+--------------------------
+- To run this application, you need a processor with at least 2.0 GHz speed, 8GB of RAM, 10GB of free hard disk space
+
 Inputs
 ~~~~~~~~
 
