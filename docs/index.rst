@@ -50,7 +50,7 @@ Hardware Requirements
 - To run this application, you need a processor with at least 2.0 GHz speed, 8GB of RAM, 10GB of free hard disk space
 
 Inputs
-~~~~~~~~
+--------------------------
 
 - Supported format for Direct Infusion FT-MS data:  
 
@@ -68,7 +68,7 @@ Inputs
   - EnviroMS Parameter File (.json)
   
 Outputs
-~~~~~~~~
+--------------------------
 
 - Molecular Formula Data-Table, containing m/z measuments, Peak height, Peak Area, Molecular Formula Identification, Ion Type, Confidence Score, etc.  
 
