@@ -8,19 +8,6 @@ Workflow Overview
 
 Direct Infusion Fourier Transform mass spectrometry (DI FT-MS) data undergoes signal processing and molecular formula assignment leveraging EMSL’s CoreMS framework. Raw time domain data is transformed into the m/z domain using Fourier Transform and Ledford equation. Data is denoised followed by peak picking, recalibration using an external reference list of known compounds, and searched against a dynamically generated molecular formula library with a defined molecular search space. The confidence scores for all the molecular formula candidates are calculated based on the mass accuracy and fine isotopic structure, and the best candidate assigned as the highest score.
 
-Workflow Dependencies
----------------------
-
-Third party software
-~~~~~~~~~~~~~~~~~~~~
-
-- CoreMS (2-clause BSD)
-- Click (BSD 3-Clause "New" or "Revised" License)
-
-Database 
-~~~~~~~~~~~~~~~~
-- CoreMS dynamic molecular database search and generator
-
 Workflow Availability
 ---------------------
 
@@ -33,21 +20,44 @@ https://hub.docker.com/r/microbiomedata/enviroms
 The python package is available on PyPi:
 https://pypi.org/project/enviroMS/
 
-Test datasets
--------------
-https://github.com/microbiomedata/enviroMS/tree/master/data
+Requirements for Execution
+--------------------------
 
+- Docker Container Runtime
+  or 
+- Python Environment >= 3.10
+  and 
+- Python Dependencies are listed on requirements.txt
 
 Execution Details
----------------------
+~~~~~~~~~~~~~~~~~~~~
 
 Please refer to: 
 
 https://github.com/microbiomedata/enviroMS#enviroms-installation
 
+
 Hardware Requirements
 --------------------------
 - To run this application, you need a processor with at least 2.0 GHz speed, 8GB of RAM, 10GB of free hard disk space
+
+Workflow Dependencies
+---------------------
+
+Software
+~~~~~~~~~~~~~~~~~~~~
+
+- CoreMS (2-clause BSD)
+- Click (BSD 3-Clause "New" or "Revised" License)
+
+Database 
+~~~~~~~~~~~~~~~~
+- CoreMS dynamic molecular database search and generator
+
+
+Test datasets
+-------------
+https://github.com/microbiomedata/enviroMS/tree/master/data
 
 Inputs
 --------------------------
@@ -79,15 +89,6 @@ Outputs
 - Workflow Metadata:
 
   - JSON
-
-Requirements for Execution
---------------------------
-
-- Docker Container Runtime
-  or 
-- Python Environment >= 3.8
-  and 
-- Python Dependencies are listed on requirements.txt
 
 
 Version History
