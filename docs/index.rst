@@ -61,6 +61,7 @@ Software
 Database 
 ~~~~~~~~~~~~~~~~
 - CoreMS dynamic molecular database search and generator
+- The database is generated at runtime during workflow execution based on selected parameters
 
 
 Test datasets
@@ -79,6 +80,8 @@ Inputs
 - Calibration File:
 
   - Molecular Formula Reference (.ref) 
+  - SRFA.ref should be used for SRFA data acquisition only
+  - Hawkes.ref contains a list of 2000 common NOM molecular formulas and should be the default calibration list for NOM samples acquired in negative mode
 
 - Parameters:
 
