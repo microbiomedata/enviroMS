@@ -52,6 +52,13 @@ docker-push:
 
 	@docker image tag corilo/enviroms:$(version) microbiomedata/enviroms:latest
 	@docker push microbiomedata/enviroms:latest
+
+docker-nmdc:
+	@echo microbiomedata/metams:$(version)
+	@docker buildx create --use
+	@docker buildx build --platform linux/amd64,linux/arm64 --no-cache -t microbiomedata/metams:$(version) --push .
+	@docker buildx imagetools create microbiomedata/metams:$(version) -t microbiomedata/metams:latest
+	@docker buildx imagetools inspect microbiomedata/metams:latest
 	
 	
 docker-build:
