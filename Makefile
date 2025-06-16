@@ -54,11 +54,11 @@ docker-push:
 	@docker push microbiomedata/enviroms:latest
 
 docker-nmdc:
-	@echo microbiomedata/metams:$(version)
+	@echo microbiomedata/enviroms:$(version)
 	@docker buildx create --use
-	@docker buildx build --platform linux/amd64,linux/arm64 --no-cache -t microbiomedata/metams:$(version) --push .
-	@docker buildx imagetools create microbiomedata/metams:$(version) -t microbiomedata/metams:latest
-	@docker buildx imagetools inspect microbiomedata/metams:latest
+	@docker buildx build --platform linux/amd64,linux/arm64 --no-cache -t microbiomedata/enviroms:$(version) --push .
+	@docker buildx imagetools create microbiomedata/enviroms:$(version) -t microbiomedata/enviroms:latest
+	@docker buildx imagetools inspect microbiomedata/enviromså:latest
 	
 	
 docker-build:
