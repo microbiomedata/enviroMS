@@ -58,7 +58,7 @@ docker-nmdc:
 	@docker buildx create --use
 	@docker buildx build --platform linux/amd64,linux/arm64 --no-cache -t microbiomedata/enviroms:$(version) --push .
 	@docker buildx imagetools create microbiomedata/enviroms:$(version) -t microbiomedata/enviroms:latest
-	@docker buildx imagetools inspect microbiomedata/enviromså:latest
+	@docker buildx imagetools inspect microbiomedata/enviroms:latest
 	
 	
 docker-build:
