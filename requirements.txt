@@ -5,3 +5,7 @@ tabulate
 toml
 pyyaml
 nmdc-schema
+tqdm
+seaborn
+pandas
+matplotlib

@@ -1,0 +1,23 @@
+{
+
+    "lc_ft_icr_ms.run_LCFTICR.start_time": 1.5,
+    "lc_ft_icr_ms.run_LCFTICR.end_time": 9.5,
+    "lc_ft_icr_ms.run_LCFTICR.time_block": 30,
+
+    "lc_ft_icr_ms.run_LCFTICR.refmasslist_neg": "data/reference/Hawkes_neg.ref",
+
+    "lc_ft_icr_ms.run_LCFTICR.input_file_path": "data/raw_data/lc_fticr/",
+    "lc_ft_icr_ms.run_LCFTICR.input_file_name": "20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw", 
+    "lc_ft_icr_ms.run_LCFTICR.output_directory": "data/",
+    "lc_ft_icr_ms.run_LCFTICR.output_file_name": "lcfticr_test_output",
+    "lc_ft_icr_ms.run_LCFTICR.output_file_type": "csv",
+
+    "lc_ft_icr_ms.run_LCFTICR.ms_toml_path": "configuration/lc_fticr/lc_fticr_corems_massspectrum.toml",
+    "lc_ft_icr_ms.run_LCFTICR.mspeak_toml_path": "configuration/lc_fticr/lc_fticr_corems_mspeak.toml",
+    "lc_ft_icr_ms.run_LCFTICR.mfsearch_toml_path": "configuration/lc_fticr/lc_fticr_corems_mfsearch.toml",
+
+    "lc_ft_icr_ms.run_LCFTICR.plot_van_krevelen_all_ids": true,
+    "lc_ft_icr_ms.run_LCFTICR.plot_van_krevelen_individual": true,
+    "lc_ft_icr_ms.run_LCFTICR.plot_properties": true
+
+}

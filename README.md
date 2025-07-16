@@ -164,9 +164,13 @@ Install miniWDL:
 pip3 install miniwdl
 ```
 
-Call:
+For Direct Infusion Workflow:
 ```bash
-miniwdl run wdl/enviroMS.wdl -i wdl/enviroms_input.json --verbose --no-cache --copy-input-files
+miniwdl run wdl/di_fticr_ms.wdl -i wdl/di_fticr_wdl_input.json --verbose --no-cache --copy-input-files
+```
+For Liquid Chromatography Workflow:
+```bash
+miniwdl run wdl/lc_fticr_ms.wdl -i wdl/lc_fticr_wdl_input.json --verbose --no-cache --copy-input-files
 ```
 
 WARNING ** Current mode only allows for multiprocessing in a single node and it defaults to one job at a time. 

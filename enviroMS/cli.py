@@ -1,5 +1,6 @@
 from dataclasses import asdict
 from pathlib import Path
+import sys
 
 import click
 import toml
@@ -16,8 +17,13 @@ from enviroMS.diWorkflow import (
     run_direct_infusion_workflow,
     run_wdl_direct_infusion_workflow,
 )
-from enviroMS.singleMzSearch import run_molecular_formula_search
 
+from enviroMS.LC_FTICR_workflow import (
+    LC_FTICR_WorkflowParameters,
+    run_LC_FTICR_workflow,
+    run_LC_FTICR_workflow_wdl,
+)
+from singleMzSearch import run_molecular_formula_search
 
 class Config:
     def __init__(self):
@@ -168,7 +174,70 @@ def run_lcms(workflow_paramaters_file, jobs):
     # implement a mz search inside the mass spectrum, then run a search for molecular formula and the isotopologues
     pass
 
+### lc ft-icr commands ###
 
+@cli.command()
+@click.argument("lc_fticr_workflow_paramaters_file", required=True, type=str)
+def run_lc_fticr(lc_fticr_workflow_paramaters_file):
+    """Run the LC-FTICR workflow"""
+    run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_file)
+
+ 
+@cli.command()
+@click.argument("start_time", required=True, type=float)
+@click.argument("end_time", required=True, type=float)
+@click.argument("time_block", required=True, type=float)
+@click.argument("refmasslist_neg", required=True, type=str)
+@click.argument("input_file_path", required=True, type=str)
+@click.argument("input_file_name", required=True, type=str)
+@click.argument("output_directory", required=True, type=str)
+@click.argument("output_file_name", required=True, type=str)
+@click.argument("output_file_type", required=True, type=str)
+@click.argument("ms_toml_path", required=True, type=str)
+@click.argument("mspeak_toml_path", required=True, type=str)
+@click.argument("mfsearch_toml_path", required=True, type=str)
+@click.option("--plot_van_krevelen_all_ids", "-a", default=True)
+@click.option("--plot_van_krevelen_individual", "-i", default=True)
+@click.option("--plot_properties", "-p", default=True)
+def run_lc_fticr_wdl(
+    start_time,
+    end_time,
+    time_block,
+    refmasslist_neg,
+    input_file_path,
+    input_file_name,
+    output_directory,
+    output_file_name,
+    output_file_type,
+    ms_toml_path,
+    mspeak_toml_path,
+    mfsearch_toml_path,
+    plot_van_krevelen_all_ids,
+    plot_van_krevelen_individual,
+    plot_properties,
+):
+    """Run the LC-FTICR Workflow using wdl"""
+    click.echo("Running lc-fticr workflow")
+    run_LC_FTICR_workflow_wdl(
+        start_time = start_time,
+        end_time = end_time,
+        time_block = time_block,
+        refmasslist_neg = refmasslist_neg,
+        input_file_path = input_file_path,
+        input_file_name = input_file_name,
+        output_directory = output_directory,
+        output_file_name = output_file_name,
+        output_file_type = output_file_type,
+        ms_toml_path = ms_toml_path,
+        mspeak_toml_path = mspeak_toml_path,
+        mfsearch_toml_path = mfsearch_toml_path,
+        plot_van_krevelen_all_ids = plot_van_krevelen_all_ids,
+        plot_van_krevelen_individual = plot_van_krevelen_individual,
+        plot_properties = plot_properties,
+    )
+
+
+### toml template commands ###
 @cli.command()
 @click.argument("toml_file_name", required=True, type=click.Path())
 def dump_corems_template(toml_file_name):
@@ -198,5 +267,17 @@ def dump_di_template(toml_file_name):
     ref_lib_path = Path(toml_file_name).with_suffix(".toml")
     with open(ref_lib_path, "w") as workflow_param:
         workflow = DiWorkflowParameters()
+
+        toml.dump(asdict(workflow), workflow_param)
+
+@cli.command()
+@click.argument("toml_file_name", required=True, type=click.Path())
+def dump_lc_fticr_template(toml_file_name):
+    """Dumps a toml file template
+    to be used as lc fticr workflow parameters input
+    """
+    ref_lib_path = Path(toml_file_name).with_suffix(".toml")
+    with open(ref_lib_path, "w") as workflow_param:
+        workflow = LC_FTICR_WorkflowParameters()
 
         toml.dump(asdict(workflow), workflow_param)
