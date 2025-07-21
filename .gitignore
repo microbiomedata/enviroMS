@@ -13,6 +13,7 @@ __pycache__/
 # C extensions
 *.so
 mana_workshop/
+data/raw_data/lc_fticr/*
 
 
 # Distribution / packaging
