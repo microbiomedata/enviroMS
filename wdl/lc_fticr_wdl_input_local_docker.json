@@ -1,5 +1,5 @@
 {
-    "gcmsMetabolomics.docker_image": "local-enviroms:latest",
+    "lc_ft_icr_ms.docker_image": "local-enviroms:latest",
     
     "lc_ft_icr_ms.run_LCFTICR.start_time": 1.5,
     "lc_ft_icr_ms.run_LCFTICR.end_time": 9.5,
