@@ -1,7 +1,13 @@
 version 1.0
 
 workflow lc_ft_icr_ms {
-    call run_LCFTICR
+    input {
+        String? docker_image  # Optional input for Docker image
+    }
+    call run_LCFTICR {
+        input:
+            docker_image = docker_image
+    }
 
     output {
         String out = run_LCFTICR.out
@@ -27,6 +33,7 @@ task run_LCFTICR {
         Boolean plot_van_krevelen_all_ids
         Boolean plot_van_krevelen_individual
         Boolean plot_properties
+        String? docker_image
     }
 
     command {
@@ -55,6 +62,6 @@ task run_LCFTICR {
     }
 
     runtime {
-        docker: "microbiomedata/enviroms:latest"
+        docker: "~{if defined(docker_image) then docker_image else 'microbiomedata/enviroms:latest'}"
     }
 }
