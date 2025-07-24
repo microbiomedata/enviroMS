@@ -33,3 +33,6 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Raw data files
+*.raw
