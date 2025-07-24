@@ -80,3 +80,31 @@ wdl-run-di :
 wdl-run-lc :
  	 
 	miniwdl run wdl/lc_fticr_ms.wdl -i wdl/lc_fticr_wdl_input.json --verbose --no-cache --copy-input-files
+
+get-lcms-fticr-test-data:
+	@echo "Downloading test files for LC-MS FTICR workflow"
+
+# download configs 
+	@echo "Downloading configuration files"
+	@mkdir -p configuration/lc_fticr
+	@curl -L -o configuration/lc_fticr/lcms_fticr_test_configs.zip https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/lcms_fticr_test_configs.zip
+	@unzip configuration/lc_fticr/lcms_fticr_test_configs.zip -d configuration/lc_fticr/
+	@rm configuration/lc_fticr/lcms_fticr_test_configs.zip
+	@echo "Configuration files downloaded and unzipped"
+
+# download data
+	@echo "Downloading test data"
+	@mkdir -p data/raw_data/lc_fticr
+	@curl -L -O --output-dir data/raw_data/lc_fticr/ https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw
+	@echo "Test data downloaded"
+
+# download ref
+	@echo "Checking if reference file exists"
+ifeq ($(data/reference/Hawkes_neg.ref), "")
+	@echo "Reference file not present, downloading"
+    @curl -L -O --output-dir data/raw_data/lc_fticr/ https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw
+	@echo "Reference file downloaded"
+else
+	@echo "Reference file exists"
+endif
+	@echo "Test files complete"
