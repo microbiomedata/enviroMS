@@ -1,6 +1,5 @@
 from dataclasses import asdict
 from pathlib import Path
-import sys
 
 import click
 import toml
@@ -23,90 +22,81 @@ from enviroMS.LC_FTICR_workflow import (
     run_LC_FTICR_workflow,
     run_LC_FTICR_workflow_wdl,
 )
-from singleMzSearch import run_molecular_formula_search
-
-class Config:
-    def __init__(self):
-        self.verbose = False
-
-
-pass_config = click.make_pass_decorator(Config, ensure=True)
+from enviroMS.singleMzSearch import run_molecular_formula_search
 
 
 @click.group()
-@click.option("--verbose", is_flag=True, help="print out the results")
-@pass_config
-def cli(config, verbose):
-    config.verbose = verbose
+def cli():
+    pass
 
 
-@cli.command()
-@click.argument(
-    "mz",
-    required=True,
-    type=float,
-)
-@click.argument("corems_parameters_filepath", required=True, type=click.Path())
-@click.argument("out", required=False, type=click.File("w"), default="-")
-@click.option(
-    "-e", "--error", "ppm_error", default=1.0, help="the marging of mass error (ppm)"
-)
-@click.option(
-    "-r",
-    "--radical",
-    "isRadical",
-    default=True,
-    type=bool,
-    help="include radical ion type",
-)
-@click.option(
-    "-p",
-    "--protonated",
-    "isProtonated",
-    default=True,
-    type=bool,
-    help="include (de)-protonated ion type",
-)
-@click.option(
-    "-a",
-    "--adduct",
-    "isAdduct",
-    default=False,
-    type=bool,
-    help="include adduct ion type",
-)
-@pass_config
-def run_search_formula(
-    config,
-    mz,
-    ppm_error,
-    isRadical,
-    isProtonated,
-    isAdduct,
-    out,
-    corems_parameters_filepath,
-):  # settings_filepath
-    """Search for molecular formula candidates to a given m/z value \n
-    corems_parameters_filepath =' CoreMS Parameters File (TOML)'
-    MZ = m/z value FLOAT\n
-    out = filename to store results TEXT\n
-    """
+# @cli.command()
+# @click.argument(
+#     "mz",
+#     required=True,
+#     type=float,
+# )
+# @click.argument("corems_parameters_filepath", required=True, type=click.Path())
+# @click.argument("out", required=False, type=click.File("w"), default="-")
+# @click.option(
+#     "-e", "--error", "ppm_error", default=1.0, help="the marging of mass error (ppm)"
+# )
+# @click.option(
+#     "-r",
+#     "--radical",
+#     "isRadical",
+#     default=True,
+#     type=bool,
+#     help="include radical ion type",
+# )
+# @click.option(
+#     "-p",
+#     "--protonated",
+#     "isProtonated",
+#     default=True,
+#     type=bool,
+#     help="include (de)-protonated ion type",
+# )
+# @click.option(
+#     "-a",
+#     "--adduct",
+#     "isAdduct",
+#     default=False,
+#     type=bool,
+#     help="include adduct ion type",
+# )
 
-    # if config.verbose:
-    click.echo("", file=out)
-    # dump_search_settings_yaml()
+# def run_search_formula(
+#     config,
+#     mz,
+#     ppm_error,
+#     isRadical,
+#     isProtonated,
+#     isAdduct,
+#     out,
+#     corems_parameters_filepath,
+# ):  # settings_filepath
+#     """Search for molecular formula candidates to a given m/z value \n
+#     corems_parameters_filepath =' CoreMS Parameters File (TOML)'
+#     MZ = m/z value FLOAT\n
+#     out = filename to store results TEXT\n
+#     """
 
-    click.echo("Searching formulas for %.5f" % mz, file=out)
+#     # if config.verbose:
+#     click.echo("", file=out)
+#     # dump_search_settings_yaml()
 
-    click.echo("", file=out)
+#     click.echo("Searching formulas for %.5f" % mz, file=out)
 
-    click.echo(
-        "Loading Searching Settings from %s" % corems_parameters_filepath, file=out
-    )
+#     click.echo("", file=out)
 
-    click.echo("", file=out)
+#     click.echo(
+#         "Loading Searching Settings from %s" % corems_parameters_filepath, file=out
+#     )
 
-    run_molecular_formula_search(mz, out, corems_parameters_filepath)
+#     click.echo("", file=out)
+
+#     run_molecular_formula_search(mz, out, corems_parameters_filepath)
 
 
 @cli.command()
@@ -169,21 +159,18 @@ def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
 @cli.command()
 @click.argument("lcms_workflow_paramaters_file", required=True, type=str)
 @click.option("--jobs", "-j", default=4, help="'cpu's'")
-@pass_config
 def run_lcms(workflow_paramaters_file, jobs):
     # implement a mz search inside the mass spectrum, then run a search for molecular formula and the isotopologues
     pass
 
-### lc ft-icr commands ###
-
-@cli.command()
+@cli.command(name="run_lc_fticr")
 @click.argument("lc_fticr_workflow_paramaters_file", required=True, type=str)
 def run_lc_fticr(lc_fticr_workflow_paramaters_file):
     """Run the LC-FTICR workflow"""
     run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_file)
 
  
-@cli.command()
+@cli.command(name="run_lc_fticr_wdl")
 @click.argument("start_time", required=True, type=float)
 @click.argument("end_time", required=True, type=float)
 @click.argument("time_block", required=True, type=float)
