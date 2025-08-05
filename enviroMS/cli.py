@@ -1,6 +1,5 @@
 from dataclasses import asdict
 from pathlib import Path
-import sys
 
 import click
 import toml
@@ -23,24 +22,15 @@ from enviroMS.LC_FTICR_workflow import (
     run_LC_FTICR_workflow,
     run_LC_FTICR_workflow_wdl,
 )
-from singleMzSearch import run_molecular_formula_search
-
-class Config:
-    def __init__(self):
-        self.verbose = False
-
-
-pass_config = click.make_pass_decorator(Config, ensure=True)
+from enviroMS.singleMzSearch import run_molecular_formula_search
 
 
 @click.group()
-@click.option("--verbose", is_flag=True, help="print out the results")
-@pass_config
-def cli(config, verbose):
-    config.verbose = verbose
+def cli():
+    pass
 
 
-@cli.command()
+@cli.command(name="run_search_formula")
 @click.argument(
     "mz",
     required=True,
@@ -75,7 +65,7 @@ def cli(config, verbose):
     type=bool,
     help="include adduct ion type",
 )
-@pass_config
+
 def run_search_formula(
     config,
     mz,
@@ -109,7 +99,7 @@ def run_search_formula(
     run_molecular_formula_search(mz, out, corems_parameters_filepath)
 
 
-@cli.command()
+@cli.command(name="create_database")
 @click.argument("corems_parameters_file", required=True, type=str)
 @click.option("--jobs", "-j", default=4, help="'cpu's'")
 def create_database(corems_parameters_file, jobs):
@@ -120,7 +110,7 @@ def create_database(corems_parameters_file, jobs):
     generate_database(corems_parameters_file, jobs)
 
 
-@cli.command()
+@cli.command(name="run_di_wdl")
 @click.argument("file_paths", required=True, type=str)
 @click.argument("output_directory", required=True, type=str)
 @click.argument("output_type", required=True, type=str)
@@ -145,7 +135,7 @@ def run_di_wdl(*args, **kwargs):
     run_wdl_direct_infusion_workflow(*args, **kwargs)
 
 
-@cli.command()
+@cli.command(name="run_di")
 @click.argument("di_workflow_paramaters_file", required=True, type=str)
 @click.option("--jobs", "-j", default=4, help="'cpu's'")
 @click.option("--replicas", "-r", default=1, help="data replicas")
@@ -166,33 +156,26 @@ def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
         run_direct_infusion_workflow(di_workflow_paramaters_file, jobs, replicas)
 
 
-@cli.command()
-@click.argument("lcms_workflow_paramaters_file", required=True, type=str)
-@click.option("--jobs", "-j", default=4, help="'cpu's'")
-@pass_config
-def run_lcms(workflow_paramaters_file, jobs):
-    # implement a mz search inside the mass spectrum, then run a search for molecular formula and the isotopologues
-    pass
 
-### lc ft-icr commands ###
-
-@cli.command()
+@cli.command(name="run_lc_fticr")
 @click.argument("lc_fticr_workflow_paramaters_file", required=True, type=str)
 def run_lc_fticr(lc_fticr_workflow_paramaters_file):
     """Run the LC-FTICR workflow"""
     run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_file)
 
- 
-@cli.command()
+
+@cli.command(name="run_lc_fticr_wdl")
+@click.argument("full_input_file_path", required=True, type=str)
 @click.argument("start_time", required=True, type=float)
 @click.argument("end_time", required=True, type=float)
 @click.argument("time_block", required=True, type=float)
 @click.argument("refmasslist_neg", required=True, type=str)
-@click.argument("input_file_path", required=True, type=str)
+@click.argument("input_file_directory", required=True, type=str)
 @click.argument("input_file_name", required=True, type=str)
 @click.argument("output_directory", required=True, type=str)
 @click.argument("output_file_name", required=True, type=str)
 @click.argument("output_file_type", required=True, type=str)
+@click.argument("lc_fticr_toml_path", required=True, type=str)
 @click.argument("ms_toml_path", required=True, type=str)
 @click.argument("mspeak_toml_path", required=True, type=str)
 @click.argument("mfsearch_toml_path", required=True, type=str)
@@ -200,15 +183,17 @@ def run_lc_fticr(lc_fticr_workflow_paramaters_file):
 @click.option("--plot_van_krevelen_individual", "-i", default=True)
 @click.option("--plot_properties", "-p", default=True)
 def run_lc_fticr_wdl(
+    full_input_file_path,
     start_time,
     end_time,
     time_block,
     refmasslist_neg,
-    input_file_path,
+    input_file_directory,
     input_file_name,
     output_directory,
     output_file_name,
     output_file_type,
+    lc_fticr_toml_path,
     ms_toml_path,
     mspeak_toml_path,
     mfsearch_toml_path,
@@ -219,15 +204,17 @@ def run_lc_fticr_wdl(
     """Run the LC-FTICR Workflow using wdl"""
     click.echo("Running lc-fticr workflow")
     run_LC_FTICR_workflow_wdl(
+        full_input_file_path = full_input_file_path,
         start_time = start_time,
         end_time = end_time,
         time_block = time_block,
         refmasslist_neg = refmasslist_neg,
-        input_file_path = input_file_path,
+        input_file_directory = input_file_directory,
         input_file_name = input_file_name,
         output_directory = output_directory,
         output_file_name = output_file_name,
         output_file_type = output_file_type,
+        lc_fticr_toml_path = lc_fticr_toml_path,
         ms_toml_path = ms_toml_path,
         mspeak_toml_path = mspeak_toml_path,
         mfsearch_toml_path = mfsearch_toml_path,
@@ -238,7 +225,7 @@ def run_lc_fticr_wdl(
 
 
 ### toml template commands ###
-@cli.command()
+@cli.command(name="dump_corems_template")
 @click.argument("toml_file_name", required=True, type=click.Path())
 def dump_corems_template(toml_file_name):
     """Dumps a CoreMS toml file template

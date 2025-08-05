@@ -1,5 +1,5 @@
 [MolecularFormulaSearch]
-url_database = "postgresql+psycopg2://coremsappdb:coremsapppnnl@localhost:5432/coremsapp"
+url_database = "postgresql+psycopg2://coremsappdb:coremsapppnnl@molformdb:5432/coremsapp"
 error_method = 'None'
 score_method = 'prob_score'
 min_ppm_error  = -1
@@ -10,7 +10,7 @@ use_isotopologue_filter = false
 min_abun_error = -30
 max_abun_error = 70
 use_min_peaks_filter = true
-min_peaks_per_class = 10 
+min_peaks_per_class = 10
 adduct_atoms_neg = ['Cl']
 adduct_atoms_pos = ['Na']
 isProtonated = true

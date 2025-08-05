@@ -1,7 +1,13 @@
 version 1.0
 
 workflow lc_ft_icr_ms {
-    call run_LCFTICR
+    input {
+        String? docker_image  # Optional input for Docker image
+    }
+    call run_LCFTICR {
+        input:
+            docker_image = docker_image
+    }
 
     output {
         String out = run_LCFTICR.out
@@ -12,39 +18,44 @@ workflow lc_ft_icr_ms {
 
 task run_LCFTICR {
     input {
+        Array[File] full_input_file_path
         Float start_time
         Float end_time
         Float time_block
-        String refmasslist_neg
-        String input_file_path
+        File refmasslist_neg
+        String input_file_directory
         String input_file_name
         String output_directory
         String output_file_name
         String output_file_type
-        String ms_toml_path
-        String mspeak_toml_path
-        String mfsearch_toml_path
+        File lc_fticr_toml_path
+        File ms_toml_path
+        File mspeak_toml_path
+        File mfsearch_toml_path
         Boolean plot_van_krevelen_all_ids
         Boolean plot_van_krevelen_individual
         Boolean plot_properties
+        String? docker_image
     }
 
     command {
         enviroMS run_lc_fticr_wdl \
-            ${start_time} \ 
-            ${end_time} \ 
-            ${time_block} \ 
-            ${refmasslist_neg} \ 
-            ${input_file_path} \ 
-            ${input_file_name} \ 
-            ${output_directory} \ 
-            ${output_file_name} \ 
-            ${output_file_type} \ 
-            ${ms_toml_path} \ 
-            ${mspeak_toml_path} \ 
-            ${mfsearch_toml_path} \ 
-            -a ${plot_van_krevelen_all_ids} \ 
-            -i ${plot_van_krevelen_individual} \ 
+            ${sep=',' full_input_file_path} \
+            ${start_time} \
+            ${end_time} \
+            ${time_block} \
+            ${refmasslist_neg} \
+            ${input_file_directory} \
+            ${input_file_name} \
+            ${output_directory} \
+            ${output_file_name} \
+            ${output_file_type} \
+            ${lc_fticr_toml_path} \
+            ${ms_toml_path} \
+            ${mspeak_toml_path} \
+            ${mfsearch_toml_path} \
+            -a ${plot_van_krevelen_all_ids} \
+            -i ${plot_van_krevelen_individual } \
             -p ${plot_properties}
     }
 
@@ -55,6 +66,6 @@ task run_LCFTICR {
     }
 
     runtime {
-        docker: "microbiomedata/enviroms:latest"
+        docker: "~{if defined(docker_image) then docker_image else 'microbiomedata/enviroms:latest'}"
     }
 }

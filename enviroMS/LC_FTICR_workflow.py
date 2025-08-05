@@ -4,9 +4,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 sns.set_context('talk')
-import os 
+import os
 import numpy as np
-from tqdm import tqdm 
+from tqdm import tqdm
 from dataclasses import dataclass
 import toml
 
@@ -26,10 +26,11 @@ class LC_FTICR_WorkflowParameters:
     end_time: int # minutes
     time_block: int #seconds
     # removed original values (check if I should do that)
-    # Reference mass list: 
+    # Reference mass list:
     refmasslist_neg: str = "data/referencec/Hawkes_neg.ref"
     # input output paths
-    input_file_path: str = "data/raw_data/..."
+    full_input_file_path: str = "data/raw_data/..."
+    input_file_directory: str = "data/raw_data/..."
     input_file_name: str = "..."
     output_directory: str = "data/..."
     output_file_name: str = "..."
@@ -50,19 +51,20 @@ class LC_FTICR_WorkflowParameters:
 
 
     ### function that init parser and get data
-    def init_parser_extract_data(self) -> pd.DataFrame: 
+    def init_parser_extract_data(self) -> pd.DataFrame:
         # Define datafile location
-        file_in = self.input_file_path + self.input_file_name
+        file_in = self.full_input_file_path
 
         # Start with all scans
-        LCMSParameters.lc_ms.scans = (-1, -1) # this needs to be read in 
+        LCMSParameters.lc_ms.scans = (-1, -1) # this needs to be read in
         # the (-1, -1) tells software to choose all scans that exist
 
         # Init parser object
+        print(file_in)
         parser = ImportMassSpectraThermoMSFileReader(file_in)
-        
+
         # Get the TIC data, scan ids, etc
-        # TIC = Total Ion Chromatogram 
+        # TIC = Total Ion Chromatogram
         tic_data = parser.get_tic(ms_type=None, peak_detection=False, smooth=False, plot=False, trace_type='TIC')[0]
         tic_df = pd.DataFrame(index=tic_data.scans, columns=['scans', 'tic', 'time'])
         tic_df['scans'] = tic_data.scans
@@ -76,14 +78,14 @@ class LC_FTICR_WorkflowParameters:
     # Process the time block mass spectrum
     def proc_time_block_inner(self, msreader, datafile, block):
         # scans = list(subset_df['scan'])
-        
+
         # load_and_set_toml_parameters_ms(MSParameters, self.corems_toml_path)
         with open(self.ms_toml_path, "r") as infile:
             MSParameters.mass_spectrum = MassSpectrumSetting(**toml.load(infile))
         with open(self.mspeak_toml_path, "r") as infile:
             MSParameters.ms_peak = MassSpecPeakSetting(**toml.load(infile))
         msobj = msreader.get_average_mass_spectrum(spectrum_mode = 'profile',auto_process=True)
-    
+
         #msobj.clear_molecular_formulas()
         MzDomainCalibration(msobj, self.refmasslist_neg).run()
 
@@ -91,8 +93,8 @@ class LC_FTICR_WorkflowParameters:
         load_and_set_toml_parameters_class("MolecularFormulaSearch", msobj.molecular_search_settings, parameters_path=self.mfsearch_toml_path)
 
         SearchMolecularFormulas(msobj).run_worker_mass_spectrum()
-        
-    
+
+
         msdf = msobj.to_dataframe()
         msdf['datafile'] = datafile
         msdf['block'] = block
@@ -116,7 +118,7 @@ class LC_FTICR_WorkflowParameters:
 
     def process_with_time_block(self, tic_df):
         # Strip out the time where there's no useful data
-        file_in = self.input_file_path + self.input_file_name
+        file_in = self.full_input_file_path
         tic_df = tic_df[(tic_df['time'] > self.start_time) & (tic_df['time'] < self.end_time)]
 
         # Block the scans into 30-second blocks, for signal averaging.
@@ -138,7 +140,7 @@ class LC_FTICR_WorkflowParameters:
             LCMSParameters.lc_ms.scans = (scan_tuple)
             # Init parser object
             parser = ImportMassSpectraThermoMSFileReader(file_in)
-            
+
             msdf, statdict = self.proc_time_block_inner(parser, file_in, block)  ### i'm not sure about this self.function()
             all_msdfs_in_file.append(msdf)
             all_statdics.append(statdict)
@@ -155,7 +157,7 @@ class LC_FTICR_WorkflowParameters:
         # Create a DataFrame
         summary_df = pd.DataFrame(flat_list)
         summary_df.to_csv(self.output_directory + self.output_file_name +"-statdicts.csv")
-        return(summary_df)    
+        return(summary_df)
 
 
 ################################### LC-FTICR PLOTS ###################################
@@ -164,22 +166,22 @@ class LC_FTICR_WorkflowParameters:
 ## for creating plots
 def filter_out_common_background(df):
     formula_block_counts = df.pivot_table(index='Molecular Formula', columns='block', aggfunc='size', fill_value=0)
-    
+
     # Filter to get 'Molecular Formula' entries that appear in all blocks
     common_formulas = formula_block_counts[formula_block_counts.gt(0).sum(axis=1) == len(df['block'].unique())].index
-    
+
     # Step 2: Further filter based on similar 'Peak Height' values (using a threshold)
     # Create a function to check if 'Peak Height' values are within a tolerance
     def peak_height_similar(df, tolerance=0.99):  # 10% tolerance
         peak_heights = df['Peak Height']
         return peak_heights.max() - peak_heights.min() <= tolerance * peak_heights.mean()
-    
+
     # Group the dataframe by 'Molecular Formula' and apply the peak height similarity check
     similar_peak_height_formulas = df.groupby('Molecular Formula').filter(lambda x: peak_height_similar(x))['Molecular Formula'].unique()
-    
+
     # Combine both conditions
     formulas_to_remove = set(common_formulas).intersection(similar_peak_height_formulas)
-    
+
     # Step 3: Remove these entries from the dataframe
     filtered_df = df[~df['Molecular Formula'].isin(formulas_to_remove)]
     return filtered_df
@@ -271,7 +273,7 @@ def plot_properties(summary_df_path,output_dir):
         axes[i, 0].set_title(f'Trend of {prop} by Block')
         axes[i, 0].set_xlabel('Block')
         axes[i, 0].set_ylabel(prop)
-        
+
         # Distribution plot
         sns.histplot(summary_df[prop], kde=True, ax=axes[i, 1], bins=10, color='skyblue')
         axes[i, 1].set_title(f'Distribution of {prop}')
@@ -301,9 +303,43 @@ def run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_toml_file):
         plot_properties(summary_df, lc_object.output_directory)
     return()
 
-def run_LC_FTICR_workflow_wdl(*args, **kwargs):
-    # read in LC_WorkflowParameters from toml file
-    lc_object = LC_FTICR_WorkflowParameters(**kwargs)
+def run_LC_FTICR_workflow_wdl(
+    start_time,
+    end_time,
+    time_block,
+    refmasslist_neg,
+    full_input_file_path,
+    input_file_directory,
+    input_file_name,
+    output_directory,
+    output_file_name,
+    output_file_type,
+    lc_fticr_toml_path,
+    ms_toml_path,
+    mspeak_toml_path,
+    mfsearch_toml_path,
+    plot_van_krevelen_all_ids,
+    plot_van_krevelen_individual,
+    plot_properties,
+):
+    # read in LC_WorkflowParameters from wdl inputs
+    lc_object = LC_FTICR_WorkflowParameters(start_time = start_time,
+                                            end_time = end_time,
+                                            time_block = time_block,
+                                            refmasslist_neg = refmasslist_neg,
+                                            full_input_file_path = full_input_file_path,
+                                            input_file_directory = input_file_directory,
+                                            input_file_name = input_file_name,
+                                            output_directory = output_directory,
+                                            output_file_name = output_file_name,
+                                            output_file_type = output_file_type,
+                                            lc_fticr_toml_path = lc_fticr_toml_path,
+                                            ms_toml_path = ms_toml_path,
+                                            mspeak_toml_path = mspeak_toml_path,
+                                            mfsearch_toml_path = mfsearch_toml_path,
+                                            plot_van_krevelen_all_ids = plot_van_krevelen_all_ids,
+                                            plot_van_krevelen_individual = plot_van_krevelen_individual,
+                                            plot_properties = plot_properties)
     # call functions
     tic_df = lc_object.init_parser_extract_data()
     all_msdfs_df, all_statdics_df = lc_object.process_with_time_block(tic_df)
