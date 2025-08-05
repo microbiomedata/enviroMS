@@ -28,13 +28,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install miniwdl
 
+    - name: Download LC-FTICR database and test data
+      run: |
+        make get-lcms-fticr-test-data
+
     - name: Run LC_FTICR WDL with lipidomics test data and pushed Docker Image
       run: |
         make wdl-run-lc
 
-    - name: Download LC-FTICR database and test data
-      run: |
-        make get-lcms-fticr-test-data
     - name: Build Docker Image
       run: |
         make docker-build-local
