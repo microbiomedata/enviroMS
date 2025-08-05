@@ -99,6 +99,32 @@ wdl-run-lc :
  	 
 	miniwdl run wdl/lc_fticr_ms.wdl -i wdl/lc_fticr_wdl_input.json --verbose --no-cache --copy-input-files
 
+get-lcms-fticr-test-data:
+
+	@echo "Downloading test files for LC-MS FT-ICR workflow"
+
+	# download configs 
+	@echo "Downloading configuration files"
+	@mkdir -p configuration/lc_fticr
+	@curl -L -o configuration/lc_fticr/lcms_fticr_test_configs.zip https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/lcms_fticr_test_configs.zip
+	@unzip -j configuration/lc_fticr/lcms_fticr_test_configs.zip -d configuration/lc_fticr/
+	@rm configuration/lc_fticr/lcms_fticr_test_configs.zip
+	@echo "Configuration files downloaded and unzipped"
+
+	# download data
+	@echo "Checking if test data file exists"
+	@if [ ! -f ./data/raw_data/lc_fticr/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw ]; \
+	then echo "Test data file does not exist, downloading"; \
+	curl -L -O --output-dir data/raw_data/lc_fticr/ https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw; \
+	else echo "Test data file exists"; fi
+
+	# download ref
+	@echo "Checking if reference file exists"
+	@if [ ! -f ./data/reference/Hawkes_neg.ref ]; then echo "Reference file does not exist, downloading"; \
+	curl -L -O --output-dir data/reference/ https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/Hawkes_neg.ref; \
+	else echo "Reference file exists"; fi
+	@echo "LC-MS FT-ICR test files complete"
+
 wdl-run-lc-local:
 
 	miniwdl run wdl/lc_fticr_ms.wdl -i wdl/lc_fticr_wdl_input_local_docker.json --verbose --no-cache --copy-input-files
