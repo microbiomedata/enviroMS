@@ -19,8 +19,8 @@
     "lc_ft_icr_ms.run_LCFTICR.mspeak_toml_path": "./configuration/lc_fticr/lc_fticr_corems_mspeak.toml",
     "lc_ft_icr_ms.run_LCFTICR.mfsearch_toml_path": "./configuration/lc_fticr/lc_fticr_corems_mfsearch.toml",
 
-    "lc_ft_icr_ms.run_LCFTICR.plot_van_krevelen_all_ids": true,
-    "lc_ft_icr_ms.run_LCFTICR.plot_van_krevelen_individual": true,
-    "lc_ft_icr_ms.run_LCFTICR.plot_properties": true
+    "lc_ft_icr_ms.run_LCFTICR.do_plot_van_krevelen_all_ids": true,
+    "lc_ft_icr_ms.run_LCFTICR.do_plot_van_krevelen_individual": true,
+    "lc_ft_icr_ms.run_LCFTICR.do_plot_properties": true
 
 }

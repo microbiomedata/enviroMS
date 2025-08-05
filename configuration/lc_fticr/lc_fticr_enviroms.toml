@@ -17,6 +17,6 @@ ms_toml_path = "./configuration/lc_fticr/lc_fticr_corems_massspectrum.toml"
 mspeak_toml_path = "./configuration/lc_fticr/lc_fticr_corems_mspeak.toml"
 mfsearch_toml_path = "./configuration/lc_fticr/lc_fticr_corems_mfsearch.toml"
 # plot settings
-plot_van_krevelen_all_ids = true
-plot_van_krevelen_individual = true
-plot_properties = true
+do_plot_van_krevelen_all_ids = true
+do_plot_van_krevelen_individual = true
+do_plot_properties = true

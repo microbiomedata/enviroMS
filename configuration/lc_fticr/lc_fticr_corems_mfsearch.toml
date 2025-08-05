@@ -1,5 +1,5 @@
 [MolecularFormulaSearch]
-url_database = "postgresql+psycopg2://coremsappdb:coremsapppnnl@molformdb:5432/coremsapp"
+url_database = ""
 error_method = 'None'
 score_method = 'prob_score'
 min_ppm_error  = -1

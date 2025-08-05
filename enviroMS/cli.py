@@ -179,9 +179,9 @@ def run_lc_fticr(lc_fticr_workflow_paramaters_file):
 @click.argument("ms_toml_path", required=True, type=str)
 @click.argument("mspeak_toml_path", required=True, type=str)
 @click.argument("mfsearch_toml_path", required=True, type=str)
-@click.option("--plot_van_krevelen_all_ids", "-a", default=True)
-@click.option("--plot_van_krevelen_individual", "-i", default=True)
-@click.option("--plot_properties", "-p", default=True)
+@click.option("--do_plot_van_krevelen_all_ids", "-a", default=True)
+@click.option("--do_plot_van_krevelen_individual", "-i", default=True)
+@click.option("--do_plot_properties", "-p", default=True)
 def run_lc_fticr_wdl(
     full_input_file_path,
     start_time,
@@ -197,9 +197,9 @@ def run_lc_fticr_wdl(
     ms_toml_path,
     mspeak_toml_path,
     mfsearch_toml_path,
-    plot_van_krevelen_all_ids,
-    plot_van_krevelen_individual,
-    plot_properties,
+    do_plot_van_krevelen_all_ids,
+    do_plot_van_krevelen_individual,
+    do_plot_properties,
 ):
     """Run the LC-FTICR Workflow using wdl"""
     click.echo("Running lc-fticr workflow")
@@ -218,9 +218,9 @@ def run_lc_fticr_wdl(
         ms_toml_path = ms_toml_path,
         mspeak_toml_path = mspeak_toml_path,
         mfsearch_toml_path = mfsearch_toml_path,
-        plot_van_krevelen_all_ids = plot_van_krevelen_all_ids,
-        plot_van_krevelen_individual = plot_van_krevelen_individual,
-        plot_properties = plot_properties,
+        do_plot_van_krevelen_all_ids = do_plot_van_krevelen_all_ids,
+        do_plot_van_krevelen_individual = do_plot_van_krevelen_individual,
+        do_plot_properties = do_plot_properties,
     )
 
 

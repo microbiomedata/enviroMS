@@ -9,6 +9,7 @@ import numpy as np
 from tqdm import tqdm
 from dataclasses import dataclass
 import toml
+import click
 
 # Import CoreMS functions
 from corems.encapsulation.factory.parameters import MSParameters, LCMSParameters, MassSpectrumSetting, MassSpecPeakSetting
@@ -41,9 +42,9 @@ class LC_FTICR_WorkflowParameters:
     mspeak_toml_path: str = "configuration/lc_fticr/lc_fticr_corems_mspeak.toml"
     mfsearch_toml_path: str = "configuration/lc_fticr/lc_fticr_corems_mfsearch.toml"
     # plot settings
-    plot_van_krevelen_all_ids: bool = True
-    plot_van_krevelen_individual: bool = True
-    plot_properties: bool = True
+    do_plot_van_krevelen_all_ids: bool = True
+    do_plot_van_krevelen_individual: bool = True
+    do_plot_properties: bool = True
 
 
     def to_toml(self):
@@ -147,7 +148,7 @@ class LC_FTICR_WorkflowParameters:
 
         all_msdfs = pd.concat(all_msdfs_in_file)
         all_msdfs.reset_index(inplace=True, drop=True)
-        all_msdfs.to_csv(self.output_directory + self.output_file_name + self.output_file_type)
+        all_msdfs.to_csv(self.output_directory + self.output_file_name + "." + self.output_file_type)
         return(all_msdfs, all_statdics)
 
 
@@ -295,11 +296,11 @@ def run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_toml_file):
     tic_df = lc_object.init_parser_extract_data()
     all_msdfs_df, all_statdics_df = lc_object.process_with_time_block(tic_df)
     summary_df = lc_object.create_summary(all_statdics=all_statdics_df)
-    if lc_object.plot_van_krevelen_all_ids:
+    if lc_object.do_plot_van_krevelen_all_ids:
         plot_van_krevelen_all_ids(all_msdfs_df, lc_object.output_directory)
-    if lc_object.plot_van_krevelen_individual:
+    if lc_object.do_plot_van_krevelen_individual:
         plot_van_krevelen_individual(all_msdfs_df, lc_object.output_directory)
-    if lc_object.plot_properties:
+    if lc_object.do_plot_properties:
         plot_properties(summary_df, lc_object.output_directory)
     return()
 
@@ -318,9 +319,9 @@ def run_LC_FTICR_workflow_wdl(
     ms_toml_path,
     mspeak_toml_path,
     mfsearch_toml_path,
-    plot_van_krevelen_all_ids,
-    plot_van_krevelen_individual,
-    plot_properties,
+    do_plot_van_krevelen_all_ids,
+    do_plot_van_krevelen_individual,
+    do_plot_properties,
 ):
     # read in LC_WorkflowParameters from wdl inputs
     lc_object = LC_FTICR_WorkflowParameters(start_time = start_time,
@@ -337,17 +338,18 @@ def run_LC_FTICR_workflow_wdl(
                                             ms_toml_path = ms_toml_path,
                                             mspeak_toml_path = mspeak_toml_path,
                                             mfsearch_toml_path = mfsearch_toml_path,
-                                            plot_van_krevelen_all_ids = plot_van_krevelen_all_ids,
-                                            plot_van_krevelen_individual = plot_van_krevelen_individual,
-                                            plot_properties = plot_properties)
+                                            do_plot_van_krevelen_all_ids = plot_van_krevelen_all_ids,
+                                            do_plot_van_krevelen_individual = plot_van_krevelen_individual,
+                                            do_plot_properties = plot_properties)
     # call functions
     tic_df = lc_object.init_parser_extract_data()
     all_msdfs_df, all_statdics_df = lc_object.process_with_time_block(tic_df)
     summary_df = lc_object.create_summary(all_statdics=all_statdics_df)
-    if lc_object.plot_van_krevelen_all_ids:
+    if lc_object.do_plot_van_krevelen_all_ids:
         plot_van_krevelen_all_ids(all_msdfs_df, lc_object.output_directory)
-    if lc_object.plot_van_krevelen_individual:
+    if lc_object.do_plot_van_krevelen_individual:
         plot_van_krevelen_individual(all_msdfs_df, lc_object.output_directory)
-    if lc_object.plot_properties:
+    if lc_object.do_plot_properties:
         plot_properties(summary_df, lc_object.output_directory)
+    click.echo("LC-FTICR workflow complete")
     return()

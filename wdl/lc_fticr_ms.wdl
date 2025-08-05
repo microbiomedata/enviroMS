@@ -32,13 +32,15 @@ task run_LCFTICR {
         File ms_toml_path
         File mspeak_toml_path
         File mfsearch_toml_path
-        Boolean plot_van_krevelen_all_ids
-        Boolean plot_van_krevelen_individual
-        Boolean plot_properties
+        Boolean do_plot_van_krevelen_all_ids
+        Boolean do_plot_van_krevelen_individual
+        Boolean do_plot_properties
         String? docker_image
     }
 
     command {
+        mkdir -p data
+
         enviroMS run_lc_fticr_wdl \
             ${sep=',' full_input_file_path} \
             ${start_time} \
@@ -54,9 +56,11 @@ task run_LCFTICR {
             ${ms_toml_path} \
             ${mspeak_toml_path} \
             ${mfsearch_toml_path} \
-            -a ${plot_van_krevelen_all_ids} \
-            -i ${plot_van_krevelen_individual } \
-            -p ${plot_properties}
+            -a ${do_plot_van_krevelen_all_ids} \
+            -i ${do_plot_van_krevelen_individual } \
+            -p ${do_plot_properties}
+
+
     }
 
     output {
