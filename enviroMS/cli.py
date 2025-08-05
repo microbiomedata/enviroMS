@@ -30,76 +30,76 @@ def cli():
     pass
 
 
-# @cli.command()
-# @click.argument(
-#     "mz",
-#     required=True,
-#     type=float,
-# )
-# @click.argument("corems_parameters_filepath", required=True, type=click.Path())
-# @click.argument("out", required=False, type=click.File("w"), default="-")
-# @click.option(
-#     "-e", "--error", "ppm_error", default=1.0, help="the marging of mass error (ppm)"
-# )
-# @click.option(
-#     "-r",
-#     "--radical",
-#     "isRadical",
-#     default=True,
-#     type=bool,
-#     help="include radical ion type",
-# )
-# @click.option(
-#     "-p",
-#     "--protonated",
-#     "isProtonated",
-#     default=True,
-#     type=bool,
-#     help="include (de)-protonated ion type",
-# )
-# @click.option(
-#     "-a",
-#     "--adduct",
-#     "isAdduct",
-#     default=False,
-#     type=bool,
-#     help="include adduct ion type",
-# )
+@cli.command(name="run_search_formula")
+@click.argument(
+    "mz",
+    required=True,
+    type=float,
+)
+@click.argument("corems_parameters_filepath", required=True, type=click.Path())
+@click.argument("out", required=False, type=click.File("w"), default="-")
+@click.option(
+    "-e", "--error", "ppm_error", default=1.0, help="the marging of mass error (ppm)"
+)
+@click.option(
+    "-r",
+    "--radical",
+    "isRadical",
+    default=True,
+    type=bool,
+    help="include radical ion type",
+)
+@click.option(
+    "-p",
+    "--protonated",
+    "isProtonated",
+    default=True,
+    type=bool,
+    help="include (de)-protonated ion type",
+)
+@click.option(
+    "-a",
+    "--adduct",
+    "isAdduct",
+    default=False,
+    type=bool,
+    help="include adduct ion type",
+)
 
-# def run_search_formula(
-#     config,
-#     mz,
-#     ppm_error,
-#     isRadical,
-#     isProtonated,
-#     isAdduct,
-#     out,
-#     corems_parameters_filepath,
-# ):  # settings_filepath
-#     """Search for molecular formula candidates to a given m/z value \n
-#     corems_parameters_filepath =' CoreMS Parameters File (TOML)'
-#     MZ = m/z value FLOAT\n
-#     out = filename to store results TEXT\n
-#     """
+def run_search_formula(
+    config,
+    mz,
+    ppm_error,
+    isRadical,
+    isProtonated,
+    isAdduct,
+    out,
+    corems_parameters_filepath,
+):  # settings_filepath
+    """Search for molecular formula candidates to a given m/z value \n
+    corems_parameters_filepath =' CoreMS Parameters File (TOML)'
+    MZ = m/z value FLOAT\n
+    out = filename to store results TEXT\n
+    """
 
-#     # if config.verbose:
-#     click.echo("", file=out)
-#     # dump_search_settings_yaml()
+    # if config.verbose:
+    click.echo("", file=out)
+    # dump_search_settings_yaml()
 
-#     click.echo("Searching formulas for %.5f" % mz, file=out)
+    click.echo("Searching formulas for %.5f" % mz, file=out)
 
-#     click.echo("", file=out)
+    click.echo("", file=out)
 
-#     click.echo(
-#         "Loading Searching Settings from %s" % corems_parameters_filepath, file=out
-#     )
+    click.echo(
+        "Loading Searching Settings from %s" % corems_parameters_filepath, file=out
+    )
 
-#     click.echo("", file=out)
+    click.echo("", file=out)
 
-#     run_molecular_formula_search(mz, out, corems_parameters_filepath)
+    run_molecular_formula_search(mz, out, corems_parameters_filepath)
 
 
-@cli.command()
+@cli.command(name="create_database")
 @click.argument("corems_parameters_file", required=True, type=str)
 @click.option("--jobs", "-j", default=4, help="'cpu's'")
 def create_database(corems_parameters_file, jobs):
@@ -110,7 +110,7 @@ def create_database(corems_parameters_file, jobs):
     generate_database(corems_parameters_file, jobs)
 
 
-@cli.command()
+@cli.command(name="run_di_wdl")
 @click.argument("file_paths", required=True, type=str)
 @click.argument("output_directory", required=True, type=str)
 @click.argument("output_type", required=True, type=str)
@@ -135,7 +135,7 @@ def run_di_wdl(*args, **kwargs):
     run_wdl_direct_infusion_workflow(*args, **kwargs)
 
 
-@cli.command()
+@cli.command(name="run_di")
 @click.argument("di_workflow_paramaters_file", required=True, type=str)
 @click.option("--jobs", "-j", default=4, help="'cpu's'")
 @click.option("--replicas", "-r", default=1, help="data replicas")
@@ -156,12 +156,6 @@ def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
         run_direct_infusion_workflow(di_workflow_paramaters_file, jobs, replicas)
 
 
-@cli.command()
-@click.argument("lcms_workflow_paramaters_file", required=True, type=str)
-@click.option("--jobs", "-j", default=4, help="'cpu's'")
-def run_lcms(workflow_paramaters_file, jobs):
-    # implement a mz search inside the mass spectrum, then run a search for molecular formula and the isotopologues
-    pass
 
 @cli.command(name="run_lc_fticr")
 @click.argument("lc_fticr_workflow_paramaters_file", required=True, type=str)
@@ -169,17 +163,19 @@ def run_lc_fticr(lc_fticr_workflow_paramaters_file):
     """Run the LC-FTICR workflow"""
     run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_file)
 
- 
+
 @cli.command(name="run_lc_fticr_wdl")
+@click.argument("full_input_file_path", required=True, type=str)
 @click.argument("start_time", required=True, type=float)
 @click.argument("end_time", required=True, type=float)
 @click.argument("time_block", required=True, type=float)
 @click.argument("refmasslist_neg", required=True, type=str)
-@click.argument("input_file_path", required=True, type=str)
+@click.argument("input_file_directory", required=True, type=str)
 @click.argument("input_file_name", required=True, type=str)
 @click.argument("output_directory", required=True, type=str)
 @click.argument("output_file_name", required=True, type=str)
 @click.argument("output_file_type", required=True, type=str)
+@click.argument("lc_fticr_toml_path", required=True, type=str)
 @click.argument("ms_toml_path", required=True, type=str)
 @click.argument("mspeak_toml_path", required=True, type=str)
 @click.argument("mfsearch_toml_path", required=True, type=str)
@@ -187,15 +183,17 @@ def run_lc_fticr(lc_fticr_workflow_paramaters_file):
 @click.option("--plot_van_krevelen_individual", "-i", default=True)
 @click.option("--plot_properties", "-p", default=True)
 def run_lc_fticr_wdl(
+    full_input_file_path,
     start_time,
     end_time,
     time_block,
     refmasslist_neg,
-    input_file_path,
+    input_file_directory,
     input_file_name,
     output_directory,
     output_file_name,
     output_file_type,
+    lc_fticr_toml_path,
     ms_toml_path,
     mspeak_toml_path,
     mfsearch_toml_path,
@@ -206,15 +204,17 @@ def run_lc_fticr_wdl(
     """Run the LC-FTICR Workflow using wdl"""
     click.echo("Running lc-fticr workflow")
     run_LC_FTICR_workflow_wdl(
+        full_input_file_path = full_input_file_path,
         start_time = start_time,
         end_time = end_time,
         time_block = time_block,
         refmasslist_neg = refmasslist_neg,
-        input_file_path = input_file_path,
+        input_file_directory = input_file_directory,
         input_file_name = input_file_name,
         output_directory = output_directory,
         output_file_name = output_file_name,
         output_file_type = output_file_type,
+        lc_fticr_toml_path = lc_fticr_toml_path,
         ms_toml_path = ms_toml_path,
         mspeak_toml_path = mspeak_toml_path,
         mfsearch_toml_path = mfsearch_toml_path,
@@ -225,7 +225,7 @@ def run_lc_fticr_wdl(
 
 
 ### toml template commands ###
-@cli.command()
+@cli.command(name="dump_corems_template")
 @click.argument("toml_file_name", required=True, type=click.Path())
 def dump_corems_template(toml_file_name):
     """Dumps a CoreMS toml file template

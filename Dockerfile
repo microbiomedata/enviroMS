@@ -26,6 +26,10 @@ RUN pip install pycparser \
 WORKDIR /enviroms
 COPY enviroMS/ /enviroms/enviroMS/
 COPY README.md disclaimer.txt Makefile requirements.txt setup.py /enviroms/
+COPY data/raw_data/lc_fticr /enviroms/data/raw_data/lc_fticr
+COPY data/reference/Hawkes_neg.ref /enviroms/data/reference/Hawkes_neg.ref
+COPY configuration/lc_fticr /enviroms/configuration/lc_fticr
+
 
 # Install the correct version of CoreMS from github
 RUN pip install git+https://github.com/EMSL-Computing/CoreMS.git@v3.6.0
