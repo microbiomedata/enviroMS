@@ -28,7 +28,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install miniwdl
 
-    - name: Run Lipidomics WDL with lipidomics test data and pushed Docker Image
+    - name: Run LC_FTICR WDL with lipidomics test data and pushed Docker Image
       run: |
         make wdl-run-lc
 
