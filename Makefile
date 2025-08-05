@@ -106,12 +106,15 @@ get-lcms-fticr-test-data:
 	# download configs
 	@echo "Downloading configuration files"
 	@mkdir -p configuration/lc_fticr
-	@if [ ! -f ./configuration/lc_fticr/lc_fticr_corems_massspectrum.toml || ! -f ./configuration/lc_fticr/lc_fticr_corems_mfsearch.toml || ! -f ./configuration/lc_fticr/lc_fticr_corems_mspeak.toml || ! -f ./configuration/lc_fticr/lc_fticr_enviroms.toml ]; \
-	then echo "Some or all config files do not exist, downloading"; \
+	@if [ ! -f configuration/lc_fticr/lc_fticr_corems_massspectrum.toml ] || \
+	     [ ! -f configuration/lc_fticr/lc_fticr_corems_mfsearch.toml ] || \
+	     [ ! -f configuration/lc_fticr/lc_fticr_corems_mspeak.toml ] || \
+	     [ ! -f configuration/lc_fticr/lc_fticr_enviroms.toml ]; then \
+	echo "Some or all config files do not exist, downloading"; \
 	curl -L -o configuration/lc_fticr/lcms_fticr_test_configs.zip https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/lcms_fticr_test_configs.zip; \
 	unzip -j configuration/lc_fticr/lcms_fticr_test_configs.zip -d configuration/lc_fticr/; \
 	rm configuration/lc_fticr/lcms_fticr_test_configs.zip; \
-	else echo "Configuration files downloaded and unzipped"; fi
+	else echo "Configuration files exist"; fi
 
 	# download data
 	@echo "Checking if test data file exists"
