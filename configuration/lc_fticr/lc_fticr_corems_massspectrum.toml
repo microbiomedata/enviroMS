@@ -1,6 +1,6 @@
 noise_threshold_method = 'log'
 noise_threshold_log_nsigma = 10
-picking_point_extrapolate = 3 
+picking_point_extrapolate = 3
 min_picking_mz = 100
 max_picking_mz = 700
 noise_min_mz = 100
@@ -9,3 +9,4 @@ calib_pol_order = 2
 calib_sn_threshold = 10
 calibration_ref_match_method = 'merged'
 calibration_ref_match_tolerance = 0.003
+verbose_processing = false
