@@ -2,6 +2,7 @@ name: Push docker image to Docker Hub
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   docker:
