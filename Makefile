@@ -120,7 +120,7 @@ get-lcms-fticr-test-data:
 	@echo "Checking if test data file exists"
 	@if [ ! -f ./data/raw_data/lc_fticr/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw ]; \
 	then echo "Test data file does not exist, downloading"; \
-	curl -fL --retry 3 --retry-delay 10 --max-time 500 -O --output-dir data/raw_data/lc_fticr/ https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw; \
+	curl -fL --retry 3 --retry-delay 10 --max-time 500 -O --output-dir data/raw_data/lc_fticr https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw; \
 	else echo "Test data file exists"; fi
 
 	# download ref
