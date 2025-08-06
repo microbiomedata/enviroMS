@@ -1,4 +1,4 @@
-name: Test workflows
+name: Test DI Workflow
 
 on:
   push:
@@ -27,39 +27,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install miniwdl
-    
-    - name: Download LCMS metabolomics database and test data
-      run: |
-        make get-test-data
 
-    - name: Run Lipidomics WDL with lipidomics test data and pushed Docker Image
+    - name: Run di WDL with pushed Docker Image
       run: |
-        miniwdl run wdl/metaMS_lcmslipidomics.wdl -i wdl/metams_input_lipidomics.json --verbose --no-cache --copy-input-files
+        make docker-run-di
 
-    - name: Run LCMS metabolomics WDL with test data and pushed Docker Image
-      run: |
-        make wdl-run-lcms-metab
-
-    - name: Run GCMS WDL with pushed Docker Image
-      run: |
-        miniwdl run wdl/metaMS_gcms.wdl -i wdl/metams_input_gcms.json --verbose --no-cache --copy-input-files
-  
     - name: Build Docker Image
       run: |
-        docker build -t local-metams:latest .
-    
+        make docker-build-local
+
     - name: Run GCMS WDL with local Docker Image based on Dockerfile
       run: |
-        miniwdl run wdl/metaMS_gcms.wdl -i wdl/metams_input_gcms_local_docker.json --verbose --no-cache --copy-input-files
-    
-    - name: Run Lipidomics WDL with local Docker Image based on Dockerfile
-      run: |
-        miniwdl run wdl/metaMS_lcmslipidomics.wdl -i wdl/metams_input_lipidomics_local_docker.json --verbose --no-cache --copy-input-files
-    
-    - name: Run LCMS metabolomics WDL with local Docker Image based on Dockerfile
-      run: |
-        miniwdl run wdl/metaMS_lcms_metabolomics.wdl -i wdl/metams_input_lcms_metabolomics_local_docker.json --verbose --no-cache --copy-input-files
-    
-    - name: Remove test data
-      run: |
-        rm -rf test_data
+        make wdl-run-di
