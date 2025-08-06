@@ -111,7 +111,7 @@ get-lcms-fticr-test-data:
 	     [ ! -f configuration/lc_fticr/lc_fticr_corems_mspeak.toml ] || \
 	     [ ! -f configuration/lc_fticr/lc_fticr_enviroms.toml ]; then \
 	echo "Some or all config files do not exist, downloading"; \
-	curl -L -o configuration/lc_fticr/lcms_fticr_test_configs.zip https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/lcms_fticr_test_configs.zip; \
+	curl -L -o configuration/lc_fticr/lcms_fticr_test_configs.zip https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/lcms_fticr_test_configs.zip; \
 	unzip -j configuration/lc_fticr/lcms_fticr_test_configs.zip -d configuration/lc_fticr/; \
 	rm configuration/lc_fticr/lcms_fticr_test_configs.zip; \
 	else echo "Configuration files exist"; fi
@@ -120,13 +120,13 @@ get-lcms-fticr-test-data:
 	@echo "Checking if test data file exists"
 	@if [ ! -f ./data/raw_data/lc_fticr/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw ]; \
 	then echo "Test data file does not exist, downloading"; \
-	curl -fL --retry 3 --retry-delay 10 --max-time 500 -O --output-dir data/raw_data/lc_fticr/ https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw; \
+	curl -fL --retry 3 --retry-delay 10 --max-time 500 -O --output-dir data/raw_data/lc_fticr/ https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw; \
 	else echo "Test data file exists"; fi
 
 	# download ref
 	@echo "Checking if reference file exists"
 	@if [ ! -f ./data/reference/Hawkes_neg.ref ]; then echo "Reference file does not exist, downloading"; \
-	curl -L -O --output-dir data/reference/ https://nmdcdemo.emsl.pnl.gov/nom/test_data/enviroms_lcms_nom_test/Hawkes_neg.ref; \
+	curl -L -O --output-dir data/reference/ https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/Hawkes_neg.ref; \
 	else echo "Reference file exists"; fi
 	@echo "LC-MS FT-ICR test files complete"
 
