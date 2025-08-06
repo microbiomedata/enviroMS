@@ -121,12 +121,12 @@ get-lcms-fticr-test-data:
 	@mkdir -p data/raw_data/lc_fticr
 	@if [ ! -f ./data/raw_data/lc_fticr/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw ]; \
 	then echo "Test data file does not exist, downloading"; \
-	curl -fL --retry 3 --retry-delay 10 --max-time 500 -O --output-dir data/raw_data/lc_fticr -o 20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw; \
+	curl -fL --retry 3 --retry-delay 10 --max-time 500 -O --output-dir data/raw_data/lc_fticr https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw; \
 	else echo "Test data file exists"; fi
 
 	# download ref
 	@echo "Checking if reference file exists"
-	@mkdir -p /data/reference
+	@mkdir -p data/reference
 	@if [ ! -f ./data/reference/Hawkes_neg.ref ]; then echo "Reference file does not exist, downloading"; \
 	curl -L -O --output-dir data/reference/ https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/Hawkes_neg.ref; \
 	else echo "Reference file exists"; fi
