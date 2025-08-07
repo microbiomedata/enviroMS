@@ -16,6 +16,7 @@ adduct_atoms_pos = ['Na']
 isProtonated = true
 isRadical= false
 isAdduct = false
+verbose_processing = false
 
 [MolecularFormulaSearch.usedAtoms]
 C = [ 1, 90,]
