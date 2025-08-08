@@ -20,7 +20,7 @@ COPY enviroMS/ /enviroms/enviroMS/
 COPY README.md disclaimer.txt Makefile requirements.txt setup.py /enviroms/
 COPY data/raw_data/lc_fticr /enviroms/data/raw_data/lc_fticr
 COPY data/reference/Hawkes_neg.ref /enviroms/data/reference/Hawkes_neg.ref
-COPY configuration/lc_fticr /enviroms/configuration/lc_fticr
+COPY configuration /enviroms/configuration
 
 
 # Install the correct version of CoreMS from github
