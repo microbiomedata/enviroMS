@@ -12,10 +12,8 @@ output_directory = "data/..."
 output_file_name = "..."
 output_file_type = ".csv"
 # corems and MF search settings
-lc_fticr_toml_path = "./configuration/lc_fticr/lc_fticr_enviroms.toml"
-ms_toml_path = "./configuration/lc_fticr/lc_fticr_corems_massspectrum.toml"
-mspeak_toml_path = "./configuration/lc_fticr/lc_fticr_corems_mspeak.toml"
-mfsearch_toml_path = "./configuration/lc_fticr/lc_fticr_corems_mfsearch.toml"
+lc_fticr_toml_path = "./configuration/lc_fticr_enviroms.toml"
+corems_toml_path = "./configuration/lc_fticr_corems.toml"
 # plot settings
 do_plot_van_krevelen_all_ids = true
 do_plot_van_krevelen_individual = true

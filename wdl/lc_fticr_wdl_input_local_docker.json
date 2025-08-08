@@ -14,10 +14,8 @@
     "lc_ft_icr_ms.run_LCFTICR.output_file_name": "lcfticr_test_output",
     "lc_ft_icr_ms.run_LCFTICR.output_file_type": "csv",
 
-    "lc_ft_icr_ms.run_LCFTICR.lc_fticr_toml_path": "./configuration/lc_fticr/lc_fticr_enviroms.toml",
-    "lc_ft_icr_ms.run_LCFTICR.ms_toml_path": "./configuration/lc_fticr/lc_fticr_corems_massspectrum.toml",
-    "lc_ft_icr_ms.run_LCFTICR.mspeak_toml_path": "./configuration/lc_fticr/lc_fticr_corems_mspeak.toml",
-    "lc_ft_icr_ms.run_LCFTICR.mfsearch_toml_path": "./configuration/lc_fticr/lc_fticr_corems_mfsearch.toml",
+    "lc_ft_icr_ms.run_LCFTICR.lc_fticr_toml_path": "./configuration/lc_fticr_enviroms.toml",
+    "lc_ft_icr_ms.run_LCFTICR.corems_toml_path": "./configuration/lc_fticr_corems.toml",
 
     "lc_ft_icr_ms.run_LCFTICR.do_plot_van_krevelen_all_ids": true,
     "lc_ft_icr_ms.run_LCFTICR.do_plot_van_krevelen_individual": true,

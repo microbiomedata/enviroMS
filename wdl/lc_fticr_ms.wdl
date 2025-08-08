@@ -29,9 +29,7 @@ task run_LCFTICR {
         String output_file_name
         String output_file_type
         File lc_fticr_toml_path
-        File ms_toml_path
-        File mspeak_toml_path
-        File mfsearch_toml_path
+        File corems_toml_path
         Boolean do_plot_van_krevelen_all_ids
         Boolean do_plot_van_krevelen_individual
         Boolean do_plot_properties
@@ -53,9 +51,7 @@ task run_LCFTICR {
             ${output_file_name} \
             ${output_file_type} \
             ${lc_fticr_toml_path} \
-            ${ms_toml_path} \
-            ${mspeak_toml_path} \
-            ${mfsearch_toml_path} \
+            ${corems_toml_path} \
             -a ${do_plot_van_krevelen_all_ids} \
             -i ${do_plot_van_krevelen_individual } \
             -p ${do_plot_properties}

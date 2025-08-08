@@ -176,9 +176,7 @@ def run_lc_fticr(lc_fticr_workflow_paramaters_file):
 @click.argument("output_file_name", required=True, type=str)
 @click.argument("output_file_type", required=True, type=str)
 @click.argument("lc_fticr_toml_path", required=True, type=str)
-@click.argument("ms_toml_path", required=True, type=str)
-@click.argument("mspeak_toml_path", required=True, type=str)
-@click.argument("mfsearch_toml_path", required=True, type=str)
+@click.argument("corems_toml_path", required=True, type=str)
 @click.option("--do_plot_van_krevelen_all_ids", "-a", default=True)
 @click.option("--do_plot_van_krevelen_individual", "-i", default=True)
 @click.option("--do_plot_properties", "-p", default=True)
@@ -194,9 +192,7 @@ def run_lc_fticr_wdl(
     output_file_name,
     output_file_type,
     lc_fticr_toml_path,
-    ms_toml_path,
-    mspeak_toml_path,
-    mfsearch_toml_path,
+    corems_toml_path,
     do_plot_van_krevelen_all_ids,
     do_plot_van_krevelen_individual,
     do_plot_properties,
@@ -215,9 +211,7 @@ def run_lc_fticr_wdl(
         output_file_name = output_file_name,
         output_file_type = output_file_type,
         lc_fticr_toml_path = lc_fticr_toml_path,
-        ms_toml_path = ms_toml_path,
-        mspeak_toml_path = mspeak_toml_path,
-        mfsearch_toml_path = mfsearch_toml_path,
+        corems_toml_path = corems_toml_path,
         do_plot_van_krevelen_all_ids = do_plot_van_krevelen_all_ids,
         do_plot_van_krevelen_individual = do_plot_van_krevelen_individual,
         do_plot_properties = do_plot_properties,

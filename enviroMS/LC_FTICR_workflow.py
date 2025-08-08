@@ -10,6 +10,7 @@ from tqdm import tqdm
 from dataclasses import dataclass
 import toml
 import click
+import re
 
 # Import CoreMS functions
 from corems.encapsulation.factory.parameters import MSParameters, LCMSParameters, MassSpectrumSetting, MassSpecPeakSetting
@@ -37,10 +38,8 @@ class LC_FTICR_WorkflowParameters:
     output_file_name: str = "..."
     output_file_type: str = ".csv"
     # corems and MF search settings
-    lc_fticr_toml_path:str = "configuration/lc_fticr/lc_fticr_corems_enviroms.toml"
-    ms_toml_path: str = "configuration/lc_fticr/lc_fticr_corems_massspectrum.toml"
-    mspeak_toml_path: str = "configuration/lc_fticr/lc_fticr_corems_mspeak.toml"
-    mfsearch_toml_path: str = "configuration/lc_fticr/lc_fticr_corems_mfsearch.toml"
+    lc_fticr_toml_path:str = "configuration/lc_fticr_enviroms.toml"
+    corems_toml_path: str = "configuration/lc_fticr/lc_fticr_corems.toml"
     # plot settings
     do_plot_van_krevelen_all_ids: bool = True
     do_plot_van_krevelen_individual: bool = True
@@ -49,6 +48,35 @@ class LC_FTICR_WorkflowParameters:
 
     def to_toml(self):
         return toml.dumps(asdict(self))
+
+    def create_temp_corems_toml(self):
+        # Ensure tmp directory exists
+        os.makedirs("tmp", exist_ok=True)
+        #read in and parse corems toml into several temp toml's
+        with open(self.corems_toml_path, 'r') as infile:
+            toml_content = infile.read()
+        # separate out MassSpectrum
+        pattern = r"\[MassSpectrum\][^\[]*"
+        masspectrum_part = re.search(pattern, toml_content)
+        masspectrum_part_string = masspectrum_part.group(0)
+        to_write = masspectrum_part_string.replace("[MassSpectrum]\n","")
+        with open("tmp/temp_masspectrum.toml", "w") as file:
+            file.writelines(to_write)
+        # separate out MolecularFormulaSearch
+        pattern = r"\[MolecularFormulaSearch\][\s\S]*?\[MolecularFormulaSearch\.usedAtoms\][\s\S]*?(?=\n\[|$)"
+        mfsearch_part = re.search(pattern, toml_content, re.DOTALL)
+        with open("tmp/temp_mfsearch.toml", "w") as file:
+            file.writelines(mfsearch_part.group(0))
+        # separate out MassSpecPeak
+        pattern = r"\[MassSpecPeak\][\s\S]*$"
+        mspeak_part = re.search(pattern, toml_content, re.DOTALL)
+        mspeak_part_string = mspeak_part.group(0)
+        to_write = mspeak_part_string.replace("[MassSpecPeak]\n","")
+        with open("tmp/temp_mspeak.toml", "w") as file:
+            file.writelines(to_write)
+        click.echo("Wrote temp toml files to ./tmp")
+        return()
+
 
 
     ### function that init parser and get data
@@ -61,7 +89,6 @@ class LC_FTICR_WorkflowParameters:
         # the (-1, -1) tells software to choose all scans that exist
 
         # Init parser object
-        print(file_in)
         parser = ImportMassSpectraThermoMSFileReader(file_in)
 
         # Get the TIC data, scan ids, etc
@@ -81,9 +108,9 @@ class LC_FTICR_WorkflowParameters:
         # scans = list(subset_df['scan'])
 
         # load_and_set_toml_parameters_ms(MSParameters, self.corems_toml_path)
-        with open(self.ms_toml_path, "r") as infile:
+        with open("tmp/temp_masspectrum.toml", "r") as infile:
             MSParameters.mass_spectrum = MassSpectrumSetting(**toml.load(infile))
-        with open(self.mspeak_toml_path, "r") as infile:
+        with open("tmp/temp_mspeak.toml", "r") as infile:
             MSParameters.ms_peak = MassSpecPeakSetting(**toml.load(infile))
         msobj = msreader.get_average_mass_spectrum(spectrum_mode = 'profile',auto_process=True)
 
@@ -91,7 +118,7 @@ class LC_FTICR_WorkflowParameters:
         MzDomainCalibration(msobj, self.refmasslist_neg).run()
 
         #set_mf_settings(msobj)
-        load_and_set_toml_parameters_class("MolecularFormulaSearch", msobj.molecular_search_settings, parameters_path=self.mfsearch_toml_path)
+        load_and_set_toml_parameters_class("MolecularFormulaSearch", msobj.molecular_search_settings, parameters_path="tmp/temp_mfsearch.toml")
 
         SearchMolecularFormulas(msobj).run_worker_mass_spectrum()
 
@@ -293,6 +320,7 @@ def run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_toml_file):
     with open(lc_fticr_workflow_paramaters_toml_file, "r") as infile:
         lc_object = LC_FTICR_WorkflowParameters(**toml.load(infile))
     # call functions
+    lc_object.create_temp_corems_toml()
     tic_df = lc_object.init_parser_extract_data()
     all_msdfs_df, all_statdics_df = lc_object.process_with_time_block(tic_df)
     summary_df = lc_object.create_summary(all_statdics=all_statdics_df)
@@ -316,9 +344,7 @@ def run_LC_FTICR_workflow_wdl(
     output_file_name,
     output_file_type,
     lc_fticr_toml_path,
-    ms_toml_path,
-    mspeak_toml_path,
-    mfsearch_toml_path,
+    corems_toml_path,
     do_plot_van_krevelen_all_ids,
     do_plot_van_krevelen_individual,
     do_plot_properties,
@@ -335,13 +361,12 @@ def run_LC_FTICR_workflow_wdl(
                                             output_file_name = output_file_name,
                                             output_file_type = output_file_type,
                                             lc_fticr_toml_path = lc_fticr_toml_path,
-                                            ms_toml_path = ms_toml_path,
-                                            mspeak_toml_path = mspeak_toml_path,
-                                            mfsearch_toml_path = mfsearch_toml_path,
+                                            corems_toml_path = corems_toml_path,
                                             do_plot_van_krevelen_all_ids = plot_van_krevelen_all_ids,
                                             do_plot_van_krevelen_individual = plot_van_krevelen_individual,
                                             do_plot_properties = plot_properties)
     # call functions
+    lc_object.create_temp_corems_toml()
     tic_df = lc_object.init_parser_extract_data()
     all_msdfs_df, all_statdics_df = lc_object.process_with_time_block(tic_df)
     summary_df = lc_object.create_summary(all_statdics=all_statdics_df)
