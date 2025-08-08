@@ -62,6 +62,6 @@ task run_LCFTICR {
     }
 
     runtime {
-        docker: "~{if defined(docker_image) then docker_image else 'microbiomedata/enviroms:latest'}"
+        docker: "~{if defined(docker_image) then docker_image else 'microbiomedata/enviroms:5.0.0'}"
     }
 }
