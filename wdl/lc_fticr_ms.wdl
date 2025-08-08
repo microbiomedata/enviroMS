@@ -23,8 +23,6 @@ task run_LCFTICR {
         Float end_time
         Float time_block
         File refmasslist_neg
-        String input_file_directory
-        String input_file_name
         String output_directory
         String output_file_name
         String output_file_type
@@ -45,8 +43,6 @@ task run_LCFTICR {
             ${end_time} \
             ${time_block} \
             ${refmasslist_neg} \
-            ${input_file_directory} \
-            ${input_file_name} \
             ${output_directory} \
             ${output_file_name} \
             ${output_file_type} \

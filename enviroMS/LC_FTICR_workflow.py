@@ -32,8 +32,6 @@ class LC_FTICR_WorkflowParameters:
     refmasslist_neg: str = "data/referencec/Hawkes_neg.ref"
     # input output paths
     full_input_file_path: str = "data/raw_data/..."
-    input_file_directory: str = "data/raw_data/..."
-    input_file_name: str = "..."
     output_directory: str = "data/..."
     output_file_name: str = "..."
     output_file_type: str = ".csv"
@@ -338,8 +336,6 @@ def run_LC_FTICR_workflow_wdl(
     time_block,
     refmasslist_neg,
     full_input_file_path,
-    input_file_directory,
-    input_file_name,
     output_directory,
     output_file_name,
     output_file_type,
@@ -355,8 +351,6 @@ def run_LC_FTICR_workflow_wdl(
                                             time_block = time_block,
                                             refmasslist_neg = refmasslist_neg,
                                             full_input_file_path = full_input_file_path,
-                                            input_file_directory = input_file_directory,
-                                            input_file_name = input_file_name,
                                             output_directory = output_directory,
                                             output_file_name = output_file_name,
                                             output_file_type = output_file_type,

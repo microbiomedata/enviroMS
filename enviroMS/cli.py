@@ -170,8 +170,6 @@ def run_lc_fticr(lc_fticr_workflow_paramaters_file):
 @click.argument("end_time", required=True, type=float)
 @click.argument("time_block", required=True, type=float)
 @click.argument("refmasslist_neg", required=True, type=str)
-@click.argument("input_file_directory", required=True, type=str)
-@click.argument("input_file_name", required=True, type=str)
 @click.argument("output_directory", required=True, type=str)
 @click.argument("output_file_name", required=True, type=str)
 @click.argument("output_file_type", required=True, type=str)
@@ -186,8 +184,6 @@ def run_lc_fticr_wdl(
     end_time,
     time_block,
     refmasslist_neg,
-    input_file_directory,
-    input_file_name,
     output_directory,
     output_file_name,
     output_file_type,
@@ -205,8 +201,6 @@ def run_lc_fticr_wdl(
         end_time = end_time,
         time_block = time_block,
         refmasslist_neg = refmasslist_neg,
-        input_file_directory = input_file_directory,
-        input_file_name = input_file_name,
         output_directory = output_directory,
         output_file_name = output_file_name,
         output_file_type = output_file_type,

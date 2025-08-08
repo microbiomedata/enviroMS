@@ -6,8 +6,6 @@ time_block = 30 #seconds
 # Reference mass list:
 refmasslist_neg = "data/reference/Hawkes_neg.ref"
 # input output paths
-input_file_directory = "data/raw_data/..."
-input_file_name = "..."
 output_directory = "data/..."
 output_file_name = "..."
 output_file_type = ".csv"
