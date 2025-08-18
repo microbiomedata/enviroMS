@@ -44,8 +44,8 @@ docker-push:
 	@docker build --no-cache -t corilo/enviroms:$(version) .
 	@docker push corilo/enviroms:$(version)
 	
-	@docker image tag corilo/enviroms:$(version) corilo/enviroms:latest
-	@docker push corilo/enviroms:latest
+	@docker image tag corilo/enviroms:$(version) corilo/enviroms:$(version)
+	@docker push corilo/enviroms:$(version)
 
 
 docker-push-im:
@@ -53,16 +53,16 @@ docker-push-im:
 	@docker build --no-cache -t alexandriai168/enviroms:$(version) .
 	@docker push alexandriai168/enviroms:$(version)
 	
-	@docker image tag alexandriai168/enviroms:$(version) alexandriai168/enviroms:latest
-	@docker push alexandriai168/enviroms:latest
+	@docker image tag alexandriai168/enviroms:$(version) alexandriai168/enviroms:$(version)
+	@docker push alexandriai168/enviroms:$(version)
 
 
 docker-nmdc:
 	@echo microbiomedata/enviroms:$(version)
 	@docker buildx create --use
 	@docker buildx build --platform linux/amd64,linux/arm64 --no-cache -t microbiomedata/enviroms:$(version) --push .
-	@docker buildx imagetools create microbiomedata/enviroms:$(version) -t microbiomedata/enviroms:latest
-	@docker buildx imagetools inspect microbiomedata/enviroms:latest
+	@docker buildx imagetools create microbiomedata/enviroms:$(version) -t microbiomedata/enviroms:$(version)
+	@docker buildx imagetools inspect microbiomedata/enviroms:$(version)
 	
 	
 docker-build:
@@ -72,20 +72,20 @@ docker-build:
 
 docker-build-local:
 
-	docker build -t local-enviroms:latest .
+	docker build -t local-enviroms:$(version) .
 
 
 docker-run-di:
 
 	@echo $(data_dir)
 	@echo $(configuration_dir)
-	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:latest run-di /enviroms/configuration/enviroms.toml
+	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:$(version) run-di /enviroms/configuration/enviroms.toml
 
 docker-run-lc:
 
 	@echo $(data_dir)
 	@echo $(configuration_dir)
-	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:latest run_lc_fticr /enviroms/configuration/lc_fticr/lc_fticr_enviroms.toml
+	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:$(version) run_lc_fticr /enviroms/configuration/lc_fticr/lc_fticr_enviroms.toml
 
 cascade-run:
 
