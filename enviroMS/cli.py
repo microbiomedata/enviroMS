@@ -160,37 +160,12 @@ def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
 @cli.command(name="run_lc_fticr")
 @click.argument("lc_fticr_workflow_paramaters_file", required=True, type=str)
 def run_lc_fticr(lc_fticr_workflow_paramaters_file):
-    """Run the LC FTICR MS workflow
+    """Run the LC FTICR MS workflow.
 
     Parameters
     ----------
-    full_input_file_path : str
-        The path to the toml file with the workflow parameters
-    start_time : int
-        The paths to the input files, separated by commas as one string
-    end_time : int
-        The directory where the output files will be stored
-    time_block : int
-        The path corems parameters toml file
-    refmasslist_neg : str
-        The path to the sqlite database for spectra searching
-    output_directory : str
-        The path to the scan translator file
-    output_file_name : str
-        The number of cores to use for processing
-    output_file_type : str
-        The number of cores to use for processing
-    lc_fticr_toml_path : str
-        The number of cores to use for processing
-    corems_toml_path : str
-        The number of cores to use for processing
-    do_plot_van_krevelen_all_ids : bool
-        The number of cores to use for processing
-    do_plot_van_krevelen_individual : bool
-        The number of cores to use for processing
-    do_plot_properties : bool
-        The number of cores to use for processing
-
+    lc_fticr_workflow_paramaters_file : str
+        The path to the TOML file containing the workflow parameters.
     """
 
     run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_file)
