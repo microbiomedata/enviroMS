@@ -23,6 +23,39 @@ from corems.encapsulation.input.parameter_from_json import load_and_set_toml_par
 ################################### LC-FTICR OBJECT AND OBJECT'S METHODS ###################################
 @dataclass
 class LC_FTICR_WorkflowParameters:
+    """
+    Data class to establish workflow parameters.
+
+    Parameters
+    ----------
+    start_time : int
+        Start time (minutes).
+    end_time : int
+        End time (minutes).
+    time_block : int
+        Time block (seconds).
+    refmasslist_neg : str
+        Path to reference m/z database.
+    full_input_file_path : str
+        The path of file to process.
+    output_directory : str
+        Path to save outputs.
+    output_file_name : str
+        Output filename.
+    output_file_type : str
+        Output extension.
+    lc_fticr_toml_path : str
+        The path to the toml file with the lc-fticr ms workflow parameters.
+    corems_toml_path : str
+        The path to the toml file with the CoreMS parameters.
+    do_plot_van_krevelen_all_ids : bool
+        Output van krevelen plot for all ID's
+    do_plot_van_krevelen_individual : bool
+        Output individual van krevelen plot for all ID's
+    do_plot_properties : bool
+        Output plot of properties.
+    """
+
     # Time Block Parameters:
     start_time: int # minutes
     end_time: int # minutes
@@ -79,6 +112,13 @@ class LC_FTICR_WorkflowParameters:
 
     ### function that init parser and get data
     def init_parser_extract_data(self) -> pd.DataFrame:
+        """
+        Initialize the parser and extract data from input file.
+        This function reads the input file, extracts the Total Ion Chromatogram (TIC) data,
+        and returns a DataFrame containing the scans, TIC values, and time.
+
+        """
+
         # Define datafile location
         file_in = self.full_input_file_path
 
@@ -103,6 +143,25 @@ class LC_FTICR_WorkflowParameters:
     ### process timeblocks
     # Process the time block mass spectrum
     def proc_time_block_inner(self, msreader, datafile, block):
+        """
+        Process time blocks of mass spectra.
+
+        Parameters:
+        ----------
+        msreader : ImportMassSpectraThermoMSFileReader
+            The mass spectrum reader object.
+        datafile : str
+            The path to the data file.
+        block : int
+            The time block number.
+
+        Returns:
+        -------
+        msdf : pd.DataFrame
+            DataFrame containing the processed mass spectrum data.
+        statdict : dict
+            Dictionary containing statistics for the processed mass spectrum.
+        """
         # scans = list(subset_df['scan'])
 
         # load_and_set_toml_parameters_ms(MSParameters, self.corems_toml_path)
@@ -143,6 +202,21 @@ class LC_FTICR_WorkflowParameters:
         return(msdf, statdict)
 
     def process_with_time_block(self, tic_df):
+        """
+        Process the mass spectra with time blocks.
+
+        Parameters:
+        ----------
+        tic_df : pd.DataFrame
+            DataFrame containing the Total Ion Chromatogram (TIC) data with time and scan information.
+        Returns:
+        -------
+        all_msdfs : pd.DataFrame
+            DataFrame containing all processed mass spectra data.
+        all_statdics : list
+            List of dictionaries containing statistics for each time block.
+
+        """
         # Strip out the time where there's no useful data
         file_in = self.full_input_file_path
         tic_df = tic_df[(tic_df['time'] > self.start_time) & (tic_df['time'] < self.end_time)]
@@ -178,6 +252,17 @@ class LC_FTICR_WorkflowParameters:
 
 
     def create_summary(self, all_statdics):
+        """
+        Create a summary DataFrame from the list of dictionaries containing statistics.
+        Parameters:
+        ----------
+        all_statdics : list
+            List of dictionaries containing statistics for each time block.
+        Returns:
+        -------
+        summary_df : pd.DataFrame
+            DataFrame containing the summary statistics for all time blocks.
+        """
         # Flatten the list of dictionaries
         flat_list = [inner_dict for outer_dict in all_statdics for inner_dict in outer_dict.values()]
         # Create a DataFrame
@@ -191,6 +276,19 @@ class LC_FTICR_WorkflowParameters:
 
 ## for creating plots
 def filter_out_common_background(df):
+    """
+    Filter out common background entries in the DataFrame based on 'Molecular Formula' and 'Peak Height'.
+
+    Parameters:
+    ----------
+    df : pd.DataFrame
+        DataFrame containing 'Molecular Formula', 'Peak Height', and 'block' columns.
+    Returns:
+    -------
+    filtered_df : pd.DataFrame
+        DataFrame with common background entries removed.
+    """
+
     formula_block_counts = df.pivot_table(index='Molecular Formula', columns='block', aggfunc='size', fill_value=0)
 
     # Filter to get 'Molecular Formula' entries that appear in all blocks
@@ -214,6 +312,19 @@ def filter_out_common_background(df):
 
 ### create plots
 def plot_van_krevelen_all_ids(all_msdfs_path, output_dir):
+    """
+    Plot a van Krevelen diagram for all IDs in the provided DataFrame or CSV file.
+    Parameters:
+    ----------
+    all_msdfs_path : str or pd.DataFrame
+        Path to the CSV file containing all mass spectra data or a DataFrame.
+    output_dir : str
+        Directory where the plot will be saved.
+    Returns:
+    -------
+    None
+    """
+
     if isinstance(all_msdfs_path,str):
         all_msdfs_df = pd.read_csv(all_msdfs_path)
     else:
@@ -240,6 +351,18 @@ def plot_van_krevelen_all_ids(all_msdfs_path, output_dir):
     plt.show()
 
 def plot_van_krevelen_individual(all_msdfs_path, output_dir):
+    """
+    Plot individual van Krevelen diagrams for each time block in the provided DataFrame or CSV file.
+    Parameters:
+    ----------
+    all_msdfs_path : str or pd.DataFrame
+        Path to the CSV file containing all mass spectra data or a DataFrame.
+    output_dir : str
+        Directory where the plots will be saved.
+    Returns:
+    -------
+    None
+    """
     if isinstance(all_msdfs_path,str):
         all_msdfs_df = pd.read_csv(all_msdfs_path)
     else:
@@ -278,6 +401,18 @@ def plot_van_krevelen_individual(all_msdfs_path, output_dir):
     fig.savefig(output_dir+'TimeBlockIDs.png',dpi=300,bbox_inches='tight')
 
 def plot_properties(summary_df_path,output_dir):
+    """
+    Plot trends and distributions of various properties from the summary DataFrame or CSV file.
+    Parameters:
+    ----------
+    summary_df_path : str or pd.DataFrame
+        Path to the CSV file containing summary statistics or a DataFrame.
+    output_dir : str
+        Directory where the plots will be saved.
+    Returns:
+    -------
+    None
+    """
     if isinstance(summary_df_path,str):
         summary_df = pd.read_csv(summary_df_path)
     else:
@@ -314,6 +449,19 @@ def plot_properties(summary_df_path,output_dir):
 ################################### RUN LC-FTICR WORKFLOW ###################################
 
 def run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_toml_file):
+    """
+    Run LC-FTICR metabolomics workflow.
+
+    Parameters
+    ----------
+    lc_fticr_workflow_paramaters_toml_file : str
+        Path to workflow parameters file.
+    Returns
+    -------
+    None
+
+    """
+
     # read in LC_WorkflowParameters from toml file
     with open(lc_fticr_workflow_paramaters_toml_file, "r") as infile:
         lc_object = LC_FTICR_WorkflowParameters(**toml.load(infile))
@@ -345,6 +493,41 @@ def run_LC_FTICR_workflow_wdl(
     do_plot_van_krevelen_individual,
     do_plot_properties,
 ):
+    """
+    Run LC-FTICR metabolomics workflow with parameters from WDL inputs.
+    Parameters
+    ----------
+    start_time : int
+        Start time (minutes).
+    end_time : int
+        End time (minutes).
+    time_block : int
+        Time block (seconds).
+    refmasslist_neg : str
+        Path to reference m/z database.
+    full_input_file_path : str
+        The path of file to process.
+    output_directory : str
+        Path to save outputs.
+    output_file_name : str
+        Output filename.
+    output_file_type : str
+        Output extension.
+    lc_fticr_toml_path : str
+        The path to the toml file with the lc-fticr ms workflow parameters.
+    corems_toml_path : str
+        The path to the toml file with the CoreMS parameters.
+    do_plot_van_krevelen_all_ids : bool
+        Output van krevelen plot for all ID's.
+    do_plot_van_krevelen_individual : bool
+        Output individual van krevelen plot for all ID's.
+    do_plot_properties : bool
+        Output plot of properties.
+
+    Returns
+    -------
+    None
+    """
     # read in LC_WorkflowParameters from wdl inputs
     lc_object = LC_FTICR_WorkflowParameters(start_time = start_time,
                                             end_time = end_time,

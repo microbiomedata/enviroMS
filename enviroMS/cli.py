@@ -121,13 +121,13 @@ def create_database(corems_parameters_file, jobs):
 @click.argument("raw_file_final_scan", required=True, type=int)
 @click.argument("is_centroid", required=True, type=bool)
 @click.argument("calibration_ref_file_path", required=False, type=str)
-@click.option("--calibrate", "-c", default=True)
-@click.option("--plot_mz_error", "-e", default=True)
-@click.option("--plot_ms_assigned_unassigned", "-a", default=True)
-@click.option("--plot_c_dbe", "-cb", default=True)
-@click.option("--plot_van_krevelen", "-vk", default=True)
-@click.option("--plot_ms_classes", "-mc", default=True)
-@click.option("--plot_mz_error_classes", "-ec", default=True)
+@click.option("--calibrate", "-c", default=True, help="Calibrate the raw files")
+@click.option("--plot_mz_error", "-e", default=True, help="Plot m/z error")
+@click.option("--plot_ms_assigned_unassigned", "-a", default=True, help="Plot MS assigned and unassigned")
+@click.option("--plot_c_dbe", "-cb", default=True, help="Plot C vs DBE")
+@click.option("--plot_van_krevelen", "-vk", default=True, help="Plot Van Krevelen diagram")
+@click.option("--plot_ms_classes", "-mc", default=True, help="Plot MS classes")
+@click.option("--plot_mz_error_classes", "-ec", default=True, help="Plot m/z error classes")
 @click.option("--jobs", "-j", default=4, help="'cpu's'")
 def run_di_wdl(*args, **kwargs):
     """Run the Direct Infusion Workflow using wdl"""
@@ -160,7 +160,39 @@ def run_di(di_workflow_paramaters_file, jobs, replicas, tasks, mpi):
 @cli.command(name="run_lc_fticr")
 @click.argument("lc_fticr_workflow_paramaters_file", required=True, type=str)
 def run_lc_fticr(lc_fticr_workflow_paramaters_file):
-    """Run the LC-FTICR workflow"""
+    """Run the LC FTICR MS workflow
+
+    Parameters
+    ----------
+    full_input_file_path : str
+        The path to the toml file with the workflow parameters
+    start_time : int
+        The paths to the input files, separated by commas as one string
+    end_time : int
+        The directory where the output files will be stored
+    time_block : int
+        The path corems parameters toml file
+    refmasslist_neg : str
+        The path to the sqlite database for spectra searching
+    output_directory : str
+        The path to the scan translator file
+    output_file_name : str
+        The number of cores to use for processing
+    output_file_type : str
+        The number of cores to use for processing
+    lc_fticr_toml_path : str
+        The number of cores to use for processing
+    corems_toml_path : str
+        The number of cores to use for processing
+    do_plot_van_krevelen_all_ids : bool
+        The number of cores to use for processing
+    do_plot_van_krevelen_individual : bool
+        The number of cores to use for processing
+    do_plot_properties : bool
+        The number of cores to use for processing
+
+    """
+
     run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_file)
 
 
@@ -175,9 +207,9 @@ def run_lc_fticr(lc_fticr_workflow_paramaters_file):
 @click.argument("output_file_type", required=True, type=str)
 @click.argument("lc_fticr_toml_path", required=True, type=str)
 @click.argument("corems_toml_path", required=True, type=str)
-@click.option("--do_plot_van_krevelen_all_ids", "-a", default=True)
-@click.option("--do_plot_van_krevelen_individual", "-i", default=True)
-@click.option("--do_plot_properties", "-p", default=True)
+@click.option("--do_plot_van_krevelen_all_ids", "-a", default=True, help="Creates Van Krevelen plots for all ids.")
+@click.option("--do_plot_van_krevelen_individual", "-i", default=True, help="Creates Van Krevelen plots for all ids individually.")
+@click.option("--do_plot_properties", "-p", default=True, help="Creates plots of properties for run.")
 def run_lc_fticr_wdl(
     full_input_file_path,
     start_time,
@@ -193,7 +225,38 @@ def run_lc_fticr_wdl(
     do_plot_van_krevelen_individual,
     do_plot_properties,
 ):
-    """Run the LC-FTICR Workflow using wdl"""
+    """
+    Run the LC FTICR MS workflow using WDL.
+
+    Parameters
+    ----------
+    full_input_file_path : str
+        The path to the input file containing LC-FTICR data
+    start_time : float
+        The start time for the LC-FTICR analysis
+    end_time : float
+        The end time for the LC-FTICR analysis
+    time_block : float
+        The time block for processing the LC-FTICR data
+    refmasslist_neg : str
+        The path to the reference mass list for negative ion mode
+    output_directory : str
+        The directory where the output files will be stored
+    output_file_name : str
+        The name of the output file to be generated
+    output_file_type : str
+        The type of the output file (e.g., csv, json)
+    lc_fticr_toml_path : str
+        The path to the LC-FTICR workflow parameters file in TOML format
+    corems_toml_path : str
+        The path to the CoreMS parameters file in TOML format
+    do_plot_van_krevelen_all_ids : bool
+        Whether to create Van Krevelen plots for all IDs
+    do_plot_van_krevelen_individual : bool
+        Whether to create individual Van Krevelen plots for each ID
+    do_plot_properties : bool
+        Whether to create plots of properties for the run
+    """
     click.echo("Running lc-fticr workflow")
     run_LC_FTICR_workflow_wdl(
         full_input_file_path = full_input_file_path,
