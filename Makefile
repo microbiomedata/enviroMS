@@ -44,35 +44,94 @@ docker-push:
 	@docker build --no-cache -t corilo/enviroms:$(version) .
 	@docker push corilo/enviroms:$(version)
 	
-	@docker image tag corilo/enviroms:$(version) corilo/enviroms:latest
-	@docker push corilo/enviroms:latest
+	@docker image tag corilo/enviroms:$(version) corilo/enviroms:$(version)
+	@docker push corilo/enviroms:$(version)
 
-	@docker image tag corilo/enviroms:$(version) microbiomedata/enviroms:$(version)
-	@docker push microbiomedata/enviroms:$(version)
 
-	@docker image tag corilo/enviroms:$(version) microbiomedata/enviroms:latest
-	@docker push microbiomedata/enviroms:latest
+docker-push-im:
+	@echo alexandriai168/enviroms:$(version)
+	@docker build --no-cache -t alexandriai168/enviroms:$(version) .
+	@docker push alexandriai168/enviroms:$(version)
+	
+	@docker image tag alexandriai168/enviroms:$(version) alexandriai168/enviroms:$(version)
+	@docker push alexandriai168/enviroms:$(version)
+
 
 docker-nmdc:
 	@echo microbiomedata/enviroms:$(version)
 	@docker buildx create --use
 	@docker buildx build --platform linux/amd64,linux/arm64 --no-cache -t microbiomedata/enviroms:$(version) --push .
-	@docker buildx imagetools create microbiomedata/enviroms:$(version) -t microbiomedata/enviroms:latest
-	@docker buildx imagetools inspect microbiomedata/enviroms:latest
+	@docker buildx imagetools create microbiomedata/enviroms:$(version) -t microbiomedata/enviroms:$(version)
+	@docker buildx imagetools inspect microbiomedata/enviroms:$(version)
 	
 	
 docker-build:
 
 	docker build -t enviroms:local .
 
-docker-run:
 
-	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:latest run-di /enviroms/configuration/enviroms.toml
+docker-build-local:
+
+	docker build -t local-enviroms:$(version) .
+
+
+docker-run-di:
+
+	@echo $(data_dir)
+	@echo $(configuration_dir)
+	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:$(version) run-di /enviroms/configuration/enviroms.toml
+
+docker-run-lc:
+
+	@echo $(data_dir)
+	@echo $(configuration_dir)
+	docker run -v $(data_dir):/enviroms/data -v $(configuration_dir):/enviroms/configuration microbiomedata/enviroms:$(version) run_lc_fticr /enviroms/configuration/lc_fticr/lc_fticr_enviroms.toml
 
 cascade-run:
 
 	srun -A mscms -t 240 -N 1 -n time enviroMS run-di -r 2 --mpi  /dtemp/mscms/enviroms/data/configuration/enviroms.toml
 
-wdl-run :
+wdl-run-di :
  	 
-	 miniwdl run wdl/enviroMS.wdl -i wdl/enviroms_input.json --verbose --no-cache --copy-input-files
+	miniwdl run wdl/di_fticr_ms.wdl -i wdl/di_fticr_wdl_input.json --verbose --no-cache --copy-input-files
+
+wdl-run-lc :
+ 	 
+	miniwdl run wdl/lc_fticr_ms.wdl -i wdl/lc_fticr_wdl_input.json --verbose --no-cache --copy-input-files
+
+get-lcms-fticr-test-data:
+
+	@echo "Downloading test files for LC-MS FT-ICR workflow"
+
+	# download configs
+	@echo "Downloading configuration files"
+	@mkdir -p configuration/lc_fticr
+	@if [ ! -f configuration/lc_fticr/lc_fticr_corems_massspectrum.toml ] || \
+	     [ ! -f configuration/lc_fticr/lc_fticr_corems_mfsearch.toml ] || \
+	     [ ! -f configuration/lc_fticr/lc_fticr_corems_mspeak.toml ] || \
+	     [ ! -f configuration/lc_fticr/lc_fticr_enviroms.toml ]; then \
+	echo "Some or all config files do not exist, downloading"; \
+	curl -L -o configuration/lc_fticr/lcms_fticr_test_configs.zip https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/lcms_fticr_test_configs.zip; \
+	unzip -j configuration/lc_fticr/lcms_fticr_test_configs.zip -d configuration/lc_fticr/; \
+	rm configuration/lc_fticr/lcms_fticr_test_configs.zip; \
+	else echo "Configuration files exist"; fi
+
+	# download data
+	@echo "Checking if test data file exists"
+	@mkdir -p data/raw_data/lc_fticr
+	@if [ ! -f ./data/raw_data/lc_fticr/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw ]; \
+	then echo "Test data file does not exist, downloading"; \
+	curl -fL --retry 3 --retry-delay 10 --max-time 500 -O --output-dir data/raw_data/lc_fticr https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw; \
+	else echo "Test data file exists"; fi
+
+	# download ref
+	@echo "Checking if reference file exists"
+	@mkdir -p data/reference
+	@if [ ! -f ./data/reference/Hawkes_neg.ref ]; then echo "Reference file does not exist, downloading"; \
+	curl -L -O --output-dir data/reference/ https://nmdcdemo.emsl.pnnl.gov/nom/test_data/enviroms_lcms_nom_test/Hawkes_neg.ref; \
+	else echo "Reference file exists"; fi
+	@echo "LC-MS FT-ICR test files complete"
+
+wdl-run-lc-local:
+
+	miniwdl run wdl/lc_fticr_ms.wdl -i wdl/lc_fticr_wdl_input_local_docker.json --verbose --no-cache --copy-input-files

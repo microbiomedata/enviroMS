@@ -1,0 +1,46 @@
+name: Test LC-FTICR Workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  run-miniwdl:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install Docker
+      run: |
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sh get-docker.sh
+        sudo usermod -aG docker $USER
+
+    - name: Install MiniWDL
+      run: |
+        python -m pip install --upgrade pip
+        pip install miniwdl
+
+    - name: Download LC-FTICR database and test data
+      run: |
+        make get-lcms-fticr-test-data
+
+    - name: Build Docker Image
+      run: |
+        make docker-build-local
+
+    - name: Run LC-FTICR WDL with local Docker Image based on Dockerfile
+      run: |
+        make wdl-run-lc-local
+
+    - name: Run LC_FTICR WDL with lipidomics test data and pushed Docker Image
+      run: |
+        make wdl-run-lc
+

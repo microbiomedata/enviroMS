@@ -13,6 +13,10 @@ __pycache__/
 # C extensions
 *.so
 mana_workshop/
+data/raw_data/lc_fticr/*
+!data/raw_data/lc_fticr/.gitkeep
+2025*/
+_LAST
 
 
 # Distribution / packaging
@@ -33,3 +37,6 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Raw data files
+*.raw

@@ -1,0 +1,18 @@
+# Time Block Parameters:
+full_input_file_path = "./data/raw_data/lc_fticr/20231109_60885_SRFA_50ppm_5uL_LC_PolarAdv-001262_231109183242.raw"
+start_time = 1.5 # minutes
+end_time = 9.5 # minutes
+time_block = 30 #seconds
+# Reference mass list:
+refmasslist_neg = "data/reference/Hawkes_neg.ref"
+# input output paths
+output_directory = "data/..."
+output_file_name = "..."
+output_file_type = ".csv"
+# corems and MF search settings
+lc_fticr_toml_path = "./configuration/lc_fticr_enviroms.toml"
+corems_toml_path = "./configuration/lc_fticr_corems.toml"
+# plot settings
+do_plot_van_krevelen_all_ids = true
+do_plot_van_krevelen_individual = true
+do_plot_properties = true
