@@ -347,7 +347,7 @@ def plot_van_krevelen_all_ids(all_msdfs_path, output_dir, output_name):
     ax.set_ylabel('H/C')
     ax.set_xlim(0,1.25)
     ax.set_ylim(0.25,2.25)
-    fig.savefig(output_dir + output_name + '_van_kreelen_AllIDs.png',dpi=300,bbox_inches='tight')
+    fig.savefig(output_dir + output_name + '_van_krevelen_AllIDs.png',dpi=300,bbox_inches='tight')
     plt.show()
 
 def plot_van_krevelen_individual(all_msdfs_path, output_dir, output_name):
@@ -398,7 +398,7 @@ def plot_van_krevelen_individual(all_msdfs_path, output_dir, output_name):
 
     # Show the plot
     plt.show()
-    fig.savefig(output_dir + output_name +'_TimeBlockIDs.png',dpi=300,bbox_inches='tight')
+    fig.savefig(output_dir + output_name +'_van_krevelen_TimeBlocks.png',dpi=300,bbox_inches='tight')
 
 def plot_properties(summary_df_path,output_dir,output_name):
     """
