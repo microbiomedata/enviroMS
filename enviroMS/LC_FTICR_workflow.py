@@ -267,7 +267,7 @@ class LC_FTICR_WorkflowParameters:
         flat_list = [inner_dict for outer_dict in all_statdics for inner_dict in outer_dict.values()]
         # Create a DataFrame
         summary_df = pd.DataFrame(flat_list)
-        summary_df.to_csv(self.output_directory + self.output_file_name +"-statdicts.csv")
+        summary_df.to_csv(self.output_directory + self.output_file_name +"_statdicts.csv")
         return(summary_df)
 
 
