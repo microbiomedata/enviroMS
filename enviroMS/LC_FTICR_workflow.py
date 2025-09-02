@@ -267,7 +267,7 @@ class LC_FTICR_WorkflowParameters:
         flat_list = [inner_dict for outer_dict in all_statdics for inner_dict in outer_dict.values()]
         # Create a DataFrame
         summary_df = pd.DataFrame(flat_list)
-        summary_df.to_csv(self.output_directory + self.output_file_name +"-statdicts.csv")
+        summary_df.to_csv(self.output_directory + self.output_file_name +"_statdicts.csv")
         return(summary_df)
 
 
@@ -311,7 +311,7 @@ def filter_out_common_background(df):
     return filtered_df
 
 ### create plots
-def plot_van_krevelen_all_ids(all_msdfs_path, output_dir):
+def plot_van_krevelen_all_ids(all_msdfs_path, output_dir, output_name):
     """
     Plot a van Krevelen diagram for all IDs in the provided DataFrame or CSV file.
     Parameters:
@@ -347,10 +347,10 @@ def plot_van_krevelen_all_ids(all_msdfs_path, output_dir):
     ax.set_ylabel('H/C')
     ax.set_xlim(0,1.25)
     ax.set_ylim(0.25,2.25)
-    fig.savefig(output_dir+'van_kreelen_AllIDs.png',dpi=300,bbox_inches='tight')
+    fig.savefig(output_dir + output_name + '_van_krevelen_AllIDs.png',dpi=300,bbox_inches='tight')
     plt.show()
 
-def plot_van_krevelen_individual(all_msdfs_path, output_dir):
+def plot_van_krevelen_individual(all_msdfs_path, output_dir, output_name):
     """
     Plot individual van Krevelen diagrams for each time block in the provided DataFrame or CSV file.
     Parameters:
@@ -398,9 +398,9 @@ def plot_van_krevelen_individual(all_msdfs_path, output_dir):
 
     # Show the plot
     plt.show()
-    fig.savefig(output_dir+'TimeBlockIDs.png',dpi=300,bbox_inches='tight')
+    fig.savefig(output_dir + output_name +'_van_krevelen_TimeBlocks.png',dpi=300,bbox_inches='tight')
 
-def plot_properties(summary_df_path,output_dir):
+def plot_properties(summary_df_path,output_dir,output_name):
     """
     Plot trends and distributions of various properties from the summary DataFrame or CSV file.
     Parameters:
@@ -443,7 +443,7 @@ def plot_properties(summary_df_path,output_dir):
 
     # Adjust layout
     plt.tight_layout()
-    fig.savefig(output_dir+'property_plots.png',dpi=300,bbox_inches='tight')
+    fig.savefig(output_dir + output_name + '_property_plots.png',dpi=300,bbox_inches='tight')
     plt.show()
 
 ################################### RUN LC-FTICR WORKFLOW ###################################
@@ -471,11 +471,11 @@ def run_LC_FTICR_workflow(lc_fticr_workflow_paramaters_toml_file):
     all_msdfs_df, all_statdics_df = lc_object.process_with_time_block(tic_df)
     summary_df = lc_object.create_summary(all_statdics=all_statdics_df)
     if lc_object.do_plot_van_krevelen_all_ids:
-        plot_van_krevelen_all_ids(all_msdfs_df, lc_object.output_directory)
+        plot_van_krevelen_all_ids(all_msdfs_df, lc_object.output_directory, lc_object.output_file_name)
     if lc_object.do_plot_van_krevelen_individual:
-        plot_van_krevelen_individual(all_msdfs_df, lc_object.output_directory)
+        plot_van_krevelen_individual(all_msdfs_df, lc_object.output_directory, lc_object.output_file_name)
     if lc_object.do_plot_properties:
-        plot_properties(summary_df, lc_object.output_directory)
+        plot_properties(summary_df, lc_object.output_directory, lc_object.output_file_name)
     return()
 
 def run_LC_FTICR_workflow_wdl(
@@ -548,10 +548,10 @@ def run_LC_FTICR_workflow_wdl(
     all_msdfs_df, all_statdics_df = lc_object.process_with_time_block(tic_df)
     summary_df = lc_object.create_summary(all_statdics=all_statdics_df)
     if lc_object.do_plot_van_krevelen_all_ids:
-        plot_van_krevelen_all_ids(all_msdfs_df, lc_object.output_directory)
+        plot_van_krevelen_all_ids(all_msdfs_df, lc_object.output_directory, lc_object.output_file_name)
     if lc_object.do_plot_van_krevelen_individual:
-        plot_van_krevelen_individual(all_msdfs_df, lc_object.output_directory)
+        plot_van_krevelen_individual(all_msdfs_df, lc_object.output_directory, lc_object.output_file_name)
     if lc_object.do_plot_properties:
-        plot_properties(summary_df, lc_object.output_directory)
+        plot_properties(summary_df, lc_object.output_directory, lc_object.output_file_name)
     click.echo("LC-FTICR workflow complete")
     return()
